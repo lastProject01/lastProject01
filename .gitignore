@@ -1,5 +1,43 @@
-# Created by https://www.toptal.com/developers/gitignore/api/intellij,java,windows,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java,windows,macos
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# Created by https://www.toptal.com/developers/gitignore/api/intellij,macos,windows,java
+# Edit at https://www.toptal.com/developers/gitignore?templates=intellij,macos,windows,java
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -199,7 +237,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij,java,windows,macos
+# End of https://www.toptal.com/developers/gitignore/api/intellij,macos,windows,java
 
-
-/src/main/resources/application-secret.yml
+# CUSTOM
+application-secret.yml
