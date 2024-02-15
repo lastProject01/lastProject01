@@ -1,5 +1,6 @@
 package com.project.Enovel.domain.product.form;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,10 +8,18 @@ import lombok.Setter;
 @Setter
 public class ProductCreateForm {
 
+    @NotEmpty(message = "상품명을 입력해 주세요")
     private String productName;
+
+    @NotEmpty(message = "상품명을 입력해 주세요")
     private String category;
+
+    @NotEmpty(message = "상품명을 입력해 주세요")
     private int price;
+
+    @NotEmpty(message = "상품명을 입력해 주세요")
     private String productImg;
+
+    @NotEmpty(message = "상품명을 입력해 주세요")
     private String introduceImg;
-    private boolean checkedProduct;
 }

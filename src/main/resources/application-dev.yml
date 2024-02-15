@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb:///127.0.0.1:3306/eNovel?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    url: jdbc:mariadb://127.0.0.1:3306/enovel?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
     username: root
     password:
     thymeleaf:
