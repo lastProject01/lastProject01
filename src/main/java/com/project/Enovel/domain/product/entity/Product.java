@@ -13,15 +13,15 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 @Entity
 public class Product extends BaseEntity {
-    String productName;
-    String category;
-    String subCategories;
-    int price;
-    String productImg;
-    String introduceImg;
-    double avgStarScore;
+    private String productName;
+    private String category;
+    private int price;
+    private String productImg;
+    private String introduceImg;
+    private double avgStarScore;
+    private boolean checkedProduct;
 
-    @ManyToOne
-    Member seller;
+//    @ManyToOne
+//    Member seller;
 
 }

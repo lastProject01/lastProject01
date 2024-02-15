@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping("/list")
-
-    @GetMapping("/create")
-    public String createProduct() {
-        this.productService.createProduct;
-        return "redirect:/product/list";
-    }
+//    @GetMapping("/list")
+//
+//    @GetMapping("/create")
+//    public String createProduct() {
+//        this.productService.createProduct;
+//        return "redirect:/product/list";
+//    }
 }
