@@ -35,11 +35,6 @@ spring:
       multipart:
         max-file-size: 100MB
         max-request-size: 500MB
-  file:
-    root:
-      path: C:\Users\hanjaehyun\Pictures\genFile
-    origin:
-      Path: /upload/
 
 
 
