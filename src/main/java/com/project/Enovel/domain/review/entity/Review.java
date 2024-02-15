@@ -3,11 +3,12 @@ package com.project.Enovel.domain.review.entity;
 import com.project.Enovel.global.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Review extends BaseEntity {
