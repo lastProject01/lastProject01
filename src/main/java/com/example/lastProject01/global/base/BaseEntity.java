@@ -1,4 +1,4 @@
-package base;
+package com.example.lastProject01.global.base;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
