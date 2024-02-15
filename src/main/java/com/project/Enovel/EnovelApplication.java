@@ -1,13 +1,13 @@
-package com.example.lastProject01;
+package com.project.Enovel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LastProject01Application {
+public class EnovelApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LastProject01Application.class, args);
+		SpringApplication.run(EnovelApplication.class, args);
 	}
 
 }
