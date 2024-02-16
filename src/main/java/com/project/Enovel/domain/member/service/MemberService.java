@@ -16,8 +16,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Member memberCreate(String username, String password, String nickname, String email,
-                         String address, String phone) {
+    public Member create(String username, String password, String nickname, String email,
+                         String address, String phone, boolean checkedSeller, boolean checkedAdmin) {
         Member member = Member.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -25,14 +25,16 @@ public class MemberService {
                 .email(email)
                 .address(address)
                 .phone(phone)
+                .checkedSeller(checkedSeller)
+                .checkedAdmin(checkedAdmin)
                 .createDate(LocalDateTime.now())
                 .build();
         this.memberRepository.save(member);
         return member;
     }
 
-    public Member getMember(String username) {
-        return this.memberRepository.findByUsername(username)
+    public Member getMember(Long id) {
+        return this.memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
 }
