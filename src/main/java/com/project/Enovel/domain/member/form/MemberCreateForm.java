@@ -3,8 +3,11 @@ package com.project.Enovel.domain.member.form;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class MemberCreateForm {
     @NotEmpty(message = "ID를 입력해 주십시오.")
     @Size(min = 5, max = 15, message = "사용자ID는 5자 이상, 15자 이하로 입력해주세요.")

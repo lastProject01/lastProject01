@@ -1,13 +1,10 @@
 package com.project.Enovel.domain.member.controller;
 
-import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.member.form.MemberCreateForm;
 import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.member.service.SellerService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
-    private final SellerService sellerService;
-    private final PasswordEncoder passwordEncoder;
 
     private void validatePassword(String password1, String password2, BindingResult bindingResult) {
         if (!password1.equals(password2)) {
