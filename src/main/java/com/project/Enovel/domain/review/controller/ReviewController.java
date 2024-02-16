@@ -52,7 +52,6 @@ public class ReviewController {
     public String modifyReview(@PathVariable("id") Long id, @RequestParam("content") String content, RedirectAttributes redirectAttributes) {
         Review review = reviewService.getReview(id);
         reviewService.modify(review, content);
-        redirectAttributes.addFlashAttribute("successMessage", "리뷰가 성공적으로 수정되었습니다.");
         return "redirect:/review/detail";
     }
 
