@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -23,9 +25,16 @@ public class MemberService {
                 .email(email)
                 .address(address)
                 .phone(phone)
+                .createDate(LocalDateTime.now())
                 .build();
         this.memberRepository.save(member);
         return member;
     }
+
+    public Member getMember(String username) {
+        return this.memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+    }
+
 
 }

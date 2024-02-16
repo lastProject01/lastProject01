@@ -4,9 +4,8 @@ import com.project.Enovel.global.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
-import lombok.Getter;
+import lombok.*;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -30,7 +29,6 @@ public class Member extends BaseEntity {
 
     private String address;
 
-    @Column(unique = true)
     private String phone;
 
     private boolean checkedSeller;

@@ -8,7 +8,7 @@ import lombok.Data;
 public class MemberCreateForm {
     @NotEmpty(message = "ID를 입력해 주십시오.")
     @Size(min = 5, max = 15, message = "사용자ID는 5자 이상, 15자 이하로 입력해주세요.")
-    private String usermane;
+    private String username;
 
     @NotEmpty(message = "비밀번호를 입력하여 주십시오.")
     @Size(min = 6, message = "비밀번호는 최소 6자 이상이어야 합니다.")
