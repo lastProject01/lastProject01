@@ -1,5 +1,7 @@
 package com.project.Enovel.domain.review.controller;
 
+import com.project.Enovel.domain.member.entity.Member;
+import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.review.entity.Review;
 import com.project.Enovel.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +16,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final MemberService memberService;
 
     @PostMapping("/create")
     public String createReview(@RequestParam("content") String content, Model model) {
-        Long memberId = 1L; // 예시 ID
+//        Member member = this.memberService.getMember(username);
         Long orderItemId = 1L; // 예시 ID
 
-        reviewService.create(memberId, orderItemId, content);
+//        reviewService.create(memberId, orderItemId, content);
 
         // 리뷰 생성 후 바로 리뷰 목록을 가져와 모델에 추가
         var reviews = reviewService.findAllReviews();

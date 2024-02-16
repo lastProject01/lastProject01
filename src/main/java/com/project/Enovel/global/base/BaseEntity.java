@@ -18,16 +18,16 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @ToString
-public class BaseEntity {
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate
-    private LocalDateTime createDate;
+    private LocalDateTime createDate = LocalDateTime.now();
 
     @LastModifiedDate
-    private LocalDateTime modifyDate;
+    private LocalDateTime modifyDate = LocalDateTime.now();
 
 }
