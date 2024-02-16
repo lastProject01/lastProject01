@@ -1,10 +1,12 @@
 package com.project.Enovel.domain.review.controller;
 
+import com.project.Enovel.domain.review.entity.Review;
 import com.project.Enovel.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/review")
@@ -14,21 +16,51 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/create")
-    public String createReview(@RequestParam("content") String content) {
-
-        Long memberId = 1L; // 예시 ID, 실제 구현에서는 사용자 세션 또는 인증 정보에서 ID를 가져와야 합니다.
-        Long orderItemId = 1L; // 예시 ID, 실제 구현에서는 필요한 로직에 따라 ID를 설정해야 합니다.
+    public String createReview(@RequestParam("content") String content, Model model) {
+        Long memberId = 1L; // 예시 ID
+        Long orderItemId = 1L; // 예시 ID
 
         reviewService.create(memberId, orderItemId, content);
-        return "redirect:/reviewDetail";
+
+        // 리뷰 생성 후 바로 리뷰 목록을 가져와 모델에 추가
+        var reviews = reviewService.findAllReviews();
+        model.addAttribute("reviews", reviews);
+        return "review/detail"; // 'review/detail.html' 템플릿으로 경로 수정
     }
 
-    @GetMapping("/reviewDetail")
+    @GetMapping("/detail")
     public String reviewDetail(Model model) {
         // 리뷰 목록을 가져오는 로직
-        var reviews = reviewService.findAllReviews(); // ReviewService에서 리뷰 목록을 가져오는 메소드를 가정
+        var reviews = reviewService.findAllReviews();
         model.addAttribute("reviews", reviews);
-        return "reviewDetail"; // templates 디렉토리 아래에 있는 reviewDetail.html을 가리킴
+        return "review/detail"; // 'review/detail.html' 템플릿으로 경로 수정
     }
 
+    @GetMapping("/createForm")
+    public String createReviewForm() {
+        return "review/createForm"; // 'review/createForm.html' 템플릿으로 경로 수정
+    }
+
+    @GetMapping("/modify/{id}")
+    public String modifyReview(@PathVariable("id") Long id, Model model) {
+        Review review = reviewService.getReview(id);
+        model.addAttribute("review", review);
+        return "review/modifyForm"; // 리뷰 수정 폼 뷰
+    }
+
+    @PostMapping("/modify/{id}")
+    public String modifyReview(@PathVariable("id") Long id, @RequestParam("content") String content, RedirectAttributes redirectAttributes) {
+        Review review = reviewService.getReview(id);
+        reviewService.modify(review, content);
+        redirectAttributes.addFlashAttribute("successMessage", "리뷰가 성공적으로 수정되었습니다.");
+        return "redirect:/review/detail";
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteReview(@PathVariable("id") Long id) {
+        Review review = reviewService.getReview(id);
+        reviewService.delete(review);
+        return "redirect:/review/detail";
+    }
 }

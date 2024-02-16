@@ -11,7 +11,6 @@ public class RootUrlController {
         return "redirect:/main";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/main")
     public String main() {
         return "main/main";

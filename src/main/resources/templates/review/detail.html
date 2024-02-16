@@ -7,6 +7,10 @@
 <h2>리뷰 목록</h2>
 <div th:each="review : ${reviews}">
     <div th:text="${review.content}">리뷰 내용</div>
+    <!-- 수정 링크 -->
+    <a th:href="@{/review/modify/{id}(id=${review.id})}">수정</a>
+    <!-- 삭제 링크 -->
+    <a th:href="@{/review/delete/{id}(id=${review.id})}" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
 </div>
 <form th:action="@{/review/create}" method="post">
     <textarea name="content" id="content" rows="15"></textarea>
@@ -14,4 +18,3 @@
 </form>
 </body>
 </html>
-
