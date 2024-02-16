@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>리뷰 목록</title>
+</head>
+<body>
+<h2>리뷰 목록</h2>
+<div th:each="review : ${reviews}">
+    <div th:text="${review.content}">리뷰 내용</div>
+</div>
+<form th:action="@{/review/create}" method="post">
+    <textarea name="content" id="content" rows="15"></textarea>
+    <input type="submit" value="리뷰 등록">
+</form>
+</body>
+</html>
+

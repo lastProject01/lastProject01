@@ -5,6 +5,7 @@ import com.project.Enovel.domain.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -40,5 +41,9 @@ public class ReviewService {
     @Transactional
     public void delete(Review review) {
         this.reviewRepository.delete(review);
+    }
+
+    public List<Review> findAllReviews() {
+        return reviewRepository.findAll(); // 모든 리뷰를 조회하여 반환
     }
 }
