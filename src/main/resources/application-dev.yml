@@ -5,7 +5,7 @@ spring:
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
     # URL 수정: `///`를 `//`로 변경하고, 데이터베이스 이름 앞에 `/` 추가
-    url: jdbc:mariadb://127.0.0.1:3306/enovel?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    url: jdbc:mariadb://127.0.0.1:3306/enovel
     username: root
     password:
 
