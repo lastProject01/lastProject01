@@ -35,6 +35,4 @@ public class MemberService {
         return this.memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
-
-
 }

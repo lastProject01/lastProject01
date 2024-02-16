@@ -35,6 +35,8 @@ class CustomOAuth2User extends User implements OAuth2User {
         // 사용자가 관리자인 경우
         if (member.isCheckedAdmin()) {
             authorityList.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+        } else if (member.isCheckedSeller()) {
+            authorityList.add(new SimpleGrantedAuthority(UserRole.SELLER.getValue()));
         } else {
             authorityList.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         }

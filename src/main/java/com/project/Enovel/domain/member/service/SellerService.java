@@ -22,8 +22,14 @@ public class SellerService {
                 .email(email)
                 .address(address)
                 .phone(phone)
+                .checkedSeller(true)
                 .build();
         this.memberRepository.save(seller);
         return seller;
+    }
+
+    public Member getMember(String username) {
+        return this.memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
 }
