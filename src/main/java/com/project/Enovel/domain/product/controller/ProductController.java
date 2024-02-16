@@ -27,12 +27,12 @@ public class ProductController {
         List<Product> product = this.productService.getList();
         model.addAttribute("product", product);
 
-        return"product_list";
+        return "product_list";
     }
 
     @GetMapping("/create")
     public String createProduct(ProductCreateForm productCreateForm) {
-       return"product/product_create";
+        return "product/product_create";
     }
 
     @PostMapping("/create")
@@ -48,7 +48,7 @@ public class ProductController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detailProduct(@PathVariable(value = "id")Long id, Model model) {
+    public String detailProduct(@PathVariable(value = "id") Long id, Model model) {
         Product product = this.productService.getProduct(id);
 
         model.addAttribute("product", product);
@@ -57,17 +57,17 @@ public class ProductController {
     }
 
     @GetMapping("/modify/{id}")
-    public String modifyProduct(@PathVariable(value = "id")Long id, ProductCreateForm productCreateForm) {
+    public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm) {
         Product product = this.productService.getProduct(id);
         return "product/product_modify";
     }
 
     @PostMapping("/modify/{id}")
-    public String modifyProduct(@PathVariable(value = "id")Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
+    public String modifyProduct(@PathVariable(value = "id") Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
         Product product = this.productService.getProduct(id);
 
         if (bindingResult.hasErrors()) {
-            return"product/product_modify";
+            return "product/product_modify";
         }
 
         this.productService.modifyProduct(product,
@@ -80,15 +80,13 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable(value = "id")Long id) {
+    public String deleteProduct(@PathVariable(value = "id") Long id) {
         Product product = this.productService.getProduct(id);
 
         this.productService.deleteProduct(product);
 
         return String.format("redirect:/product/detail/%d", product.getId());
     }
-
-
 
 
 }

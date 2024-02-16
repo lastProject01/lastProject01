@@ -25,8 +25,4 @@ public class Product extends BaseEntity {
     private String content;
     private LocalDateTime deleteDate;
 
-
-//    @ManyToOne
-//    Member seller;
-
 }
