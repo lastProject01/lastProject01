@@ -66,12 +66,12 @@ public class ProductController {
         return "product_modify";
     }
 
-    @PostMapping("/modify")
+    @PostMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id")Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
         Product product = this.productService.getProduct(id);
 
         if (bindingResult.hasErrors()) {
-            return"redirect:/product/modify";
+            return"product_modify";
         }
 
         this.productService.modifyProduct(product,
@@ -81,12 +81,16 @@ public class ProductController {
                 productCreateForm.getProductImg(),
                 productCreateForm.getIntroduceImg());
 
-        return "redirect:/product/detail";
+        return String.format("redirect:/product/detail/%d", product.getId());
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteProduct() {
-        return"";
+    public String deleteProduct(@PathVariable(value = "id")Long id) {
+        Product product = this.productService.getProduct(id);
+
+        this.productService.deleteProduct(product);
+
+        return String.format("redirect:/product/detail/%d", product.getId());
     }
 
 

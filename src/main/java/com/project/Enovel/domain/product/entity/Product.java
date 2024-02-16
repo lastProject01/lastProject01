@@ -6,6 +6,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Getter
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,13 +15,14 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 @Entity
 public class Product extends BaseEntity {
+
     private String productName;
     private String category;
     private int price;
     private String productImg;
     private String introduceImg;
     private double avgStarScore;
-    private boolean checkedProduct;
+    private LocalDateTime deleteDate;
 
 //    @ManyToOne
 //    Member seller;
