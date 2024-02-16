@@ -47,8 +47,8 @@ public class MemberController {
         validatePassword(memberCreateForm.getPassword1(), memberCreateForm.getPassword2(), bindingResult);
 
         try {
-            memberService.memberCreate(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickname(),
-                    memberCreateForm.getEmail(), memberCreateForm.getAddress(), memberCreateForm.getPhone());
+            memberService.create(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickname(),
+                    memberCreateForm.getEmail(), memberCreateForm.getAddress(), memberCreateForm.getPhone(), false, false);
         } catch (DataIntegrityViolationException e) {
             handleUserCreationError(bindingResult);
         }

@@ -13,10 +13,6 @@
                 <li><a th:href="@{/main}">메인</a></li>
             </ul>
         </div>
-        <div class="logo">
-            <div>로고 로고 로고</div>
-            <div>로고 로고 로고</div>
-        </div>
         <div class="member-section">
             <ul>
                 <li><a th:href="@{/review/detail/}">리뷰 상세</a></li>
@@ -25,7 +21,10 @@
         </div>
         <div class="login-section">
             <ul>
-                <li><a th:href="@{/admin/notice}" sec:authorize="isAuthenticated()"
+                <li><a th:href="@{/admin/board}" sec:authorize="isAuthenticated()"
+                       th:unless="${#authorization.expression('hasRole(''USER'')')}">
+                    판매자 페이지</a></li>
+                <li><a th:href="@{/seller/board}" sec:authorize="isAuthenticated()"
                        th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                     관리자 페이지</a></li>
                 <li><a th:href="@{/mypage}" sec:authorize="isAuthenticated()">마이페이지</a></li>

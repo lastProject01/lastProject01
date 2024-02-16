@@ -27,7 +27,7 @@ public class ProductController {
         List<Product> product = this.productService.getList();
         model.addAttribute("product", product);
 
-        return "product_list";
+        return "product/product_list";
     }
 
     @GetMapping("/create")
