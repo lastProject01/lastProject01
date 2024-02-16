@@ -25,18 +25,16 @@ public class ProductService {
 
     //상품 등록
     public Product createProduct(String productName,
-                                 String category,
                                  int price,
                                  String productImg,
-                                 String introduceImg) {
+                                 String content) {
 
         //상품 생성 코드
         Product product = Product.builder()
                 .productName(productName)
-                .category(category)
                 .price(price)
                 .productImg(productImg)
-                .introduceImg(introduceImg)
+                .content(content)
                 .build();
 
         //생성된 상품 저장
@@ -48,18 +46,16 @@ public class ProductService {
     //상품 수정
     public Product modifyProduct(Product product,
                                  String productName,
-                                 String category,
                                  int price,
                                  String productImg,
-                                 String introduceImg) {
+                                 String content) {
 
         //상품 수정 코드
         Product modifyProduct = product.toBuilder()
                 .productName(productName)
-                .category(category)
                 .price(price)
                 .productImg(productImg)
-                .introduceImg(introduceImg)
+                .content(content)
                 .build();
 
         //수정된 상품 저장

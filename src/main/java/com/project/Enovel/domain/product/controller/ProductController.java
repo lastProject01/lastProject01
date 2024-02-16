@@ -32,21 +32,17 @@ public class ProductController {
 
     @GetMapping("/create")
     public String createProduct(ProductCreateForm productCreateForm) {
-       return"product_create";
+       return"product/product_create";
     }
 
     @PostMapping("/create")
-    public String createProduct(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
+    public String createProduct(ProductCreateForm productCreateForm, Principal principal) {
 
-        if(bindingResult.hasErrors()) {
-            return "redirect:/product/create";
-        }
 
         this.productService.createProduct(productCreateForm.getProductName(),
-                productCreateForm.getCategory(),
                 productCreateForm.getPrice(),
                 productCreateForm.getProductImg(),
-                productCreateForm.getIntroduceImg());
+                productCreateForm.getContent());
 
         return "redirect:/product/list";
     }
@@ -57,13 +53,13 @@ public class ProductController {
 
         model.addAttribute("product", product);
 
-        return "product_detail";
+        return "product/product_detail";
     }
 
     @GetMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id")Long id, ProductCreateForm productCreateForm) {
         Product product = this.productService.getProduct(id);
-        return "product_modify";
+        return "product/product_modify";
     }
 
     @PostMapping("/modify/{id}")
@@ -71,15 +67,14 @@ public class ProductController {
         Product product = this.productService.getProduct(id);
 
         if (bindingResult.hasErrors()) {
-            return"product_modify";
+            return"product/product_modify";
         }
 
         this.productService.modifyProduct(product,
                 productCreateForm.getProductName(),
-                productCreateForm.getCategory(),
                 productCreateForm.getPrice(),
                 productCreateForm.getProductImg(),
-                productCreateForm.getIntroduceImg());
+                productCreateForm.getContent());
 
         return String.format("redirect:/product/detail/%d", product.getId());
     }

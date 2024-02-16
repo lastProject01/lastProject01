@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:text="${product.productName}"></div>
+
+<a th:href="@{|/product/delete/${product.id}|}">삭제</a>
+
+</body>
+</html>
