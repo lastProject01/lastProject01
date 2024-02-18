@@ -3,6 +3,9 @@ package com.project.Enovel.domain.product.service;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,8 +17,9 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<Product> getList() {
-        return this.productRepository.findAll();
+    public Page<Product> getList(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.productRepository.findAll(pageable);
     }
 
     public Product getProduct(Long id) {

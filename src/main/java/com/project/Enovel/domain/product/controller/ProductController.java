@@ -5,13 +5,11 @@ import com.project.Enovel.domain.product.form.ProductCreateForm;
 import com.project.Enovel.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -23,9 +21,9 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/list")
-    public String productList(Model model) {
-        List<Product> product = this.productService.getList();
-        model.addAttribute("product", product);
+    public String productList(Model model,  @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Product> paging = this.productService.getList(page);
+        model.addAttribute("paging", paging);
 
         return "product/product_list";
     }
