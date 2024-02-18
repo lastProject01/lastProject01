@@ -1,5 +1,6 @@
 package com.project.Enovel.domain.review.entity;
 
+import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.global.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,8 +13,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Review extends BaseEntity {
-    @Column(nullable = false)
-    private Long memberId; // 나중에 @ManyToOne으로 변경 예정
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(nullable = false)
     private Long orderItemId; // 나중에 @ManyToOne으로 변경 예정

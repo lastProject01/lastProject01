@@ -1,5 +1,7 @@
 package com.project.Enovel.domain.review.service;
 
+import com.project.Enovel.domain.member.entity.Member;
+import com.project.Enovel.domain.member.repository.MemberRepository;
 import com.project.Enovel.domain.review.entity.Review;
 import com.project.Enovel.domain.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
@@ -10,19 +12,24 @@ import java.util.NoSuchElementException;
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
 
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, MemberRepository memberRepository) {
         this.reviewRepository = reviewRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
-    public Review create(Long memberId, Long orderItemId, String content) {
+    public Review create(Long memberId, String content) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("회원을 찾을 수 없습니다."));
+
         Review newReview = Review.builder()
+                .member(member)
                 .content(content)
-                .orderItemId(orderItemId) // 이 부분은 Long 타입의 ID 값을 직접 할당
-                .memberId(memberId) // 이 부분도 Long 타입의 ID 값을 직접 할당
+                // orderItem 설정은 생략됨
                 .build();
-        this.reviewRepository.save(newReview);
+        reviewRepository.save(newReview);
         return newReview;
     }
 
