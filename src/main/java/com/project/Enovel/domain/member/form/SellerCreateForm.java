@@ -8,10 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberCreateForm {
+public class SellerCreateForm {
     @NotEmpty(message = "ID를 입력해 주십시오.")
     @Size(min = 5, max = 15, message = "사용자ID는 5자 이상, 15자 이하로 입력해주세요.")
-    private String username;
+    private String usermane;
 
     @NotEmpty(message = "비밀번호를 입력하여 주십시오.")
     @Size(min = 6, message = "비밀번호는 최소 6자 이상이어야 합니다.")
@@ -21,7 +21,7 @@ public class MemberCreateForm {
     @Size(min = 6, message = "비밀번호는 최소 6자 이상이어야 합니다.")
     private String password2;
 
-    @NotEmpty(message = "닉네임을 입력해 주십시오.")
+    @NotEmpty(message = "상점이름을 입력해 주십시오.")
     private String nickname;
 
     @NotEmpty(message = "이메일을 입력해 주십시오.")
@@ -36,5 +36,4 @@ public class MemberCreateForm {
     @NotEmpty(message = "전화번호를 입력해 주십시오.")
     @Size(min = 11, max = 11)
     private String phone;
-
 }

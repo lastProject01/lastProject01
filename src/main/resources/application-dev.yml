@@ -5,7 +5,11 @@ spring:
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
     # URL 수정: `///`를 `//`로 변경하고, 데이터베이스 이름 앞에 `/` 추가
+<<<<<<< HEAD
     url: jdbc:mariadb://127.0.0.1:3306/eNovel?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+=======
+    url: jdbc:mariadb://127.0.0.1:3306/enovel
+>>>>>>> 97456d25f2f2258c3eaa9086ae892eb94db85def
     username: root
     password:
 
@@ -37,4 +41,8 @@ logging:
         type: TRACE
       springframework:
         transaction:
+<<<<<<< HEAD
           interceptor: TRACE
+=======
+          interceptor: TRACE
+>>>>>>> 97456d25f2f2258c3eaa9086ae892eb94db85def
