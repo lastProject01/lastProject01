@@ -18,12 +18,4 @@ public class MainController {
     public String root() {
         return "redirect:/main";
     }
-<<<<<<< HEAD:src/main/java/com/project/Enovel/RootUrlController.java
-
-    @GetMapping("/main")
-    public String main() {
-        return "main/main";
-    }
-=======
->>>>>>> 2517e00c1a2ae0414f5f01d81eca8cb0a84eeb3c:src/main/java/com/project/Enovel/domain/MainController.java
 }
