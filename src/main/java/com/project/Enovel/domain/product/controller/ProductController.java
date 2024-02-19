@@ -36,19 +36,24 @@ public class ProductController {
         return "product/product_list";
     }
 
-//    @PreAuthorize("hasRole('ADMIN','SELLER')")
+
+    //admin 등급과 seller 등급만 접근 가능
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/create")
-    public String createProduct(ProductCreateForm productCreateForm, Principal principal) {
+    public String createProduct(ProductCreateForm productCreateForm,BindingResult bindingResult, Principal principal) {
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
-        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
-        }
+//        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+//            bindingResult.rejectValue();
+//            return "product/product_create";
+//        }
 
         return "product/product_create";
     }
 
+    //admin 등급과 seller 등급만 접근 가능
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/create")
     public String createProduct(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
 
@@ -81,6 +86,8 @@ public class ProductController {
         return "product/product_detail";
     }
 
+    //admin 등급과 seller 등급만 접근 가능
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm, Principal principal) {
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
@@ -93,6 +100,8 @@ public class ProductController {
         return "product/product_modify";
     }
 
+    //admin 등급과 seller 등급만 접근 가능
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id") Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
 
@@ -118,6 +127,8 @@ public class ProductController {
         return String.format("redirect:/product/detail/%d", product.getId());
     }
 
+    //admin 등급과 seller 등급만 접근 가능
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
 
