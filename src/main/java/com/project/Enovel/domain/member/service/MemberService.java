@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +37,10 @@ public class MemberService {
     public Member getMember(Long id) {
         return this.memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+    }
+
+    public Member getMemberFindByUsername(String username) {
+        Optional<Member> member = this.memberRepository.findByUsername(username);
+        return member.get();
     }
 }

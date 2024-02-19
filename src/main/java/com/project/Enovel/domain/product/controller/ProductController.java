@@ -1,10 +1,14 @@
 package com.project.Enovel.domain.product.controller;
 
+import com.project.Enovel.domain.member.entity.Member;
+import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.form.ProductCreateForm;
 import com.project.Enovel.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String productList(Model model) {
@@ -30,13 +36,32 @@ public class ProductController {
         return "product/product_list";
     }
 
+//    @PreAuthorize("hasRole('ADMIN','SELLER')")
     @GetMapping("/create")
-    public String createProduct(ProductCreateForm productCreateForm) {
+    public String createProduct(ProductCreateForm productCreateForm, Principal principal) {
+        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+
+        //회원 등급 검증
+        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
+
         return "product/product_create";
     }
 
     @PostMapping("/create")
-    public String createProduct(ProductCreateForm productCreateForm, Principal principal) {
+    public String createProduct(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
+
+        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+
+        //회원 등급 검증
+        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
+
+        if(bindingResult.hasErrors()) {
+            return "redirect:/product/list";
+        }
 
 
         this.productService.createProduct(productCreateForm.getProductName(),
@@ -57,13 +82,27 @@ public class ProductController {
     }
 
     @GetMapping("/modify/{id}")
-    public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm) {
+    public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm, Principal principal) {
+        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+
+        //회원 등급 검증
+        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
         Product product = this.productService.getProduct(id);
         return "product/product_modify";
     }
 
     @PostMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id") Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
+
+        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+
+        //회원 등급 검증
+        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
+
         Product product = this.productService.getProduct(id);
 
         if (bindingResult.hasErrors()) {
@@ -80,7 +119,15 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable(value = "id") Long id) {
+    public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
+
+        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+
+        //회원 등급 검증
+        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
+
         Product product = this.productService.getProduct(id);
 
         this.productService.deleteProduct(product);
