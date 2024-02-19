@@ -1,0 +1,42 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    # URL 수정: `///`를 `//`로 변경하고, 데이터베이스 이름 앞에 `/` 추가
+    url: jdbc:mariadb://127.0.0.1:3306/enovel
+
+    username: root
+    password:
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    # `ddl-auto` 위치 수정: `spring.jpa.hibernate.ddl-auto`로 이동
+    hibernate:
+      ddl-auto: update
+
+  thymeleaf:
+    cache: false
+    # `prefix` 설정 위치 수정: `spring.thymeleaf.prefix`로 이동
+    prefix: file:src/main/resources/templates/
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+      springframework:
+        transaction:
+          interceptor: TRACE
+
