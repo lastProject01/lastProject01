@@ -38,14 +38,14 @@ public class ProductController {
 
 
     //admin 등급과 seller 등급만 접근 가능
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String createProduct(ProductCreateForm productCreateForm,BindingResult bindingResult, Principal principal) {
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
 //        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
-//            bindingResult.rejectValue();
+//            bindingResult.rejectValue("member", "memberRoleError","권한이 없습니다.");
 //            return "product/product_create";
 //        }
 
@@ -55,7 +55,7 @@ public class ProductController {
     //admin 등급과 seller 등급만 접근 가능
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/create")
-    public String createProduct(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
+    public String createProductPost(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
 
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
