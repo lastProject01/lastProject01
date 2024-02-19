@@ -17,7 +17,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(nullable = false)
+
     private Long orderItemId; // 나중에 @ManyToOne으로 변경 예정
 
     @Column(columnDefinition = "TEXT")

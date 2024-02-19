@@ -7,6 +7,7 @@ import com.project.Enovel.domain.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -20,14 +21,14 @@ public class ReviewService {
     }
 
     @Transactional
-    public Review create(Long memberId, String content) {
+    public Review create(Long memberId, String content, Long orderItemId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원을 찾을 수 없습니다."));
 
         Review newReview = Review.builder()
                 .member(member)
                 .content(content)
-                // orderItem 설정은 생략됨
+                .orderItemId(orderItemId)
                 .build();
         reviewRepository.save(newReview);
         return newReview;
@@ -47,5 +48,9 @@ public class ReviewService {
     @Transactional
     public void delete(Review review) {
         this.reviewRepository.delete(review);
+    }
+
+    public List<Review> findAllReviews() {
+        return reviewRepository.findAll(); // 모든 리뷰를 조회하여 반환
     }
 }

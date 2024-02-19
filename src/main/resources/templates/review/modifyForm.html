@@ -1,0 +1,5 @@
+<form th:action="@{/review/modify/{id}(id=${review.id})}" method="post">
+    <input type="hidden" name="id" th:value="${review.id}" />
+    <textarea name="content" th:text="${review.content}" id="content" rows="15"></textarea>
+    <input type="submit" value="리뷰 수정">
+</form>
