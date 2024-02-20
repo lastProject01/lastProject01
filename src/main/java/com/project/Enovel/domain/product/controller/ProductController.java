@@ -28,6 +28,7 @@ public class ProductController {
     private final ProductService productService;
     private final MemberService memberService;
 
+    //상품 목록 출력
     @GetMapping("/list")
     public String productList(Model model) {
         List<Product> product = this.productService.getList();
@@ -36,16 +37,28 @@ public class ProductController {
         return "product/product_list";
     }
 
+    //상품 세부
+    @GetMapping("/detail/{id}")
+    public String detailProduct(@PathVariable(value = "id") Long id, Model model) {
+        Product product = this.productService.getProduct(id);
+
+        model.addAttribute("product", product);
+
+        return "product/product_detail";
+    }
+
 
     //admin 등급과 seller 등급만 접근 가능
-    @PreAuthorize("isAuthenticated()")
+    //상품 생섬 폼 이동
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/create")
     public String createProduct(ProductCreateForm productCreateForm, Principal principal) {
 
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
-        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+        //user등급만 필터링
+        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
@@ -53,6 +66,7 @@ public class ProductController {
     }
 
     //admin 등급과 seller 등급만 접근 가능
+    //상품 생성
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/create")
     public String createProductPost(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
@@ -60,7 +74,8 @@ public class ProductController {
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
-        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+        //user등급만 필터링
+        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
@@ -77,23 +92,16 @@ public class ProductController {
         return "redirect:/product/list";
     }
 
-    @GetMapping("/detail/{id}")
-    public String detailProduct(@PathVariable(value = "id") Long id, Model model) {
-        Product product = this.productService.getProduct(id);
-
-        model.addAttribute("product", product);
-
-        return "product/product_detail";
-    }
-
     //admin 등급과 seller 등급만 접근 가능
+    //수정 폼 이동
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm, Principal principal) {
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
-        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+        //user등급만 필터링
+        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
         Product product = this.productService.getProduct(id);
@@ -101,6 +109,7 @@ public class ProductController {
     }
 
     //admin 등급과 seller 등급만 접근 가능
+    //상품 수정
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id") Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
@@ -108,7 +117,7 @@ public class ProductController {
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
-        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
@@ -128,6 +137,7 @@ public class ProductController {
     }
 
     //admin 등급과 seller 등급만 접근 가능
+    //상품 삭제
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
@@ -135,7 +145,8 @@ public class ProductController {
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
-        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+        //user등급만 필터링
+        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
