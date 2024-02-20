@@ -40,14 +40,14 @@ public class ProductController {
     //admin 등급과 seller 등급만 접근 가능
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String createProduct(ProductCreateForm productCreateForm,BindingResult bindingResult, Principal principal) {
+    public String createProduct(ProductCreateForm productCreateForm, Principal principal) {
+
         Member member = this.memberService.getMemberFindByUsername(principal.getName());
 
         //회원 등급 검증
-//        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
-//            bindingResult.rejectValue("member", "memberRoleError","권한이 없습니다.");
-//            return "product/product_create";
-//        }
+        if (!member.isCheckedAdmin() || !member.isCheckedSeller() ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
 
         return "product/product_create";
     }
