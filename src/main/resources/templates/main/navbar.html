@@ -1,0 +1,32 @@
+<div class="container">
+    <nav>
+        <div class="logo-section">
+            <ul>
+                <li><a th:href="@{/static}">메인</a></li>
+            </ul>
+        </div>
+        <div class="member-section">
+            <ul>
+                <li><a th:href="@{/review/detail}">리뷰 상세</a></li>
+                <li><a th:href="@{/review/create}">리뷰 작성</a></li>
+                <li><a th:href="@{/product/create}">상품 작성</a></li>
+                <!--                <li><a th:href="@{/review/createForm}"></a></li>-->
+            </ul>
+        </div>
+        <div class="login-section">
+            <ul>
+                <li><a th:href="@{/seller/product}" sec:authorize="isAuthenticated()"
+                       th:unless="${#authorization.expression('hasRole(''USER'')')}">
+                    판매자 페이지</a></li>
+                <li><a th:href="@{/admin/member}" sec:authorize="isAuthenticated()"
+                       th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    관리자 페이지</a></li>
+                <li><a th:href="@{/member/myInfo}" sec:authorize="isAuthenticated()">마이페이지</a></li>
+                <li><a th:href="@{/member/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
+                <li><a th:href="@{/member/signup}" sec:authorize="isAnonymous()">회원가입</a></li>
+                <li><a th:href="@{/member/login}" sec:authorize="isAnonymous()">로그인</a></li>
+            </ul>
+        </div>
+
+    </nav>
+</div>

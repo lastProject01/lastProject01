@@ -1,0 +1,27 @@
+<form th:object="${memberCreateForm}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+<!--    <div>-->
+<!--        <label for="username">사용자ID</label>-->
+<!--        <input type="text" id="username" name="username" th:value="${memberCreateForm.username}" disabled>-->
+<!--    </div>-->
+    <div>
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" name="nickname" th:value="${memberMyPageForm.nickname}">
+    </div>
+    <div>
+        <label for="email">이메일</label>
+        <input type="text" id="email" name="email" th:value="${memberMyPageForm.email}">
+    </div>
+    <div>
+        <label for="address">주소</label>
+        <input type="text" id="address" name="address" th:value="${memberMyPageForm.address}">
+    </div>
+    <div>
+        <label for="phone">전화번호</label>
+        <input type="text" id="phone" name="phone" th:value="${memberMyPageForm.phone}">
+    </div>
+
+    <div>
+        <button type="submit" th:herf="@{/member/updateMyInfo}">정보 수정하기</button>
+    </div>
+</form>

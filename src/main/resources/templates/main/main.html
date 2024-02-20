@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/main.css}">
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="stylesheet" href="/nav.css"/>
+    <link rel="stylesheet" href="/layout.css"/>
 </head>
 <body>
 <div class="container">
@@ -34,7 +36,20 @@
             </ul>
         </div>
     </nav>
+=======
+
+<div th:replace="main/navbar.html"></div>
+
+<div layout:fragment="content" class="container">
+    <h1 style="padding-left:600px;
+    padding-top:40px;">안녕 안녕</h1>
+    <h2 style="padding-left:600px;
+    padding-top:40px;">메인 메인 메인</h2>
+    <h3 style="padding-left:600px;
+    padding-top:40px;">중심 중심 중심 중심</h3>
 </div>
 
+<div th:replace="main/footer.html"></div>
+</div>
 </body>
 </html>
