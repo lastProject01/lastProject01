@@ -60,6 +60,6 @@ public class OrderController {
     @PostMapping("/{orderId}/refund")
     public String refundOrder(@PathVariable("orderId") Long orderId) {
         orderService.refundOrder(orderId);
-        return "redirect:/order/detail/" + orderId;  // 변경된 부분
+        return "redirect:/order/detail/" + orderId;  // 다시 시작
     }
 }
