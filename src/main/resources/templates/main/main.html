@@ -27,7 +27,7 @@
                 <li><a th:href="@{/admin/member}" sec:authorize="isAuthenticated()"
                        th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                     관리자 페이지</a></li>
-                <li><a th:href="@{/mypage}" sec:authorize="isAuthenticated()">마이페이지</a></li>
+                <li><a th:href="@{/member/myInfo}" sec:authorize="isAuthenticated()">마이페이지</a></li>
                 <li><a th:href="@{/member/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
                 <li><a th:href="@{/member/signup}" sec:authorize="isAnonymous()">회원가입</a></li>
                 <li><a th:href="@{/member/login}" sec:authorize="isAnonymous()">로그인</a></li>

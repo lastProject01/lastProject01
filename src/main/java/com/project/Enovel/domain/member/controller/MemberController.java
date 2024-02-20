@@ -1,6 +1,9 @@
 package com.project.Enovel.domain.member.controller;
 
+import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.member.form.MemberCreateForm;
+import com.project.Enovel.domain.member.form.MemberMyPageForm;
+import com.project.Enovel.domain.member.form.MemberPasswordForm;
 import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.member.service.SellerService;
 import jakarta.validation.Valid;
@@ -10,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,57 +61,107 @@ public class MemberController {
                     memberCreateForm.getEmail(), memberCreateForm.getAddress(), memberCreateForm.getPhone(), false, false);
         } catch (DataIntegrityViolationException e) {
             handleUserCreationError(bindingResult);
+            return "member/signup";
         }
 
         return "redirect:/";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/showmypage")
-    public String showmypage(UserMypageForm userMypageForm, UserCreateForm userCreateForm, Principal principal) {
+    @GetMapping("/myInfo")
+    public String myInfo(MemberCreateForm memberCreateForm, Principal principal) {
         String username = principal.getName();
-        SiteUser siteUser = this.userService.getUser(username);
-        if (!siteUser.getUserId().equals(principal.getName())) {
+        Member member = this.memberService.getMember(username);
+        if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
-        userCreateForm.setUserId(siteUser.getUserId());
-        userMypageForm.setNickname(siteUser.getNickname());
-        userMypageForm.setPhone(siteUser.getPhone());
+        memberCreateForm.setUsername(member.getUsername());
+        memberCreateForm.setNickname(member.getNickname());
+        memberCreateForm.setEmail(member.getEmail());
+        memberCreateForm.setAddress(member.getAddress());
+        memberCreateForm.setPhone(member.getPhone());
 
-        return "user/mypage_detail";
+        return "member/my_info";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/mypage")
-    public String mypage(UserMypageForm userMypageForm, UserCreateForm userCreateForm, Principal principal) {
+    @GetMapping("/updateMyInfo")
+    public String myPage(MemberCreateForm memberCreateForm, Principal principal) {
         String username = principal.getName();
-        SiteUser siteUser = this.userService.getUser(username);
-        if (!siteUser.getUserId().equals(principal.getName())) {
+        Member member = this.memberService.getMember(username);
+        if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
-        userCreateForm.setUserId(siteUser.getUserId());
-        userMypageForm.setNickname(siteUser.getNickname());
-        userMypageForm.setPhone(siteUser.getPhone());
-        return "user/mypage_form";
+        memberCreateForm.setUsername(member.getUsername());
+        memberCreateForm.setNickname(member.getNickname());
+        memberCreateForm.setEmail(member.getEmail());
+        memberCreateForm.setAddress(member.getAddress());
+        memberCreateForm.setPhone(member.getPhone());
+        return "member/my_info_update";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/mypage")
-    public String userModify(@Valid UserMypageForm userMypageForm,
+    @PostMapping("/updateMyInfo")
+    public String memberModify(@Valid MemberMyPageForm memberMyPageForm,
                              BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
-            return "user/mypage_form";
+            return "member/my_info_update";
         }
-        SiteUser siteUser = this.userService.getUser(principal.getName());
-        if (!siteUser.getUserId().equals(principal.getName())) {
+        Member member = this.memberService.getMember(principal.getName());
+        if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         try {
-            userService.modify(siteUser, userMypageForm.getNickname(), userMypageForm.getPhone());
-            return "redirect:/user/showmypage";
+            memberService.modify(member, memberMyPageForm.getNickname(), memberMyPageForm.getEmail(),
+                    memberMyPageForm.getAddress(), memberMyPageForm.getPhone());
+            return "redirect:/member/myInfo";
         } catch (Exception e) {
             e.printStackTrace();
-            return "user/mypage_form";
+            return "member/my_info";
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/changePw")
+    public String changePw(MemberPasswordForm memberPasswordForm) {
+        return "member/change_pw";
+    }
+
+//    @PreAuthorize("isAuthenticated()")
+//    @PostMapping("/changePw")
+//    public String changePassword(@Valid UserPasswordForm userPasswordForm, BindingResult bindingResult, Principal principal, Model model) {
+//        String username = principal.getName();
+//        SiteUser siteUser = userService.getUser(username);
+//
+//        // 기존 비밀번호 확인
+//        if (!passwordEncoder.matches(userPasswordForm.getCurrentPassword(), siteUser.getPassword())) {
+//            bindingResult.rejectValue("currentPassword", "passwordInCorrect", "기존 비밀번호가 일치하지 않습니다.");
+//        }
+//
+//        // 새로운 비밀번호와 비밀번호 확인이 일치하는지 확인
+//        if (!userPasswordForm.getNewPassword().equals(userPasswordForm.getConfirmPassword())) {
+//            bindingResult.rejectValue("confirmPassword", "passwordInCorrect", "새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+//        }
+//
+//        if (bindingResult.hasErrors()) {
+//            return "user/change_password"; // 에러가 있으면 변경 페이지로 다시 이동
+//        }
+//
+//        // 비밀번호 변경
+//        try {
+//            userService.changePw(siteUser, userPasswordForm.getNewPassword());
+//            return "redirect:/user/showmypage"; // 성공 페이지로 리다이렉트 또는 성공 메시지를 표시하는 뷰로 이동
+//        } catch (RuntimeException e) {
+//            model.addAttribute("error", "비밀번호 변경에 실패했습니다.");
+//            return "redirect:/user/changePw"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 뷰로 이동
+//        }
+//    }
+
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("/checkedPw")
+//    public String checkedpw() {
+//        return "";
+//    }
+
+
 }

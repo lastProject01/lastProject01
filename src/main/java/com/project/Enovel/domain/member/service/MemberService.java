@@ -58,6 +58,7 @@ public class MemberService {
                             .address(address)
                             .phone(phone)
                             .createDate(member.getCreateDate())
+                            .modifyDate(LocalDateTime.now())
                             .checkedSeller(member.isCheckedSeller())
                             .checkedAdmin(member.isCheckedAdmin())
                             .checkedDeleted(member.isCheckedDeleted())
