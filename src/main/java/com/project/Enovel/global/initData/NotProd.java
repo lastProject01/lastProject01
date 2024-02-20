@@ -14,10 +14,9 @@ public class NotProd {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-//    @Bean
-//    public ApplicationRunner init(MemberService memberService) {
-//        return args -> {
-//
+    @Bean
+    public ApplicationRunner init(MemberService memberService) {
+        return args -> {
 //            memberService.create("user1", "123123", "유저1", "user1@enovel.com", "주소", "01011111111", false, false);
 //            memberService.create("user2", "123123", "유저2", "user2@enovel.com", "주소", "01022222222", false, false);
 //            memberService.create("user3", "123123", "유저3", "user3@enovel.com", "주소", "01033333333", false, false);
@@ -27,7 +26,6 @@ public class NotProd {
 //            memberService.create("admin1", "123123", "관리자1", "admin1@enovel.com", "주소", "01011111111", false, true);
 //            memberService.create("admin2", "123123", "관리자2", "admin2@enovel.com", "주소", "01022222222", false, true);
 //            memberService.create("admin3", "123123", "관리자3", "admin3@enovel.com", "주소", "01033333333", false, true);
-//
-//        };
-//    }
+        };
+    }
 }

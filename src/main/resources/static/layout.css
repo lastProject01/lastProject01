@@ -20,13 +20,13 @@ ul,li{
 /* 스타일 시작 */
 
 .container{
-  width: 1200px;
-  margin:0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
   color:white;
 }
 
 .container>nav{
-  width: 900px;
+  max-width: 900px;
   margin:auto;
   display:flex;
   justify-content:space-between;
