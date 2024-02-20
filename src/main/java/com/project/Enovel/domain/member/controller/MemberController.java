@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
@@ -76,6 +77,7 @@ public class MemberController {
         if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
+
         memberCreateForm.setUsername(member.getUsername());
         memberCreateForm.setNickname(member.getNickname());
         memberCreateForm.setEmail(member.getEmail());
@@ -93,18 +95,20 @@ public class MemberController {
         if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
+
         memberCreateForm.setUsername(member.getUsername());
         memberCreateForm.setNickname(member.getNickname());
         memberCreateForm.setEmail(member.getEmail());
         memberCreateForm.setAddress(member.getAddress());
         memberCreateForm.setPhone(member.getPhone());
+
         return "member/my_info_update";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/updateMyInfo")
     public String memberModify(@Valid MemberMyPageForm memberMyPageForm,
-                             BindingResult bindingResult, Principal principal) {
+                               BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "member/my_info_update";
         }
@@ -155,8 +159,30 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/checkedPw")
-    public String checkedpw() {
+    public String checkedPw() {
         return "member/checked_pw";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/checkedPw")
+    public String checkedPw(@Valid MemberPasswordForm memberPasswordForm, BindingResult bindingResult, Principal principal, Model model) {
+        // 사용자 이름 가져오기
+        String username = principal.getName();
+        // 사용자 정보 가져오기
+        Member member = memberService.getMember(username);
+
+        // 입력된 확인 비밀번호가 실제 사용자의 비밀번호와 일치하지 않으면 에러 추가
+        if (!passwordEncoder.matches(memberPasswordForm.getConfirmPassword(), member.getPassword())) {
+            bindingResult.rejectValue("currentPassword", "passwordInCorrect", "비밀번호가 일치하지 않습니다.");
+        }
+
+        // 바인딩 결과에 에러가 있으면 다시 입력 폼으로 이동
+        if (bindingResult.hasErrors()) {
+            return "member/checked_pw";
+        }
+
+        // 모든 검증을 통과하면 비밀번호가 일치하므로 성공 페이지로 리다이렉트
+        return "redirect:/member/myInfo";
     }
 
 
