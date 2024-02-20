@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,17 @@ public class UserSecurityService implements UserDetailsService {
         if (_member.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
+
         Member member = _member.get();
+
+        if (member.isCheckedDeleted()) {
+            try {
+                throw new LoginException("탈퇴된 회원입니다.");
+            } catch (LoginException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (member.isCheckedAdmin()) {
             authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));

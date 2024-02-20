@@ -11,11 +11,13 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @SuperBuilder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
 
+    @Setter
     private String password;
 
     @Column(unique = true)
@@ -35,5 +37,6 @@ public class Member extends BaseEntity {
 
     private boolean checkedAdmin;
 
+    @Setter
     private boolean checkedDeleted;
 }

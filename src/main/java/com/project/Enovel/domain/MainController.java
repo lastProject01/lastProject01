@@ -13,5 +13,4 @@ public class MainController {
         // 메서드 로직
         return "main/main";
     }
-
 }
