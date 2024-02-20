@@ -1,38 +1,61 @@
-<div>
-    <h2>관리자페이지</h2>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<div style="margin: 30px;">
+    <div>
+        <h2>관리자페이지</h2>
+    </div>
+    <table class="table" style="width: 1000px; text-align: center;">
+        <thead>
+        <tr>
+            <th style="width: 12.5%;">번호</th>
+            <th style="width: 12.5%;">아이디</th>
+            <th style="width: 12.5%;">닉네임</th>
+            <th style="width: 12.5%;">가입일자</th>
+            <th style="width: 12.5%;">수정일자</th>
+            <th style="width: 10%;">유저등급</th>
+            <th style="width: 15%;">권한변경</th>
+            <th style="width: 12.5%;">탈퇴</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member, loop : ${paging}">
+            <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
+            <td th:text="${member.username}"></td>
+            <td th:text="${member.nickname}"></td>
+            <td>
+                <div th:text="${#temporals.format(member.createDate, 'yyyy-MM-dd')}"></div>
+                <div th:text="${#temporals.format(member.createDate, 'HH:mm')}"></div>
+            </td>
+            <td>
+                <div th:text="${#temporals.format(member.modifyDate, 'yyyy-MM-dd')}"></div>
+                <div th:text="${#temporals.format(member.modifyDate, 'HH:mm')}"></div>
+            </td>
+            <td>
+                <div th:if="${!member.isCheckedSeller() && !member.isCheckedAdmin() == true}">일반회원</div>
+                <div th:if="${member.isCheckedSeller() == true}">판매자</div>
+                <div th:if="${member.isCheckedAdmin() == true}">관리자</div>
+            </td>
+            <td>
+                <span th:if="${member.checkedDeleted}">탈퇴한 사용자</span>
+                <form th:if="${member.checkedSeller && !member.checkedDeleted}" th:action="@{/admin/common/{username}(username=${member.username})}" method="post"
+                      onsubmit="return confirm('판매자 권한을 취소하겠습니까?');">
+                    <input type="hidden" name="username" th:value="${member.username}"/>
+                    <button type="submit" sec:authorize="isAuthenticated()">판매자권한취소</button>
+                </form>
+                <form th:if="${!member.checkedSeller && !member.checkedDeleted}" th:action="@{/admin/seller/{username}(username=${member.username})}" method="post"
+                      onsubmit="return confirm('판매자 등급으로 올리시겠습니까?');">
+                    <input type="hidden" name="username" th:value="${member.username}"/>
+                    <button type="submit" sec:authorize="isAuthenticated()">판매자권한부여</button>
+                </form>
+            </td>
+            <td>
+                <span th:if="${member.checkedDeleted}">탈퇴한 사용자</span>
+                <form th:unless="${member.checkedDeleted}" th:action="@{/admin/delete/{username}(username=${member.username})}" method="post"
+                      onsubmit="return confirm('정말 탈퇴시키겠습니까?');">
+                    <input type="hidden" name="username" th:value="${member.username}"/>
+                    <button type="submit" sec:authorize="isAuthenticated()">탈퇴</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<table>
-    <thead>
-    <tr>
-        <th>번호</th>
-        <th>아이디</th>
-        <th>닉네임</th>
-        <th>가입일자</th>
-        <th>수정일자</th>
-        <th>탈퇴</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="member, loop : ${paging}">
-        <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
-        <td th:text="${member.username}"></td>
-        <td th:text="${member.nickname}"></td>
-        <td>
-            <div th:text="${#temporals.format(member.createDate, 'yyyy-MM-dd')}"></div>
-            <div th:text="${#temporals.format(member.createDate, 'HH:mm')}"></div>
-        </td>
-        <td>
-            <div th:text="${#temporals.format(member.modifyDate, 'yyyy-MM-dd')}"></div>
-            <div th:text="${#temporals.format(member.modifyDate, 'HH:mm')}"></div>
-        </td>
-        <td>
-            <span th:if="${member.checkedDeleted}">탈퇴한 사용자</span>
-            <form th:unless="${member.checkedDeleted}" th:action="@{/admin/delete/{username}(username=${member.username})}" method="post"
-                  onsubmit="return confirm('정말 탈퇴시키겠습니까?');">
-                <input type="hidden" name="username" th:value="${member.username}"/>
-                <button type="submit" sec:authorize="isAuthenticated()">탈퇴</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>

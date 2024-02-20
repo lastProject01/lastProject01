@@ -41,11 +41,32 @@ public class AdminController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
-    public String deleteUser(Principal principal, @RequestParam("username") String username) {
+    public String deleteMember(Principal principal, @RequestParam("username") String username) {
         Member loginUser = this.memberService.getMember(principal.getName());
         if(loginUser.isCheckedAdmin()) {
             memberService.deleteMember(username);
         }
         return "redirect:/admin/member";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/seller/{id}")
+    public String sellerMember(Principal principal, @RequestParam("username") String username) {
+        Member loginUser = this.memberService.getMember(principal.getName());
+        if(loginUser.isCheckedAdmin()) {
+            memberService.sellerMember(username);
+        }
+        return "redirect:/admin/member";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/common/{id}")
+    public String commonMember(Principal principal, @RequestParam("username") String username) {
+        Member loginUser = this.memberService.getMember(principal.getName());
+        if(loginUser.isCheckedAdmin()) {
+            memberService.commonMember(username);
+        }
+        return "redirect:/admin/member";
+    }
+
 }

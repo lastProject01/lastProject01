@@ -118,6 +118,20 @@ public class MemberService {
         this.memberRepository.save(deleteuser);
     }
 
+    public void sellerMember(String username) {
+        Optional<Member> optionalUser = memberRepository.findByUsername(username);
+        Member sellerMember = optionalUser.get();
+        sellerMember.setCheckedSeller(true);
+        this.memberRepository.save(sellerMember);
+    }
+
+    public void commonMember(String username) {
+        Optional<Member> optionalUser = memberRepository.findByUsername(username);
+        Member commonMember = optionalUser.get();
+        commonMember.setCheckedSeller(false);
+        this.memberRepository.save(commonMember);
+    }
+
     public Member getMember(String username) {
         return this.memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));

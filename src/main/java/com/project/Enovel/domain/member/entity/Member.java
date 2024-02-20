@@ -33,8 +33,10 @@ public class Member extends BaseEntity {
 
     private String phone;
 
+    @Setter
     private boolean checkedSeller;
 
+    @Setter
     private boolean checkedAdmin;
 
     @Setter
