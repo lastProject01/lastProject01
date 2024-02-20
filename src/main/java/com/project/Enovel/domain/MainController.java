@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
-    @GetMapping("/main/main")
-    public String mainPage() {
+    @GetMapping("/")
+    public String main() {
         // 메서드 로직
         return "main/main";
     }
+
 }
