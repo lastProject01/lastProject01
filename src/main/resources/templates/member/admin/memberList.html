@@ -35,21 +35,23 @@
                 <div th:if="${member.isCheckedAdmin() == true}">관리자</div>
             </td>
             <td>
+                <span th:if="${member.checkedAdmin}">관리자</span>
                 <span th:if="${member.checkedDeleted}">탈퇴한 사용자</span>
-                <form th:if="${member.checkedSeller && !member.checkedDeleted}" th:action="@{/admin/common/{username}(username=${member.username})}" method="post"
+                <form th:if="${member.checkedSeller && !member.checkedDeleted && !member.isCheckedAdmin()}" th:action="@{/admin/common/{username}(username=${member.username})}" method="post"
                       onsubmit="return confirm('판매자 권한을 취소하겠습니까?');">
                     <input type="hidden" name="username" th:value="${member.username}"/>
                     <button type="submit" sec:authorize="isAuthenticated()">판매자권한취소</button>
                 </form>
-                <form th:if="${!member.checkedSeller && !member.checkedDeleted}" th:action="@{/admin/seller/{username}(username=${member.username})}" method="post"
+                <form th:if="${!member.checkedSeller && !member.checkedDeleted && !member.isCheckedAdmin()}" th:action="@{/admin/seller/{username}(username=${member.username})}" method="post"
                       onsubmit="return confirm('판매자 등급으로 올리시겠습니까?');">
                     <input type="hidden" name="username" th:value="${member.username}"/>
                     <button type="submit" sec:authorize="isAuthenticated()">판매자권한부여</button>
                 </form>
             </td>
             <td>
+                <span th:if="${member.checkedAdmin}">관리자</span>
                 <span th:if="${member.checkedDeleted}">탈퇴한 사용자</span>
-                <form th:unless="${member.checkedDeleted}" th:action="@{/admin/delete/{username}(username=${member.username})}" method="post"
+                <form th:if="${!member.checkedDeleted}" th:unless="${member.isCheckedAdmin()}" th:action="@{/admin/delete/{username}(username=${member.username})}" method="post"
                       onsubmit="return confirm('정말 탈퇴시키겠습니까?');">
                     <input type="hidden" name="username" th:value="${member.username}"/>
                     <button type="submit" sec:authorize="isAuthenticated()">탈퇴</button>
