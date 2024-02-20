@@ -27,6 +27,7 @@ import java.security.Principal;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     private void validatePassword(String password1, String password2, BindingResult bindingResult) {
         if (!password1.equals(password2)) {
@@ -127,41 +128,36 @@ public class MemberController {
         return "member/change_pw";
     }
 
-//    @PreAuthorize("isAuthenticated()")
-//    @PostMapping("/changePw")
-//    public String changePassword(@Valid UserPasswordForm userPasswordForm, BindingResult bindingResult, Principal principal, Model model) {
-//        String username = principal.getName();
-//        SiteUser siteUser = userService.getUser(username);
-//
-//        // 기존 비밀번호 확인
-//        if (!passwordEncoder.matches(userPasswordForm.getCurrentPassword(), siteUser.getPassword())) {
-//            bindingResult.rejectValue("currentPassword", "passwordInCorrect", "기존 비밀번호가 일치하지 않습니다.");
-//        }
-//
-//        // 새로운 비밀번호와 비밀번호 확인이 일치하는지 확인
-//        if (!userPasswordForm.getNewPassword().equals(userPasswordForm.getConfirmPassword())) {
-//            bindingResult.rejectValue("confirmPassword", "passwordInCorrect", "새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-//        }
-//
-//        if (bindingResult.hasErrors()) {
-//            return "user/change_password"; // 에러가 있으면 변경 페이지로 다시 이동
-//        }
-//
-//        // 비밀번호 변경
-//        try {
-//            userService.changePw(siteUser, userPasswordForm.getNewPassword());
-//            return "redirect:/user/showmypage"; // 성공 페이지로 리다이렉트 또는 성공 메시지를 표시하는 뷰로 이동
-//        } catch (RuntimeException e) {
-//            model.addAttribute("error", "비밀번호 변경에 실패했습니다.");
-//            return "redirect:/user/changePw"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 뷰로 이동
-//        }
-//    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/changePw")
+    public String changePassword(@Valid MemberPasswordForm memberPasswordForm, BindingResult bindingResult, Principal principal, Model model) {
+        String username = principal.getName();
+        Member member = memberService.getMember(username);
 
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/checkedPw")
-//    public String checkedpw() {
-//        return "";
-//    }
+        // 새로운 비밀번호와 비밀번호 확인이 일치하는지 확인
+        if (!memberPasswordForm.getNewPassword().equals(memberPasswordForm.getConfirmPassword())) {
+            bindingResult.rejectValue("confirmPassword", "passwordInCorrect", "새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "member/change_pw"; // 에러가 있으면 변경 페이지로 다시 이동
+        }
+
+        // 비밀번호 변경
+        try {
+            memberService.changePw(member, memberPasswordForm.getNewPassword());
+            return "redirect:/member/myInfo"; // 성공 페이지로 리다이렉트 또는 성공 메시지를 표시하는 뷰로 이동
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "비밀번호 변경에 실패했습니다.");
+            return "redirect:/member/changePw"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 뷰로 이동
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/checkedPw")
+    public String checkedpw() {
+        return "member/checked_pw";
+    }
 
 
 }
