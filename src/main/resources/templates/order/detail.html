@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>내 주문 목록</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- CSS 스타일 링크 -->
+</head>
+<body>
+<h1>내 주문 목록</h1>
+<div th:if="${orders.isEmpty()}">
+    <p>주문이 없습니다.</p>
+</div>
+<div th:if="${not #lists.isEmpty(orders)}">
+    <table>
+        <thead>
+        <tr>
+            <th>주문 번호</th>
+            <th>상품 이름</th>
+            <th>주문 상태</th>
+            <th>주문 금액</th>
+            <th>주문 날짜</th>
+            <th>작업</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">주문번호</td>
+            <td th:text="${order.productName}">상품이름</td>
+            <td th:text="${order.status}">주문상태</td>
+            <td th:text="${order.totalPrice}">주문금액</td>
+            <td th:text="${order.orderDate}">주문날짜</td>
+            <td>
+                <form th:action="@{'/order/' + ${order.id} + '/pay'}" method="post">
+                    <input type="submit" value="결제하기" th:if="${order.status == 'WAITING_FOR_PAYMENT'}"/>
+                </form>
+                <form th:action="@{'/order/' + ${order.id} + '/cancel'}" method="post">
+                    <input type="submit" value="주문 취소" th:if="${order.status == 'PAID'}"/>
+                </form>
+                <form th:action="@{'/order/' + ${order.id} + '/refund'}" method="post">
+                    <input type="submit" value="환불 요청" th:if="${order.status == 'DELIVERED'}"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
