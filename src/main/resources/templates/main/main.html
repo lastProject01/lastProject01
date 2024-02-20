@@ -3,42 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/main.css}">
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="stylesheet" href="/nav.css"/>
+    <link rel="stylesheet" href="/layout.css"/>
 </head>
 <body>
-<div class="container">
-    <nav>
-        <div class="logo-section">
-            <ul>
-                <li><a th:href="@{/main}">메인</a></li>
-            </ul>
-        </div>
-        <div class="member-section">
-            <ul>
-<<<<<<< HEAD
-                <li><a th:href="@{/review/detail}">리뷰 상세</a></li>
-=======
-                <li><a th:href="@{/review/detail/}">리뷰 상세</a></li>
->>>>>>> 2517e00c1a2ae0414f5f01d81eca8cb0a84eeb3c
-                <li><a th:href="@{/review/createForm}">리뷰 작성</a></li>
-            </ul>
-        </div>
-        <div class="login-section">
-            <ul>
-                <li><a th:href="@{/admin/board}" sec:authorize="isAuthenticated()"
-                       th:unless="${#authorization.expression('hasRole(''USER'')')}">
-                    판매자 페이지</a></li>
-                <li><a th:href="@{/seller/board}" sec:authorize="isAuthenticated()"
-                       th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                    관리자 페이지</a></li>
-                <li><a th:href="@{/mypage}" sec:authorize="isAuthenticated()">마이페이지</a></li>
-                <li><a th:href="@{/member/logout}" sec:authorize="isAuthenticated()">로그아웃</a></li>
-                <li><a th:href="@{/member/signup}" sec:authorize="isAnonymous()">회원가입</a></li>
-                <li><a th:href="@{/member/login}" sec:authorize="isAnonymous()">로그인</a></li>
-            </ul>
-        </div>
-    </nav>
+
+<div th:replace="/navbar.html"></div>
+
+<div layout:fragment="content" class="container">
+    <h1 style="padding-left:600px;
+    padding-top:40px;">안녕 안녕</h1>
+    <h2 style="padding-left:600px;
+    padding-top:40px;">메인 메인 메인</h2>
+    <h3 style="padding-left:600px;
+    padding-top:40px;">중심 중심 중심 중심</h3>
 </div>
 
+<div th:replace="/footer.html"></div>
 </body>
 </html>
