@@ -1,15 +1,17 @@
 <div>
     <h2>관리자페이지</h2>
 </div>
-<table>
+<table style="width: 1000px;">
     <thead>
-    <tr>
-        <th>번호</th>
-        <th>아이디</th>
-        <th>닉네임</th>
-        <th>가입일자</th>
-        <th>수정일자</th>
-        <th>탈퇴</th>
+    <tr style="margin: 20px 20px;">
+        <th style="width: 12.5%; text-align: center;">번호</th>
+        <th style="width: 12.5%; text-align: center;">아이디</th>
+        <th style="width: 12.5%; text-align: center;">닉네임</th>
+        <th style="width: 12.5%; text-align: center;">가입일자</th>
+        <th style="width: 12.5%; text-align: center;">수정일자</th>
+        <th style="width: 12.5%; text-align: center;">유저등급</th>
+        <th style="width: 12.5%; text-align: center;">권한변경</th>
+        <th style="width: 12.5%; text-align: center;">탈퇴</th>
     </tr>
     </thead>
     <tbody>
@@ -24,6 +26,24 @@
         <td>
             <div th:text="${#temporals.format(member.modifyDate, 'yyyy-MM-dd')}"></div>
             <div th:text="${#temporals.format(member.modifyDate, 'HH:mm')}"></div>
+        </td>
+        <td>
+            <div th:if="${!member.isCheckedSeller() && !member.isCheckedAdmin() == true}">일반회원</div>
+            <div th:if="${member.isCheckedSeller() == true}">판매자</div>
+            <div th:if="${member.isCheckedAdmin() == true}">관리자</div>
+        </td>
+        <td>
+            <span th:if="${member.checkedDeleted}">탈퇴한 사용자</span>
+            <form th:if="${member.checkedSeller && !member.checkedDeleted}" th:action="@{/admin/common/{username}(username=${member.username})}" method="post"
+                  onsubmit="return confirm('판매자 권한을 취소하겠습니까?');">
+                <input type="hidden" name="username" th:value="${member.username}"/>
+                <button type="submit" sec:authorize="isAuthenticated()">일반유저로 변경</button>
+            </form>
+            <form th:if="${!member.checkedSeller && !member.checkedDeleted}" th:action="@{/admin/seller/{username}(username=${member.username})}" method="post"
+                  onsubmit="return confirm('판매자 등급으로 올리시겠습니까?');">
+                <input type="hidden" name="username" th:value="${member.username}"/>
+                <button type="submit" sec:authorize="isAuthenticated()">판매자로 변경</button>
+            </form>
         </td>
         <td>
             <span th:if="${member.checkedDeleted}">탈퇴한 사용자</span>
