@@ -1,6 +1,7 @@
 package com.project.Enovel.domain.member.controller;
 
 import com.project.Enovel.domain.member.entity.Member;
+import com.project.Enovel.domain.member.form.MemberCheckedPwForm;
 import com.project.Enovel.domain.member.form.MemberCreateForm;
 import com.project.Enovel.domain.member.form.MemberMyPageForm;
 import com.project.Enovel.domain.member.form.MemberPasswordForm;
@@ -159,31 +160,32 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/checkedPw")
-    public String checkedPw() {
+    public String checkedPw(MemberCheckedPwForm memberCheckedPwForm) {
         return "member/checked_pw";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/checkedPw")
-    public String checkedPw(@Valid MemberPasswordForm memberPasswordForm, BindingResult bindingResult, Principal principal, Model model) {
-        // 사용자 이름 가져오기
+    public String checkedPw(@Valid MemberCheckedPwForm memberCheckedPwForm, BindingResult bindingResult, Principal principal, Model model) {
         String username = principal.getName();
-        // 사용자 정보 가져오기
         Member member = memberService.getMember(username);
 
-        // 입력된 확인 비밀번호가 실제 사용자의 비밀번호와 일치하지 않으면 에러 추가
-        if (!passwordEncoder.matches(memberPasswordForm.getConfirmPassword(), member.getPassword())) {
+        // 기존 비밀번호 확인
+        if (!passwordEncoder.matches(memberCheckedPwForm.getCheckedPassword(), member.getPassword())) {
             bindingResult.rejectValue("currentPassword", "passwordInCorrect", "비밀번호가 일치하지 않습니다.");
         }
 
-        // 바인딩 결과에 에러가 있으면 다시 입력 폼으로 이동
         if (bindingResult.hasErrors()) {
+            // 모델에 memberPasswordForm 추가
+            model.addAttribute("memberCheckedPwForm", memberCheckedPwForm);
             return "member/checked_pw";
         }
 
-        // 모든 검증을 통과하면 비밀번호가 일치하므로 성공 페이지로 리다이렉트
-        return "redirect:/member/myInfo";
+        try {
+            return "redirect:/member/myInfo"; // 성공 페이지로 리다이렉트 또는 성공 메시지를 표시하는 뷰로 이동
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/member/checkedPw"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 뷰로 이동
+        }
     }
-
-
 }
