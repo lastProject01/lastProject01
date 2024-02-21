@@ -54,7 +54,7 @@ public class ProductController {
     @GetMapping("/create")
     public String createProduct(ProductCreateForm productCreateForm, Principal principal) {
 
-        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+        Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
         //user등급만 필터링
@@ -71,7 +71,7 @@ public class ProductController {
     @PostMapping("/create")
     public String createProductPost(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
 
-        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+        Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
         //user등급만 필터링
@@ -97,7 +97,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm, Principal principal) {
-        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+        Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
         //user등급만 필터링
@@ -114,7 +114,7 @@ public class ProductController {
     @PostMapping("/modify/{id}")
     public String modifyProduct(@PathVariable(value = "id") Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
 
-        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+        Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
         if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
@@ -142,7 +142,7 @@ public class ProductController {
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
 
-        Member member = this.memberService.getMemberFindByUsername(principal.getName());
+        Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
         //user등급만 필터링
