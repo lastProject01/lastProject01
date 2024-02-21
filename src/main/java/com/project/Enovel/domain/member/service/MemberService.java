@@ -141,4 +141,6 @@ public class MemberService {
         Optional<Member> member = this.memberRepository.findById(id);
         return member.get();
     }
+
+    //getMember 부분 충돌이 발생할 가능성이 있음
 }
