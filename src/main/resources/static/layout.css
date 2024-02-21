@@ -84,9 +84,13 @@ nav>.login-section>ul{
     width: 300px;
     font-size:12px;
     display:flex;
-    justify-content:space-between;
+    justify-content: center;
 }
 
+nav>.login-section>ul>li{
+  margin-left: 5px;
+  margin-right: 5px;
+}
 .footer-wrap{
   width: 900px;
   margin:auto;
