@@ -3,6 +3,8 @@ package com.project.Enovel.domain.order.controller;
 import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.order.entity.Order;
 import com.project.Enovel.domain.order.service.OrderService;
+import com.project.Enovel.domain.product.entity.Product;
+import com.project.Enovel.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final ProductService productService;
 
     @GetMapping("/detail/{orderId}")
     public String orderDetail(@PathVariable("orderId") Long orderId, Model model) {
@@ -32,6 +35,15 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/create")
+    public String showCreateOrderForm(Model model) {
+        // 상품 목록을 가져와 모델에 추가
+        List<Product> products = productService.getList();
+        model.addAttribute("products", products);
+
+        // 주문 생성 페이지 뷰 이름 반환
+        return "order/create"; // 뷰 이름은 실제 템플릿 경로와 일치해야 합니다.
+    }
     // 주문 생성
     @PostMapping("/create")
     public String createOrder(@AuthenticationPrincipal Member member, @RequestParam("productIds") String productIds) {
