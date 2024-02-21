@@ -1,8 +1,9 @@
+<html layout:decorate="~{main/layout}">
 <div class="container">
-    <nav>
+    <nav th:fragment="navbarFragment">
         <div class="logo-section">
             <ul>
-                <li><a th:href="@{/static}">메인</a></li>
+                <li><a th:href="@{/}">메인</a></li>
             </ul>
         </div>
         <div class="member-section">
@@ -32,3 +33,4 @@
 
     </nav>
 </div>
+</html>
