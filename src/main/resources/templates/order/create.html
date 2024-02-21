@@ -1,0 +1,23 @@
+<!-- create_order.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>새 주문 생성</title>
+</head>
+<body>
+<h1>새 주문 생성</h1>
+<form th:action="@{/order/create}" method="post">
+    <div>
+        <label for="productIds">상품 선택:</label>
+        <select multiple id="productIds" name="productIds">
+            <option th:each="product : ${products}"
+                    th:value="${product.id}"
+                    th:text="${product.productName}">상품 이름</option>
+        </select>
+    </div>
+    <div>
+        <button type="submit">주문 생성</button>
+    </div>
+</form>
+</body>
+</html>
