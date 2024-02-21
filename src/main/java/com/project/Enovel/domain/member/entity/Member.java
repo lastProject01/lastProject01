@@ -1,12 +1,17 @@
 package com.project.Enovel.domain.member.entity;
 
+import com.project.Enovel.domain.cart.entity.Cart;
 import com.project.Enovel.global.base.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,4 +46,7 @@ public class Member extends BaseEntity {
 
     @Setter
     private boolean checkedDeleted;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Cart> cartList;
 }
