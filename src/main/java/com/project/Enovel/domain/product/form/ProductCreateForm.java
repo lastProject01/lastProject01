@@ -15,7 +15,7 @@ public class ProductCreateForm {
     @NotNull(message = "가격을 입력해 주세요")
     private int price;
 
-    @NotEmpty(message = "이미지를 넣어 주세요")
+//    @NotEmpty(message = "이미지를 넣어 주세요")
     private String productImg;
 
     @NotEmpty(message = "내용을 넣어 주세요")

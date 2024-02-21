@@ -137,8 +137,10 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
 
-    public Member getMemberFindByUsername(String username) {
-        Optional<Member> member = this.memberRepository.findByUsername(username);
+    public Member getMemberFindById(Long id) {
+        Optional<Member> member = this.memberRepository.findById(id);
         return member.get();
     }
+
+    //getMember 부분 충돌이 발생할 가능성이 있음
 }

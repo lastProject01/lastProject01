@@ -33,7 +33,7 @@
             </div>
             <div class="file-upload">
                 <div class="title">상품 사진등록</div>
-                <input type="file" accept="image/**" id="imgPath" name="file">
+                <input type="file" accept="image/**" id="imgPath" name="file"  th:field="*{productImg}">
             </div>
             <div class="button">
                 <button type="submit">저장하기</button>
