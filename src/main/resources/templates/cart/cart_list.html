@@ -8,7 +8,7 @@
 <table>
     <tr th:each="cart : ${cartList}">
         <th th:text="${cart.member.username}"></th>
-        <th><a th:href="@{|/cart/delete/${cart.product.id}|}">삭제</a></th>
+        <th><a th:href="@{|/cart/delete/${cart.id}|}">삭제</a></th>
     </tr>
 </table>
 

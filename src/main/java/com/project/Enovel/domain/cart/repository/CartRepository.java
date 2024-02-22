@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     void deleteByProductAndMember(Product product, Member member);
+
+    Cart getCartItemByProductAndMember(Product product, Member member);
 }
