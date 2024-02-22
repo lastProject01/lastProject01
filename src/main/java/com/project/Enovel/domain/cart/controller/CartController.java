@@ -37,6 +37,7 @@ public class CartController {
         Member member = this.memberService.getMemberFindById(id);
         List<Cart> cartList = member.getCartList();
 
+        //회원 검증 코드
         if(!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
@@ -64,14 +65,15 @@ public class CartController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String deleteItem(@PathVariable(value = "id")Long id, Principal principal) {
-        Optional<Cart> cart = this.cartService.getCartItem(id);
-        Member member = this.memberService.getMember(cart.get().getMember().getUsername());
+        Cart cart = this.cartService.getCartItem(id);
+        Member member = this.memberService.getMember(cart.getMember().getUsername());
 
+        //회원 검증 코드
         if(!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
-        Product product = this.productService.getProduct(cart.get().getProduct().getId());
+        Product product = this.productService.getProduct(cart.getProduct().getId());
 
         this.cartService.deleteItem(product, member);
 

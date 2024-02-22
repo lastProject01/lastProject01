@@ -32,7 +32,9 @@ public class CartService {
     }
 
 
-    public Optional<Cart> getCartItem(Long id) {
-        return this.cartRepository.findById(id);
+    public Cart getCartItem(Long id) {
+        //Optional<>은 데이터를 cart.get()으로 데이터를 받아 와야 한다.
+        Optional<Cart> cart = this.cartRepository.findById(id);
+        return cart.get();
     }
 }
