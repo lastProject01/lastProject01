@@ -31,6 +31,7 @@ public class CartController {
     private final ProductService productService;
     private final CartService cartService;
 
+    //cart list 출력
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list/{id}")
     public String cartList(@PathVariable(value = "id")Long id, Model model, Principal principal) {
@@ -50,10 +51,19 @@ public class CartController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
     public String addCItem(@PathVariable(value = "id")Long id, Principal principal) {
-        Product product = this.productService.getProduct(id);
-
         Member member = this.memberService.getMember(principal.getName());
 
+        Product product = this.productService.getProduct(id);
+
+//        if(product == null) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "없는 상품입니다.");
+//            data not found exception
+//        }
+//
+//
+//        if(member.getCartList().contains(product)) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 상품입니다.");
+//        }
 
         this.cartService.addItem(product, member);
 
