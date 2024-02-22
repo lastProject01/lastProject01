@@ -2,47 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>내 주문 목록</title>
+    <title>주문 상세 정보</title>
     <link rel="stylesheet" href="/css/style.css"> <!-- CSS 스타일 링크 -->
 </head>
 <body>
-<h1>내 주문 목록</h1>
-<div th:if="${orders.isEmpty()}">
-    <p>주문이 없습니다.</p>
+<h1>주문 상세 정보</h1>
+<div th:if="${order == null}">
+    <p>주문 정보를 찾을 수 없습니다.</p>
 </div>
-<div th:if="${not #lists.isEmpty(orders)}">
+<div th:if="${order != null}">
+    <p><strong>주문 상태:</strong>
+        <span th:if="${order.payDate != null}" th:text="'결제 완료'"></span>
+        <span th:if="${order.cancelDate != null}" th:text="'취소됨'"></span>
+        <span th:if="${order.refundDate != null}" th:text="'환불됨'"></span>
+        <span th:if="${order.payDate == null and order.cancelDate == null and order.refundDate == null}" th:text="'대기 중'"></span>
+    </p>
     <table>
         <thead>
         <tr>
-            <th>주문 번호</th>
-            <th>상품 이름</th>
-            <th>주문 상태</th>
-            <th>주문 금액</th>
-            <th>주문 날짜</th>
-            <th>작업</th>
+            <th>제품 이름</th>
+            <th>가격</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order : ${orders}">
-            <td th:text="${order.id}">주문번호</td>
-            <td th:text="${order.productName}">상품이름</td>
-            <td th:text="${order.status}">주문상태</td>
-            <td th:text="${order.totalPrice}">주문금액</td>
-            <td th:text="${order.orderDate}">주문날짜</td>
-            <td>
-                <form th:action="@{'/order/' + ${order.id} + '/pay'}" method="post">
-                    <input type="submit" value="결제하기" th:if="${order.status == 'WAITING_FOR_PAYMENT'}"/>
-                </form>
-                <form th:action="@{'/order/' + ${order.id} + '/cancel'}" method="post">
-                    <input type="submit" value="주문 취소" th:if="${order.status == 'PAID'}"/>
-                </form>
-                <form th:action="@{'/order/' + ${order.id} + '/refund'}" method="post">
-                    <input type="submit" value="환불 요청" th:if="${order.status == 'DELIVERED'}"/>
-                </form>
-            </td>
+        <tr th:each="item : ${order.orderItems}">
+            <td th:text="${item.product.productName}">제품 이름</td>
+            <td th:text="${item.getPrice()}">가격</td>
         </tr>
         </tbody>
     </table>
+    <p><strong>총 금액:</strong> <span th:text="${order.calculateTotalPrice()}">총 금액</span></p>
+    <div>
+        <form th:action="@{'/order/' + ${order.id} + '/pay'}" method="post" th:if="${order.payDate == null and order.cancelDate == null and order.refundDate == null}">
+            <input type="submit" value="결제하기"/>
+        </form>
+        <form th:action="@{'/order/' + ${order.id} + '/cancel'}" method="post" th:if="${order.payDate != null and order.cancelDate == null}">
+            <input type="submit" value="주문 취소"/>
+        </form>
+        <form th:action="@{'/order/' + ${order.id} + '/refund'}" method="post" th:if="${order.payDate != null and order.refundDate == null}">
+            <input type="submit" value="환불 요청"/>
+        </form>
+    </div>
 </div>
 </body>
 </html>

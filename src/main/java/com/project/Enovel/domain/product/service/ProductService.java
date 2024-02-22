@@ -3,6 +3,8 @@ package com.project.Enovel.domain.product.service;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -75,5 +77,20 @@ public class ProductService {
         this.productRepository.save(deleteProduct);
 
         return product;
+    }
+    @Component
+    public class ProductLoader implements CommandLineRunner {
+
+        private final ProductService productService;
+
+        public ProductLoader(ProductService productService) {
+            this.productService = productService;
+        }
+
+        @Override
+        public void run(String... args) throws Exception {
+            // 여기에 상품 추가 코드를 넣습니다.
+            productService.createProduct("샘플 상품", 10000, "sample.jpg", "샘플 상품 설명입니다.");
+        }
     }
 }
