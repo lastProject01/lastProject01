@@ -37,6 +37,8 @@ class CustomOAuth2User extends User implements OAuth2User {
             authorityList.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
         } else if (member.isCheckedSeller()) {
             authorityList.add(new SimpleGrantedAuthority(UserRole.SELLER.getValue()));
+        } else if (member.isCheckedKakaoMember()) {
+            authorityList.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         } else {
             authorityList.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         }

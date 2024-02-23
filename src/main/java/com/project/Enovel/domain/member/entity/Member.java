@@ -47,6 +47,9 @@ public class Member extends BaseEntity {
     @Setter
     private boolean checkedDeleted;
 
+    @Setter
+    private boolean checkedKakaoMember;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Cart> cartList;
 }
