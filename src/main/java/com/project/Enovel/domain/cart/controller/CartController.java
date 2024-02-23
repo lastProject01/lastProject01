@@ -64,9 +64,9 @@ public class CartController {
 //            data not found exception
         }
 
-        if(product.getProductName().equals(cart.get().getProduct().getProductName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 상품입니다.");
-        }
+//        if(product.getProductName().equals(cart.get().getProduct().getProductName())) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 상품입니다.");
+//        }
 
         this.cartService.addItem(product, member);
 
