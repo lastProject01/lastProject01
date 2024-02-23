@@ -26,8 +26,11 @@ public class Order extends BaseEntity {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
+
     private LocalDateTime payDate;
+
     private LocalDateTime cancelDate;
+
     private LocalDateTime refundDate;
 
     // 주문 항목 추가

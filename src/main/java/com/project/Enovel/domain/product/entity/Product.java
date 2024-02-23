@@ -19,12 +19,19 @@ import java.util.List;
 public class Product extends BaseEntity {
 
     private String productName;
+
     private String category;
+
     private int price;
+
     private String productImg;
+
     private String introduceImg;
+
     private double avgStarScore;
+
     private String content;
+
     private LocalDateTime deleteDate;
 
     @ManyToOne
