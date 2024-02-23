@@ -30,7 +30,7 @@ public class MemberService {
 
     @Transactional
     public Member create(String username, String password, String nickname, String email,
-                         String address, String phone) {
+                         String address, String phone, boolean checkedKakaoMember) {
         Member member = Member.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -41,6 +41,7 @@ public class MemberService {
                 .createDate(LocalDateTime.now())
                 .checkedSeller(false)
                 .checkedAdmin(false)
+                .checkedKakaoMember(false)
                 .build();
         this.memberRepository.save(member);
         return member;
@@ -161,7 +162,7 @@ public class MemberService {
         }
 
         // 가입된 회원이 없으면 새로운 회원을 생성하여 반환
-        return create(username, null, nickname, "", "", "");
+        return create(username, null, nickname, "", "", "", true);
     }
 
 }
