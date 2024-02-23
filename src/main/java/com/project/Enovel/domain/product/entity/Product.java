@@ -32,6 +32,10 @@ public class Product extends BaseEntity {
 
     private String introduceImgName;
 
+    private String productImg;
+
+    private String introduceImg;
+
     private double avgStarScore;
 
     private String content;

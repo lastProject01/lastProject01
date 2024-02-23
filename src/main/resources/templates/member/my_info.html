@@ -23,6 +23,6 @@
 
     <div>
         <button type="submit">정보 수정하기</button>
-        <a href="/member/changePw">비밀번호 변경</a>
+        <a th:unless="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" href="/member/changePw">비밀번호 변경</a>
     </div>
 </form>
