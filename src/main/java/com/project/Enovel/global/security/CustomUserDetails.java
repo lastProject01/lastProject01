@@ -34,7 +34,4 @@ public abstract class CustomUserDetails implements UserDetails {
 
         return authorities;
     }
-
-    // 나머지 UserDetails 인터페이스 메서드들을 구현
-    // ...
 }
