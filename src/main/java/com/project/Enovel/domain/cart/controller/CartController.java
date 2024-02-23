@@ -34,12 +34,12 @@ public class CartController {
     //cart list 출력
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list/{id}")
-    public String cartList(@PathVariable(value = "id")Long id, Model model, Principal principal) {
+    public String cartList(@PathVariable(value = "id") Long id, Model model, Principal principal) {
         Member member = this.memberService.getMemberFindById(id);
         List<Cart> cartList = member.getCartList();
 
         //회원 검증 코드
-        if(!member.getUsername().equals(principal.getName())) {
+        if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
@@ -50,13 +50,13 @@ public class CartController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
-    public String addItem(@PathVariable(value = "id")Long id, Principal principal) {
+    public String addItem(@PathVariable(value = "id") Long id, Principal principal) {
         Member member = this.memberService.getMember(principal.getName());
 
         Product product = this.productService.getProduct(id);
 
 
-        if(product == null) {
+        if (product == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "없는 상품 입니다.");
 //            data not found exception
         }
@@ -67,15 +67,14 @@ public class CartController {
     }
 
 
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String deleteItem(@PathVariable(value = "id")Long id, Principal principal) {
+    public String deleteItem(@PathVariable(value = "id") Long id, Principal principal) {
         Cart cart = this.cartService.getCartItem(id);
         Member member = this.memberService.getMember(cart.getMember().getUsername());
 
         //회원 검증 코드
-        if(!member.getUsername().equals(principal.getName())) {
+        if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
