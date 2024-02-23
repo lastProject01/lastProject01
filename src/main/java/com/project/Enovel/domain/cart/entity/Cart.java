@@ -6,6 +6,7 @@ import com.project.Enovel.global.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.mapping.ToOne;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
