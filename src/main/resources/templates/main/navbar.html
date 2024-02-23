@@ -11,7 +11,7 @@
                 <li><a th:href="@{/review/detail}">리뷰 상세</a></li>
                 <li><a th:href="@{/review/create}">리뷰 작성</a></li>
                 <!--상품 작성은 관리자와 판매자만 가능하다-->
-                <li th:unless="${#authorization.expression('hasRole(''USER'')')}"><a th:href="@{/product/create}" sec:authorize="isAuthenticated()"
+                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}"><a th:href="@{/product/create}" sec:authorize="isAuthenticated()"
                        >상품 작성</a></li>
                 <!--<li><a th:href="@{/review/createForm}"></a></li>-->
             </ul>
