@@ -50,20 +50,23 @@ public class CartController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
-    public String addCItem(@PathVariable(value = "id")Long id, Principal principal) {
+    public String addItem(@PathVariable(value = "id")Long id, Principal principal) {
         Member member = this.memberService.getMember(principal.getName());
 
         Product product = this.productService.getProduct(id);
 
-//        if(product == null) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "없는 상품입니다.");
+        List<Cart> cart = this.cartService.getCartList();
+
+
+
+        if(product == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "없는 상품 입니다.");
 //            data not found exception
-//        }
-//
-//
-//        if(member.getCartList().contains(product)) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 상품입니다.");
-//        }
+        }
+
+        if(product.getProductName().equals(cart.get().getProduct().getProductName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 상품입니다.");
+        }
 
         this.cartService.addItem(product, member);
 
@@ -89,7 +92,6 @@ public class CartController {
 
         return String.format("redirect:/cart/list/%d", member.getId());
     }
-
 
 
 }

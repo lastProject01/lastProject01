@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,9 @@ public class CartService {
         //Optional<>은 데이터를 cart.get()으로 데이터를 받아 와야 한다.
         Optional<Cart> cart = this.cartRepository.findById(id);
         return cart.get();
+    }
+
+    public List<Cart> getCartList() {
+        return this.cartRepository.findAll();
     }
 }
