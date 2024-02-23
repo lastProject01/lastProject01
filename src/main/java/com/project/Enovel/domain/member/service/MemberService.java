@@ -132,8 +132,8 @@ public class MemberService {
 
     @Transactional
     public void commonMember(String username) {
-        Optional<Member> tionalUser = memberRepository.findByUsername(username);
-        Member commonMember = tionalUser.get();
+        Optional<Member> member = memberRepository.findByUsername(username);
+        Member commonMember = member.get();
         commonMember.setCheckedSeller(false);
 
         this.memberRepository.save(commonMember);
