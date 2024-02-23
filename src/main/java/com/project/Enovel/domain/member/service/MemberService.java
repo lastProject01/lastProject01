@@ -90,7 +90,7 @@ public class MemberService {
                     this.memberRepository.save(modifyMember);
                 });
     }
-
+//  관리자 권한 시작
     @Transactional
     public Page<Member> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
@@ -116,29 +116,29 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(String username) {
-        Optional<Member> optionalUser = memberRepository.findByUsername(username);
-        Member deleteuser = optionalUser.get();
+        Optional<Member> member = memberRepository.findByUsername(username);
+        Member deleteuser = member.get();
         deleteuser.setCheckedDeleted(true);
         this.memberRepository.save(deleteuser);
     }
 
     @Transactional
     public void sellerMember(String username) {
-        Optional<Member> optionalUser = memberRepository.findByUsername(username);
-        Member sellerMember = optionalUser.get();
+        Optional<Member> member = memberRepository.findByUsername(username);
+        Member sellerMember = member.get();
         sellerMember.setCheckedSeller(true);
         this.memberRepository.save(sellerMember);
     }
 
     @Transactional
     public void commonMember(String username) {
-        Optional<Member> optionalUser = memberRepository.findByUsername(username);
-        Member commonMember = optionalUser.get();
+        Optional<Member> tionalUser = memberRepository.findByUsername(username);
+        Member commonMember = tionalUser.get();
         commonMember.setCheckedSeller(false);
 
         this.memberRepository.save(commonMember);
     }
-
+//  관리자 권한 종료
     @Transactional
     public Member getMember(String username) {
         return this.memberRepository.findByUsername(username)
@@ -154,11 +154,11 @@ public class MemberService {
     @Transactional
     public Member whenSocialLogin(String providerTypeCode, String username, String nickname) {
         // 주어진 username으로 이미 가입된 회원이 있는지 확인
-        Optional<Member> opMember = memberRepository.findByUsername(username);
+        Optional<Member> member = memberRepository.findByUsername(username);
 
         // 이미 가입된 회원이 있다면 해당 회원을 반환
-        if (opMember.isPresent()) {
-            return opMember.get();
+        if (member.isPresent()) {
+            return member.get();
         }
 
         // 가입된 회원이 없으면 새로운 회원을 생성하여 반환
