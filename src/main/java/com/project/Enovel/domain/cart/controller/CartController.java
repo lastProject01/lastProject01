@@ -6,16 +6,21 @@ import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,38 +31,67 @@ public class CartController {
     private final ProductService productService;
     private final CartService cartService;
 
+    //cart list 출력
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list/{id}")
-    public String cartList(@PathVariable(value = "id")Long id, Model model) {
+    public String cartList(@PathVariable(value = "id")Long id, Model model, Principal principal) {
         Member member = this.memberService.getMemberFindById(id);
         List<Cart> cartList = member.getCartList();
+
+        //회원 검증 코드
+        if(!member.getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
 
         model.addAttribute("cartList", cartList);
 
         return "cart/cart_list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
-    public String addCItem(@PathVariable(value = "id")Long id, Principal principal) {
+    public String addItem(@PathVariable(value = "id")Long id, Principal principal) {
+        Member member = this.memberService.getMember(principal.getName());
+
         Product product = this.productService.getProduct(id);
 
-        Member member = this.memberService.getMember(principal.getName());
+        List<Cart> cart = this.cartService.getCartList();
+
+
+
+        if(product == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "없는 상품 입니다.");
+//            data not found exception
+        }
+
+        if(product.getProductName().equals(cart.get().getProduct().getProductName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 상품입니다.");
+        }
 
         this.cartService.addItem(product, member);
 
         return "redirect:/product/list";
     }
 
+
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String deleteItem(@PathVariable(value = "id")Long id, Principal principal) {
-        Product product = this.productService.getProduct(id);
+        Cart cart = this.cartService.getCartItem(id);
+        Member member = this.memberService.getMember(cart.getMember().getUsername());
 
-        Member member = this.memberService.getMember(principal.getName());
+        //회원 검증 코드
+        if(!member.getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
+
+        Product product = this.productService.getProduct(cart.getProduct().getId());
 
         this.cartService.deleteItem(product, member);
 
         return String.format("redirect:/cart/list/%d", member.getId());
     }
-
 
 
 }

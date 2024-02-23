@@ -57,7 +57,7 @@ public class ProductController {
         Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
-        //user등급만 필터링
+        //user 등급만 필터링
         if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
@@ -74,13 +74,13 @@ public class ProductController {
         Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
-        //user등급만 필터링
+        //user 등급만 필터링
         if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
         if(bindingResult.hasErrors()) {
-            return "redirect:/product/list";
+            return "redirect:/product/create";
         }
 
 
