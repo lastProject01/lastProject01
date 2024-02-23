@@ -24,6 +24,14 @@ public class Product extends BaseEntity {
 
     private int price;
 
+    private String productImgPath;
+
+    private String introduceImgPath;
+
+    private String productImgName;
+
+    private String introduceImgName;
+
     private String productImg;
 
     private String introduceImg;

@@ -22,15 +22,14 @@ public class CartService {
     public void addItem(Product product, Member member) {
         Cart existingCart = this.cartRepository.findByProduct(product);
 
-        if(existingCart != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 상품입니다.");
+        if (existingCart != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재 하는 상품 입니다.");
         }
 
         Cart cart = Cart.builder()
                 .product(product)
                 .member(member)
                 .build();
-
 
 
         this.cartRepository.save(cart);
