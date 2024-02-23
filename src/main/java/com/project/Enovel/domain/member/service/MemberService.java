@@ -2,6 +2,7 @@ package com.project.Enovel.domain.member.service;
 
 import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.member.repository.MemberRepository;
+import com.project.Enovel.domain.member.role.UserRole;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -29,7 +30,7 @@ public class MemberService {
 
     @Transactional
     public Member create(String username, String password, String nickname, String email,
-                         String address, String phone, boolean checkedSeller, boolean checkedAdmin) {
+                         String address, String phone) {
         Member member = Member.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -37,9 +38,9 @@ public class MemberService {
                 .email(email)
                 .address(address)
                 .phone(phone)
-                .checkedSeller(checkedSeller)
-                .checkedAdmin(checkedAdmin)
                 .createDate(LocalDateTime.now())
+                .checkedSeller(false)
+                .checkedAdmin(false)
                 .build();
         this.memberRepository.save(member);
         return member;
@@ -89,6 +90,7 @@ public class MemberService {
                 });
     }
 
+    @Transactional
     public Page<Member> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
@@ -111,6 +113,7 @@ public class MemberService {
         };
     }
 
+    @Transactional
     public void deleteMember(String username) {
         Optional<Member> optionalUser = memberRepository.findByUsername(username);
         Member deleteuser = optionalUser.get();
@@ -118,6 +121,7 @@ public class MemberService {
         this.memberRepository.save(deleteuser);
     }
 
+    @Transactional
     public void sellerMember(String username) {
         Optional<Member> optionalUser = memberRepository.findByUsername(username);
         Member sellerMember = optionalUser.get();
@@ -125,22 +129,39 @@ public class MemberService {
         this.memberRepository.save(sellerMember);
     }
 
+    @Transactional
     public void commonMember(String username) {
         Optional<Member> optionalUser = memberRepository.findByUsername(username);
         Member commonMember = optionalUser.get();
         commonMember.setCheckedSeller(false);
+
         this.memberRepository.save(commonMember);
     }
 
+    @Transactional
     public Member getMember(String username) {
         return this.memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
 
+    @Transactional
     public Member getMemberFindById(Long id) {
         Optional<Member> member = this.memberRepository.findById(id);
         return member.get();
     }
 
-    //getMember 부분 충돌이 발생할 가능성이 있음
+    @Transactional
+    public Member whenSocialLogin(String providerTypeCode, String username, String nickname) {
+        // 주어진 username으로 이미 가입된 회원이 있는지 확인
+        Optional<Member> opMember = memberRepository.findByUsername(username);
+
+        // 이미 가입된 회원이 있다면 해당 회원을 반환
+        if (opMember.isPresent()) {
+            return opMember.get();
+        }
+
+        // 가입된 회원이 없으면 새로운 회원을 생성하여 반환
+        return create(username, null, nickname, "", "", "");
+    }
+
 }

@@ -61,7 +61,7 @@ public class MemberController {
 
         try {
             memberService.create(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickname(),
-                    memberCreateForm.getEmail(), memberCreateForm.getAddress(), memberCreateForm.getPhone(), false, false);
+                    memberCreateForm.getEmail(), memberCreateForm.getAddress(), memberCreateForm.getPhone());
         } catch (DataIntegrityViolationException e) {
             handleUserCreationError(bindingResult);
             return "member/signup";
@@ -170,13 +170,19 @@ public class MemberController {
         String username = principal.getName();
         Member member = memberService.getMember(username);
 
+        if (member.getUsername() != null && member.getUsername().contains("KAKAO")) {
+            return "redirect:/member/myInfo";
+        }
         // 기존 비밀번호 확인
         if (!passwordEncoder.matches(memberCheckedPwForm.getCheckedPassword(), member.getPassword())) {
-            bindingResult.rejectValue("currentPassword", "passwordInCorrect", "비밀번호가 일치하지 않습니다.");
+            // 비밀번호가 일치하지 않을 때 에러 메시지를 추가하고 폼으로 돌아감
+            bindingResult.rejectValue("checkedPassword", "passwordIncorrect", "비밀번호가 일치하지 않습니다.");
+            model.addAttribute("memberCheckedPwForm", memberCheckedPwForm);
+            return "member/checked_pw";
         }
 
         if (bindingResult.hasErrors()) {
-            // 모델에 memberPasswordForm 추가
+            // 다른 유효성 검사 에러가 있을 때도 폼으로 돌아감
             model.addAttribute("memberCheckedPwForm", memberCheckedPwForm);
             return "member/checked_pw";
         }
@@ -188,4 +194,5 @@ public class MemberController {
             return "redirect:/member/checkedPw"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 뷰로 이동
         }
     }
+
 }

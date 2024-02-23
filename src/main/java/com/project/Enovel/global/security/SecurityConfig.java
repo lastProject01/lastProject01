@@ -19,6 +19,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests(
@@ -32,6 +34,9 @@ public class SecurityConfig {
                         formLogin -> formLogin
                                 .loginPage("/member/login")
                                 .defaultSuccessUrl("/")
+                )
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/member/login")
                 )
                 .logout(
                         logout -> logout
