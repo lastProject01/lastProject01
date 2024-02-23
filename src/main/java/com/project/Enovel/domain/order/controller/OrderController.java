@@ -78,7 +78,7 @@ public class OrderController {
         return "redirect:/order/detail/" + orderId;  // 다시 시작
     }
     // 현재 사용자의 주문 목록을 보여주는 메소드
-    @GetMapping("/my_list")
+    @GetMapping("/myList")
     public String showMyOrders(Principal principal, Model model) {
         String username = principal.getName(); // 현재 로그인한 사용자의 사용자명을 얻습니다.
         Member member = memberService.getMember(username); // 사용자명을 바탕으로 Member 객체를 조회합니다.
@@ -91,6 +91,6 @@ public class OrderController {
         Long memberId = member.getId(); // Member 객체에서 ID를 얻습니다.
         List<Order> orders = orderService.findOrdersByMemberId(memberId); // 회원 ID를 사용하여 주문 목록을 조회합니다.
         model.addAttribute("orders", orders);
-        return "redirect:/order/my_list"; // 주문 목록을 포함한 뷰를 반환합니다.
+        return "redirect:/order/myList"; // 주문 목록을 포함한 뷰를 반환합니다.
     }
 }
