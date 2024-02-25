@@ -1,1 +1,43 @@
-<div>안녕</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:each="product : ${productList}">
+    <ul th:id="'product-'+ ${product.id}">
+        <li th:text="${product.productName}"></li>
+        <button type="button" th:onclick="deleteProduct([[${product.id}]])">삭제하기</button>
+    </ul>
+</div>
+
+<div>상품 목록이에요</div>
+</body>
+
+<script>
+    function deleteProduct(productId) {
+    // AJAX 요청 보내기
+    $.ajax({
+        url: "/product/delete/" + productId, // 삭제할 URL
+        method: "POST",
+        data: { productId: productId }, // 삭제할 카트 ID를 서버로 전달합니다.
+        success: function(response) {
+            // 삭제가 성공하면 사용자에게 알림을 표시합니다.
+            alert("삭제 했습니다.");
+             $("#product-" + productId).parent().remove();
+        },
+        error: function(xhr, status, error) {
+                // 권한이 없는 경우
+            if (xhr.status === 403) {
+                alert("권한이 없습니다.");
+            } else  {
+                // 삭제 실패 시 오류 메시지 표시
+                alert("삭제 실패했습니다. 다시 시도해주세요.");
+            }
+        }
+    });
+}
+</script>
+</html>

@@ -12,10 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -31,8 +28,8 @@ public class ProductController {
     //상품 목록 출력
     @GetMapping("/list")
     public String productList(Model model) {
-        List<Product> product = this.productService.getList();
-        model.addAttribute("product", product);
+        List<Product> productList = this.productService.getList();
+        model.addAttribute("productList", productList);
 
         return "product/product_list";
     }
@@ -139,22 +136,27 @@ public class ProductController {
     //admin 등급과 seller 등급만 접근 가능
     //상품 삭제
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
+    @ResponseBody
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
+        //TODO 회원 등급 검증 문제 해결 필요(비회원이 기능 사용시 기능 정상 작동 문제)
+        if(principal == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
 
         Member member = this.memberService.getMember(principal.getName());
 
+
+        Product product = this.productService.getProduct(id);
         //회원 등급 검증
         //user등급만 필터링
         if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
-        Product product = this.productService.getProduct(id);
-
         this.productService.deleteProduct(product);
 
-        return "redirect:/product/list";
+        return "delete success";
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
