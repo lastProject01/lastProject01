@@ -35,9 +35,9 @@ public class CartService {
         this.cartRepository.save(cart);
     }
 
-    @Transactional
-    public void deleteItem(Product product, Member member) {
-        this.cartRepository.deleteByProductAndMember(product, member);
+
+    public void deleteItem(Cart cart) {
+        this.cartRepository.delete(cart);
     }
 
 
