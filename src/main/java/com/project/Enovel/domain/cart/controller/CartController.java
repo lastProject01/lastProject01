@@ -78,7 +78,11 @@ public class CartController {
 
         Product product = this.productService.getProduct(cart.getProduct().getId());
 
-        this.cartService.deleteItem(product, member);
+        if(product == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "없는 상품 입니다.");
+        }
+
+        this.cartService.deleteItem(cart);
 
         return "delete Success";
     }
