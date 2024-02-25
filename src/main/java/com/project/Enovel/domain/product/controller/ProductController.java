@@ -139,9 +139,9 @@ public class ProductController {
     @PostMapping("/delete/{id}")
     @ResponseBody
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
-
+        //TODO 회원 등급 검증 문제 해결 필요(비회원이 기능 사용시 기능 정상 작동 문제)
         if(principal == null) {
-            return "redirect:/member/login";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
         Member member = this.memberService.getMember(principal.getName());
@@ -154,10 +154,7 @@ public class ProductController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
-
-            this.productService.deleteProduct(product);
-
-
+        this.productService.deleteProduct(product);
 
         return "delete success";
     }
