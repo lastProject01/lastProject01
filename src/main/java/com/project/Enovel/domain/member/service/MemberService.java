@@ -18,15 +18,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+//    private final Set<String> registeredUsernames = new HashSet<>();
+//
+//    public boolean isUsernameUnique(Long id) {
+//        // 실제로는 데이터베이스에서 해당 username이 존재하는지 확인합니다.
+//        Optional<Member> existingMember = memberRepository.findById(id);
+//        return existingMember.isEmpty();
+//    }
+//
+//    public boolean isUsernameUnique(String username) {
+//        return !registeredUsernames.contains(username);
+//    }
 
     @Transactional
     public Member create(String username, String password, String nickname, String email,
@@ -162,7 +171,7 @@ public class MemberService {
         }
 
         // 가입된 회원이 없으면 새로운 회원을 생성하여 반환
-        return create(username, null, nickname, "", "", "", true);
+        return create(username, "", nickname, "", "", "", true);
     }
 
 }
