@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -68,7 +65,8 @@ public class CartController {
 
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
+    @ResponseBody
     public String deleteItem(@PathVariable(value = "id") Long id, Principal principal) {
         Cart cart = this.cartService.getCartItem(id);
         Member member = this.memberService.getMember(cart.getMember().getUsername());
@@ -82,7 +80,7 @@ public class CartController {
 
         this.cartService.deleteItem(product, member);
 
-        return String.format("redirect:/cart/list/%d", member.getId());
+        return "delete Success";
     }
 
 
