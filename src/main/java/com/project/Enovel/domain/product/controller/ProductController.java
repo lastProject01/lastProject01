@@ -154,7 +154,26 @@ public class ProductController {
 
         this.productService.deleteProduct(product);
 
-        return String.format("redirect:/product/detail/%d", product.getId());
+        return "redirect:/product/list";
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
+    @GetMapping("/add/{id}")
+    public String addProduct(@PathVariable(value = "id")Long id, Principal principal) {
+
+        Member member = this.memberService.getMember(principal.getName());
+
+        //회원 등급 검증
+        //user등급만 필터링
+        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+        }
+
+        Product product = this.productService.getProduct(id);
+
+        this.productService.addProduct(product);
+
+        return "redirect:/product/list";
     }
 
 

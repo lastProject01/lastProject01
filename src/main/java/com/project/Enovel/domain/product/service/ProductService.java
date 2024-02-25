@@ -93,4 +93,15 @@ public class ProductService {
             productService.createProduct("샘플 상품", 10000, "sample.jpg", "샘플 상품 설명입니다.");
         }
     }
+
+    public Product addProduct(Product product) {
+
+        Product addProduct = product.toBuilder()
+                .deleteDate(null)
+                .build();
+
+        this.productRepository.save(addProduct);
+
+        return product;
+    }
 }
