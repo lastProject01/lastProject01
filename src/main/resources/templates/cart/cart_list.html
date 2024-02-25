@@ -3,17 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-<table>
-    <tr th:each="cart : ${cartList}">
-        <th th:text="${cart.member.username}"></th>
-        <th><a th:href="@{|/cart/delete/${cart.id}|}">삭제</a></th>
-    </tr>
-</table>
+<div th:each="cart : ${cartList}">
+    <ul th:id="'cart-'+ ${cart.id}">
+        <li th:text="${cart.member.username}"></li>
+        <button type="button" th:onclick="deleteCartItem([[${cart.id}]])">삭제하기</button>
+    </ul>
+</div>
 
 <div>카트 목록이에요</div>
-
-
 </body>
+
+<script>
+    function deleteCartItem(cartId) {
+    // AJAX 요청 보내기
+    $.ajax({
+        url: "/cart/delete/" + cartId, // 삭제할 URL
+        method: "POST",
+        data: { cartId: cartId }, // 삭제할 카트 ID를 서버로 전달합니다.
+        success: function(response) {
+            // 삭제가 성공하면 사용자에게 알림을 표시합니다.
+            alert("삭제 했습니다.");
+             $("#cart-" + cartId).parent().remove();
+        },
+        error: function(xhr, status, error) {
+            // 삭제가 실패하면 사용자에게 알림을 표시합니다.
+            alert("삭제 실패했습니다. 다시 시도해주세요.");
+        }
+    });
+}
+</script>
 </html>
