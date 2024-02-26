@@ -66,4 +66,4 @@ public class Order extends BaseEntity {
         this.refundDate = LocalDateTime.now();
         // 주문 상태 업데이트 로직 추가 가능
     }
-}
+}//0226 작업시작
