@@ -25,8 +25,6 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    private LocalDateTime orderDate;
-
     private LocalDateTime payDate;
 
     private LocalDateTime cancelDate;
