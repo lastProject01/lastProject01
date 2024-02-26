@@ -25,17 +25,17 @@ import java.util.*;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-//    private final Set<String> registeredUsernames = new HashSet<>();
-//
-//    public boolean isUsernameUnique(Long id) {
-//        // 실제로는 데이터베이스에서 해당 username이 존재하는지 확인합니다.
-//        Optional<Member> existingMember = memberRepository.findById(id);
-//        return existingMember.isEmpty();
-//    }
-//
-//    public boolean isUsernameUnique(String username) {
-//        return !registeredUsernames.contains(username);
-//    }
+    private final Set<String> registeredUsernames = new HashSet<>();
+
+    public boolean isUsernameUnique(Long id) {
+        // 실제로는 데이터베이스에서 해당 username이 존재하는지 확인합니다.
+        Optional<Member> existingMember = memberRepository.findById(id);
+        return existingMember.isEmpty();
+    }
+
+    public boolean isUsernameUnique(String username) {
+        return !registeredUsernames.contains(username);
+    }
 
     @Transactional
     public Member create(String username, String password, String nickname, String email,
