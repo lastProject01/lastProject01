@@ -242,3 +242,5 @@ $RECYCLE.BIN/
 # CUSTOM
 application-secret.yml
 .idea/modules
+src/main/java/com/project/Enovel/domain/ajax
+src/main/resources/templates/ajax

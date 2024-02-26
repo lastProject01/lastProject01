@@ -6,7 +6,7 @@
         <form th:action="@{/member/signup}" th:object="${memberCreateForm}" method="post">
             <div>
                 <label for="username" class="form-label">사용자ID</label>
-                <input type="text" th:field="*{username}">
+                <input type="text" th:field="*{username}" id="username" autocomplete="off"/>
             </div>
             <div>
                 <label for="password1" class="form-label">비밀번호</label>
@@ -18,45 +18,21 @@
             </div>
             <div>
                 <label for="nickname" class="form-label">닉네임</label>
-                <input type="text" th:field="*{nickname}">
+                <input type="text" th:field="*{nickname}" autocomplete="off">
             </div>
             <div>
                 <label for="email" class="form-label">E-mail</label>
-                <input type="text" th:field="*{email}">
+                <input type="text" th:field="*{email}" autocomplete="off">
             </div>
             <div>
                 <label for="address" class="form-label">주소</label>
-                <input type="text" th:field="*{address}">
+                <input type="text" th:field="*{address}" autocomplete="off">
             </div>
             <div>
                 <label for="phone" class="form-label">전화번호</label>
-                <input type="text" th:field="*{phone}">
+                <input type="text" th:field="*{phone}" autocomplete="off">
             </div>
             <button type="submit">회원가입</button>
         </form>
     </div>
-
-
-    <!-- jQuery를 사용하여 AJAX 구현 -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script type="text/javascript">
-        function checkUsername() {
-            var username = $("#username").val();
-
-            // AJAX를 이용한 중복 체크
-            $.ajax({
-                type: "GET",
-                url: "/check-username/" + username, // 실제로 사용할 URL로 변경
-                success: function (result) {
-                    if (result === true) {
-                        $("#username-error").text("이미 사용 중인 ID입니다.");
-                    } else {
-                        $("#username-error").text("");
-                    }
-                },
-                error: function (error) {
-                    console.log("Error checking username: " + error);
-                }
-            });
-        }
-    </script>
+</div>
