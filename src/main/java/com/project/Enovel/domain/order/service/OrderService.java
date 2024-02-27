@@ -1,5 +1,7 @@
 package com.project.Enovel.domain.order.service;
 
+import com.project.Enovel.domain.cart.entity.Cart;
+import com.project.Enovel.domain.cart.service.CartService;
 import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.order.entity.Order;
 import com.project.Enovel.domain.order.entity.OrderItem;
@@ -12,12 +14,14 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
+    private final CartService cartService;
 
     @Transactional
     public Order createOrder(Member buyer, List<Long> productIds) {
@@ -43,6 +47,29 @@ public class OrderService {
         }
 
         return orderRepository.save(order);
+    }
+
+    @Transactional
+    public Order createFromCart(Member buyer) {
+        // 구매자의 장바구니 항목 가져오기
+        List<Cart> cartItems = cartService.getCartList(buyer);
+
+        if (cartItems.isEmpty()) {
+            throw new IllegalArgumentException("장바구니가 비어 있습니다.");
+        }
+
+        // 장바구니 항목으로부터 제품 ID 목록 추출
+        List<Long> productIds = cartItems.stream()
+                .map(cartItem -> cartItem.getProduct().getId())
+                .collect(Collectors.toList());
+
+        // 제품 ID 목록을 사용하여 주문 생성
+        Order order = createOrder(buyer, productIds);
+
+        // 주문 생성 후 장바구니 비우기
+        cartItems.forEach(cartService::deleteItem);
+
+        return order;
     }
     @Transactional
     public void payOrder(Long orderId) {
