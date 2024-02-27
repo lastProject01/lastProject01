@@ -19,7 +19,7 @@ public class CartService {
 
     private final CartRepository cartRepository;
 
-    public void addItem(Product product, Member member) {
+    public void addItem(Product product, Member buyer) {
         Cart existingCart = this.cartRepository.findByProduct(product);
 
         if (existingCart != null) {
@@ -28,7 +28,7 @@ public class CartService {
 
         Cart cart = Cart.builder()
                 .product(product)
-                .member(member)
+                .buyer(buyer)
                 .build();
 
 
@@ -45,5 +45,9 @@ public class CartService {
         //Optional<>은 데이터를 cart.get()으로 데이터를 받아 와야 한다.
         Optional<Cart> cart = this.cartRepository.findById(id);
         return cart.get();
+    }
+
+    public List<Cart> getCartList(Member buyer) {
+        return this.cartRepository.findByBuyer(buyer);
     }
 }

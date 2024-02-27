@@ -6,8 +6,11 @@ import com.project.Enovel.domain.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     Cart findByProduct(Product product);
+    List<Cart> findByBuyer(Member buyer);
 }
