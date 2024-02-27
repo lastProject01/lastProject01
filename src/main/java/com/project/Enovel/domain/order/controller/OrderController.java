@@ -8,7 +8,9 @@ import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; // 올바른 Model 임포트
 import org.springframework.web.bind.annotation.*;
@@ -49,12 +51,19 @@ public class OrderController {
     }
     // 주문 생성
     @PostMapping("/create")
-    public String createOrder(@AuthenticationPrincipal Member member, @RequestParam("productIds") String productIds) {
+    public String createOrder(@RequestParam("productIds") String productIds) {
+        // 현재 인증된 사용자의 Authentication 객체 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName(); // 현재 로그인한 사용자 이름 가져오기
+
+        // 사용자 이름을 사용하여 Member 객체 조회
+        Member member = memberService.getMember(currentUsername); // MemberService에서 제공하는 메서드 사용
+
         List<Long> productIdList = Arrays.stream(productIds.split(","))
                 .map(Long::parseLong)
                 .collect(Collectors.toList());
-        Order order = orderService.createOrder(member, productIdList);
-        return "redirect:/order/detail/" + order.getId();  // 변경된 부분
+        Order order = orderService.createOrder(member, productIdList); // 조회된 Member 객체 사용
+        return "redirect:/order/detail/" + order.getId();
     }
 
     // 주문 결제
@@ -91,6 +100,6 @@ public class OrderController {
         Long memberId = member.getId(); // Member 객체에서 ID를 얻습니다.
         List<Order> orders = orderService.findOrdersByMemberId(memberId); // 회원 ID를 사용하여 주문 목록을 조회합니다.
         model.addAttribute("orders", orders);
-        return "redirect:/order/myList"; // 주문 목록을 포함한 뷰를 반환합니다.
+        return "/order/myList"; // 주문 목록을 포함한 뷰를 반환합니다.
     }
 }
