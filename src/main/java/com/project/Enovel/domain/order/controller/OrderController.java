@@ -91,6 +91,6 @@ public class OrderController {
         Long memberId = member.getId(); // Member 객체에서 ID를 얻습니다.
         List<Order> orders = orderService.findOrdersByMemberId(memberId); // 회원 ID를 사용하여 주문 목록을 조회합니다.
         model.addAttribute("orders", orders);
-        return "redirect:/order/myList"; // 주문 목록을 포함한 뷰를 반환합니다.
+        return "/order/myList"; // 주문 목록을 포함한 뷰를 반환합니다.
     }
 }
