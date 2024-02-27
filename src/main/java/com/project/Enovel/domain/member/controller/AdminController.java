@@ -36,7 +36,7 @@ public class AdminController {
             model.addAttribute("paging",paging);
             return "member/admin/memberList";
         }
-        return "redirect:/main";
+        return "redirect:/";
     }
 
     @PreAuthorize("isAuthenticated()")

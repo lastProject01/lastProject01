@@ -78,21 +78,6 @@ public class ProductService {
 
         return product;
     }
-    @Component
-    public class ProductLoader implements CommandLineRunner {
-
-        private final ProductService productService;
-
-        public ProductLoader(ProductService productService) {
-            this.productService = productService;
-        }
-
-        @Override
-        public void run(String... args) throws Exception {
-            // 여기에 상품 추가 코드를 넣습니다.
-            productService.createProduct("샘플 상품", 10000, "sample.jpg", "샘플 상품 설명입니다.");
-        }
-    }
 
     public Product addProduct(Product product) {
 
