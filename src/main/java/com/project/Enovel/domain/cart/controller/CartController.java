@@ -30,9 +30,9 @@ public class CartController {
 
     //cart list 출력
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/list/{id}")
-    public String cartList(@PathVariable(value = "id") Long id, Model model, Principal principal) {
-        Member member = this.memberService.getMemberFindById(id);
+    @GetMapping("/list")
+    public String cartList( Model model, Principal principal) {
+        Member member = this.memberService.getMember(principal.getName());
         List<Cart> cartList = member.getCartList();
 
         //회원 검증 코드
