@@ -8,7 +8,7 @@
 <body>
 <div th:each="cart : ${cartList}">
     <ul th:id="'cart-'+ ${cart.id}">
-        <li th:text="${cart.member.username}"></li>
+        <li th:text="${cart.buyer.username}"></li>
         <button type="button" th:onclick="deleteCartItem([[${cart.id}]])">삭제하기</button>
     </ul>
 </div>

@@ -2,10 +2,7 @@ package com.project.Enovel.domain.member.entity;
 
 import com.project.Enovel.domain.cart.entity.Cart;
 import com.project.Enovel.global.base.BaseEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -51,6 +48,6 @@ public class Member extends BaseEntity {
     @Setter
     private boolean checkedKakaoMember;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Cart> cartList;
+//    @OneToOne
+//    private Cart cart;
 }

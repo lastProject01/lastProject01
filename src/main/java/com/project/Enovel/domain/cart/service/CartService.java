@@ -19,7 +19,7 @@ public class CartService {
 
     private final CartRepository cartRepository;
 
-    public void addItem(Product product, Member member) {
+    public void addItem(Product product, Member buyer) {
         Cart existingCart = this.cartRepository.findByProduct(product);
 
         if (existingCart != null) {
@@ -28,7 +28,7 @@ public class CartService {
 
         Cart cart = Cart.builder()
                 .product(product)
-                .member(member)
+                .buyer(buyer)
                 .build();
 
 
