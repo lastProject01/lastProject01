@@ -19,6 +19,8 @@ spring:
 
   thymeleaf:
     cache: false
+    enabled: true
+    check-template-location: true
     # `prefix` 설정 위치 수정: `spring.thymeleaf.prefix`로 이동
     prefix: file:src/main/resources/templates/
 
