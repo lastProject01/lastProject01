@@ -20,7 +20,7 @@ import java.util.List;
 public class Cart extends BaseEntity {
 
     @ManyToOne
-    private Member member;
+    private Member buyer;
 
     @ManyToOne
     private Product product;

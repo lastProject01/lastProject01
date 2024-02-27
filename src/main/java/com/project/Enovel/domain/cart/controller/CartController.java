@@ -33,7 +33,7 @@ public class CartController {
     @GetMapping("/list")
     public String cartList( Model model, Principal principal) {
         Member member = this.memberService.getMember(principal.getName());
-        List<Cart> cartList = member.getCartList();
+        List<Cart> cartList = this.cartService.getCartList(member);
 
         //회원 검증 코드
         if (!member.getUsername().equals(principal.getName())) {
@@ -69,7 +69,7 @@ public class CartController {
     @ResponseBody
     public String deleteItem(@PathVariable(value = "id") Long id, Principal principal) {
         Cart cart = this.cartService.getCartItem(id);
-        Member member = this.memberService.getMember(cart.getMember().getUsername());
+        Member member = this.memberService.getMember(cart.getBuyer().getUsername());
 
         //회원 검증 코드
         if (!member.getUsername().equals(principal.getName())) {

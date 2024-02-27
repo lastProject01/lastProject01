@@ -46,4 +46,8 @@ public class CartService {
         Optional<Cart> cart = this.cartRepository.findById(id);
         return cart.get();
     }
+
+    public List<Cart> getCartList(Member buyer) {
+        return this.cartRepository.findByBuyer(buyer);
+    }
 }
