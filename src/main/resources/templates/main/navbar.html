@@ -11,20 +11,32 @@
                 </div>
 
                 <div class="right-top-bar flex-w h-full">
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
+                    <a th:href="@{/seller/list}" sec:authorize="isAuthenticated()"  th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}"  class="flex-c-m trans-04 p-lr-25">
+                        상품 관리
+                    </a>
+
+                    <a th:href="@{/admin/member}" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="flex-c-m trans-04 p-lr-25">
                         관리자 페이지
                     </a>
 
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
-                        판매자 페이지
+                    <a th:href="@{/member/signup}"  sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25">
+                        회원가입
                     </a>
 
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
+                    <a th:href="@{/member/checkedPw}" th:unless="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                        마이페이지
+                    </a>
+
+                    <a th:href="@{/member/myInfo}" th:if="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                        마이페이지
+                    </a>
+
+                    <a  th:href="@{/member/login}" sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25">
                         로그인
                     </a>
 
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
-                        회원 가입
+                    <a  th:href="@{/member/logout}" sec:authorize="isAuthenticated()"  class="flex-c-m trans-04 p-lr-25">
+                        로그아웃
                     </a>
                 </div>
             </div>
@@ -34,7 +46,7 @@
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
-                <a href="#" class="logo">
+                <a th:href="@{/}" class="logo">
                     <img src="images/icons/logo-01.png" alt="IMG-LOGO">
                 </a>
 
