@@ -4,7 +4,7 @@
     <div>
         <h2>로그인</h2>
     </div>
-    <form th:action="@{/member/login}" method="post">
+    <form action="/member/login" method="post">
         <div class="mb-3">
             <label for="username" class="form-label">사용자ID</label>
             <input type="text" name="username" id="username">
@@ -18,6 +18,5 @@
             <button type="button" onclick="location.href='/oauth2/authorization/kakao'">카카오 로그인</button>
         </div>
     </form>
-</div>
 </div>
 </html>
