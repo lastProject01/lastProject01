@@ -20,7 +20,7 @@ public class CartService {
     private final CartRepository cartRepository;
 
     public void addItem(Product product, Member buyer) {
-        Cart existingCart = this.cartRepository.findByProduct(product);
+        Cart existingCart = this.cartRepository.findByProductAndBuyer(product, buyer);
 
         if (existingCart != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재 하는 상품 입니다.");
