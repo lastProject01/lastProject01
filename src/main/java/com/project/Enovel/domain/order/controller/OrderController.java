@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; // 올바른 Model 임포트
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Arrays;
@@ -57,13 +58,38 @@ public class OrderController {
         String currentUsername = authentication.getName(); // 현재 로그인한 사용자 이름 가져오기
 
         // 사용자 이름을 사용하여 Member 객체 조회
-        Member member = memberService.getMember(currentUsername); // MemberService에서 제공하는 메서드 사용
+        Member buyer = memberService.getMember(currentUsername); // MemberService에서 제공하는 메서드 사용
 
         List<Long> productIdList = Arrays.stream(productIds.split(","))
                 .map(Long::parseLong)
                 .collect(Collectors.toList());
-        Order order = orderService.createOrder(member, productIdList); // 조회된 Member 객체 사용
+        Order order = orderService.createOrder(buyer, productIdList); // 조회된 Member 객체 사용
         return "redirect:/order/detail/" + order.getId();
+    }
+
+    @PostMapping("/createFromCart")
+    public String createFromCart(Principal principal, RedirectAttributes redirectAttributes) {
+        // 현재 로그인한 사용자 정보 가져오기
+        String username = principal.getName();
+        Member member = memberService.getMember(username);
+
+        if (member == null) {
+            // 사용자 정보가 없는 경우, 적절한 오류 처리
+            redirectAttributes.addFlashAttribute("errorMessage", "사용자 정보를 찾을 수 없습니다.");
+            return "redirect:/errorPage";
+        }
+
+        try {
+            // 카트에 담긴 항목으로부터 주문 생성
+            Order order = orderService.createFromCart(member);
+
+            // 주문이 성공적으로 생성된 경우, 주문 상세 페이지로 리다이렉트
+            return "redirect:/order/detail/" + order.getId();
+        } catch (IllegalArgumentException e) {
+            // 장바구니가 비어있거나 다른 문제가 있는 경우, 적절한 오류 처리
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/errorPage";
+        }
     }
 
     // 주문 결제

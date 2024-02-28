@@ -9,10 +9,16 @@
 <div th:each="cart : ${cartList}">
     <ul th:id="'cart-'+ ${cart.id}">
         <li th:text="${cart.buyer.username}"></li>
-        <button type="button" th:onclick="deleteCartItem([[${cart.id}]])">삭제하기</button>
+        <button type="button" onclick="deleteCartItem([[${cart.id}]])">삭제하기</button>
     </ul>
 </div>
-
+<div class="flex justify-center mt-6 mb-4">
+    <form action="/order/createFromCart" method="post">
+        <button type="submit" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg">
+            <span class="text-lg">주문하기</span>
+        </button>
+    </form>
+</div>
 <div>카트 목록이에요</div>
 </body>
 
@@ -24,9 +30,9 @@
         method: "POST",
         data: { cartId: cartId }, // 삭제할 카트 ID를 서버로 전달합니다.
         success: function(response) {
-            // 삭제가 성공하면 사용자에게 알림을 표시합니다.
+            // 삭제가 성공하면 해당 카트 항목을 DOM에서 제거합니다.
+            $("#cart-" + cartId).remove();
             alert("삭제 했습니다.");
-             $("#cart-" + cartId).parent().remove();
         },
         error: function(xhr, status, error) {
             // 삭제가 실패하면 사용자에게 알림을 표시합니다.
