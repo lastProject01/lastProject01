@@ -37,6 +37,7 @@ public class ProductService {
                 .price(price)
                 .productImg(productImg)
                 .content(content)
+                .createDate(LocalDateTime.now())
                 .build();
 
         //생성된 상품 저장
@@ -58,6 +59,7 @@ public class ProductService {
                 .price(price)
                 .productImg(productImg)
                 .content(content)
+                .modifyDate(LocalDateTime.now())
                 .build();
 
         //수정된 상품 저장
