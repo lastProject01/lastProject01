@@ -38,7 +38,7 @@ public class OrderService {
                         .product(product)
                         .order(order)
                         .build();
-                order.addOrderItem(orderItem.getProduct());
+                order.addOrderItem(orderItem); // 수정됨: 제품 대신 주문 항목을 추가
             }
         });
 
