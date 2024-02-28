@@ -22,10 +22,10 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreatedDate
-    private LocalDateTime createDate = LocalDateTime.now();
 
-    @LastModifiedDate
-    private LocalDateTime modifyDate = LocalDateTime.now();
+    private LocalDateTime createDate;
+
+
+    private LocalDateTime modifyDate;
 
 }
