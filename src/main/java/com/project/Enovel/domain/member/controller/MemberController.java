@@ -58,7 +58,7 @@ public class MemberController {
 
         try {
             memberService.create(memberCreateForm.getUsername(), memberCreateForm.getPassword1(), memberCreateForm.getNickname(),
-                    memberCreateForm.getEmail(), memberCreateForm.getAddress(), memberCreateForm.getPhone(), false);
+                    memberCreateForm.getEmail(), memberCreateForm.getAddress(), memberCreateForm.getPhone(), false, false, false);
         } catch (DataIntegrityViolationException e) {
             handleUserCreationError(bindingResult);
             return "member/signup";

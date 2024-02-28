@@ -1,5 +1,6 @@
 package com.project.Enovel.domain.product.service;
 
+import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ public class ProductService {
     public Product createProduct(String productName,
                                  int price,
                                  String productImg,
-                                 String content) {
+                                 String content,
+                                 Member author) {
 
         //상품 생성 코드
         Product product = Product.builder()
@@ -37,6 +39,8 @@ public class ProductService {
                 .price(price)
                 .productImg(productImg)
                 .content(content)
+                .author(author)
+                .createDate(LocalDateTime.now())
                 .build();
 
         //생성된 상품 저장
@@ -58,6 +62,7 @@ public class ProductService {
                 .price(price)
                 .productImg(productImg)
                 .content(content)
+                .modifyDate(LocalDateTime.now())
                 .build();
 
         //수정된 상품 저장

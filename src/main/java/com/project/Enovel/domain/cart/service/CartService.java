@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class CartService {
     private final CartRepository cartRepository;
 
     public void addItem(Product product, Member buyer) {
-        Cart existingCart = this.cartRepository.findByProduct(product);
+        Cart existingCart = this.cartRepository.findByProductAndBuyer(product, buyer);
 
         if (existingCart != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재 하는 상품 입니다.");
@@ -29,6 +30,7 @@ public class CartService {
         Cart cart = Cart.builder()
                 .product(product)
                 .buyer(buyer)
+                .createDate(LocalDateTime.now())
                 .build();
 
 

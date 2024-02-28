@@ -84,7 +84,8 @@ public class ProductController {
         this.productService.createProduct(productCreateForm.getProductName(),
                 productCreateForm.getPrice(),
                 productCreateForm.getProductImg(),
-                productCreateForm.getContent());
+                productCreateForm.getContent(),
+                member);
 
         return "redirect:/product/list";
     }

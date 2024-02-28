@@ -1,6 +1,7 @@
 package com.project.Enovel.domain.product.entity;
 
 import com.project.Enovel.domain.cart.entity.Cart;
+import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.global.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -44,4 +45,7 @@ public class Product extends BaseEntity {
 
     @ManyToOne
     private Cart cart;
+
+    @ManyToOne
+    private Member author;
 }
