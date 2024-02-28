@@ -28,7 +28,7 @@ public class NotProd {
 //            memberService.create("admin1", "123123", "관리자1", "admin1@enovel.com", "주소", "01011111111", true, false, false);
 //            memberService.create("admin2", "123123", "관리자2", "admin2@enovel.com", "주소", "01022222222", true, false, false);
 //            memberService.create("admin3", "123123", "관리자3", "admin3@enovel.com", "주소", "01033333333", true, false, false);
-//
+
 //            productService.createProduct("샘플 상품 1", 10000, "sample.jpg", "샘플 상품 설명입니다.");
 //            productService.createProduct("샘플 상품 2", 10000, "sample.jpg", "샘플 상품 설명입니다.");
 //            productService.createProduct("샘플 상품 3", 10000, "sample.jpg", "샘플 상품 설명입니다.");
