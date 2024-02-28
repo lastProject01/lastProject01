@@ -48,6 +48,4 @@ public class Member extends BaseEntity {
     @Setter
     private boolean checkedKakaoMember;
 
-//    @OneToOne
-//    private Cart cart;
 }
