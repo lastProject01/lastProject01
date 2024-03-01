@@ -13,6 +13,10 @@
         <form th:action="@{|/cart/add/${product.id}|}" method="POST">
             <button type="submit">장바구니</button>
         </form>
+        <form th:action="@{/order/create}" method="POST">
+            <input type="hidden" name="productIds" th:value="${product.id}" />
+            <button type="submit">주문하기</button>
+        </form>
     </ul>
 </div>
 
