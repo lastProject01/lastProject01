@@ -39,7 +39,7 @@ public class MemberService {
 
     @Transactional
     public Member create(String username, String password, String nickname, String email,
-                         String address, String phone, boolean checkedKakaoMember) {
+                         String address, String phone, boolean checkedAdmin, boolean checkedSeller, boolean checkedKakaoMember) {
         Member member = Member.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -171,7 +171,7 @@ public class MemberService {
         }
 
         // 가입된 회원이 없으면 새로운 회원을 생성하여 반환
-        return create(username, "", nickname, "", "", "", true);
+        return create(username, "", nickname, "", "", "",false,false, true);
     }
 
 }

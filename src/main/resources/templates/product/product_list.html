@@ -6,10 +6,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-<div th:each="product : ${productList}">
+<div th:each="product : ${productList}" th:if="${product.getDeleteDate() == null}">
     <ul th:id="'product-'+ ${product.id}">
         <li th:text="${product.productName}"></li>
         <button type="button" th:onclick="deleteProduct([[${product.id}]])">삭제하기</button>
+        <form th:action="@{|/cart/add/${product.id}|}" method="POST">
+            <button type="submit">장바구니</button>
+        </form>
     </ul>
 </div>
 

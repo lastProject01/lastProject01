@@ -23,9 +23,11 @@ public abstract class BaseEntity {
     private Long id;
 
     @CreatedDate
-    private LocalDateTime createDate = LocalDateTime.now();
+    @Column(name = "create_date", nullable = false, updatable = false)
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    private LocalDateTime modifyDate = LocalDateTime.now();
+    @Column(name = "modify_date")
+    private LocalDateTime modifyDate;
 
 }

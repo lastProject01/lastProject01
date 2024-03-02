@@ -1,8 +1,11 @@
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
 <div>
     <div>
         <h2>로그인</h2>
     </div>
-    <form th:action="@{/member/login}" method="post">
+    <form action="/member/login" method="post">
         <div class="mb-3">
             <label for="username" class="form-label">사용자ID</label>
             <input type="text" name="username" id="username">
@@ -17,3 +20,5 @@
         </div>
     </form>
 </div>
+</div>
+</html>

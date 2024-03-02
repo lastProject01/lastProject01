@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>내 주문 목록</title>
+</head>
+<body>
+<h1>내 주문 목록</h1>
+<div th:if="${orders.isEmpty()}">
+    주문 내역이 없습니다.
+</div>
+<div th:unless="${orders.isEmpty()}">
+    <table>
+        <thead>
+        <tr>
+            <th>주문 번호</th>
+            <th>구매자</th>
+<!--            <th>주문 상태</th>-->
+            <th>주문 날짜</th>
+            <th>결제 날짜</th>
+            <th>취소 날짜</th>
+            <th>환불 날짜</th>
+            <th>주문 총액</th>
+            <th>상세 보기</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">주문번호</td>
+            <td th:text="${order.buyer.username}">구매자명</td>
+<!--            <td th:text="${order.status}">주문상태</td>-->
+            <td th:text="${order.createDate}">주문날짜</td>
+            <td th:text="${order.payDate}">결제날짜</td>
+            <td th:text="${order.cancelDate}">취소날짜</td>
+            <td th:text="${order.refundDate}">환불날짜</td>
+            <td th:text="${order.calculateTotalPrice()}">주문총액</td>
+            <td><a th:href="@{/order/detail/{orderId}(orderId=${order.id})}">상세 보기</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

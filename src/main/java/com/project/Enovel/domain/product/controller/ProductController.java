@@ -84,7 +84,8 @@ public class ProductController {
         this.productService.createProduct(productCreateForm.getProductName(),
                 productCreateForm.getPrice(),
                 productCreateForm.getProductImg(),
-                productCreateForm.getContent());
+                productCreateForm.getContent(),
+                member);
 
         return "redirect:/product/list";
     }
@@ -160,7 +161,8 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
-    @GetMapping("/add/{id}")
+    @PostMapping("/add/{id}")
+    @ResponseBody
     public String addProduct(@PathVariable(value = "id")Long id, Principal principal) {
 
         Member member = this.memberService.getMember(principal.getName());
@@ -175,7 +177,7 @@ public class ProductController {
 
         this.productService.addProduct(product);
 
-        return "redirect:/product/list";
+        return "add success";
     }
 
 

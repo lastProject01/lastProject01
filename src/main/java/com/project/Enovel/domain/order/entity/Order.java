@@ -32,12 +32,9 @@ public class Order extends BaseEntity {
     private LocalDateTime refundDate;
 
     // 주문 항목 추가
-    public void addOrderItem(Product product) {
-        OrderItem orderItem = OrderItem.builder()
-                .order(this)
-                .product(product)
-                .build();
+    public void addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 
     // 총 결제 금액 계산

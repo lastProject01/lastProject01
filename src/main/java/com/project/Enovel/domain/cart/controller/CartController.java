@@ -30,10 +30,10 @@ public class CartController {
 
     //cart list 출력
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/list/{id}")
-    public String cartList(@PathVariable(value = "id") Long id, Model model, Principal principal) {
-        Member member = this.memberService.getMemberFindById(id);
-        List<Cart> cartList = member.getCartList();
+    @GetMapping("/list")
+    public String cartList( Model model, Principal principal) {
+        Member member = this.memberService.getMember(principal.getName());
+        List<Cart> cartList = this.cartService.getCartList(member);
 
         //회원 검증 코드
         if (!member.getUsername().equals(principal.getName())) {
@@ -69,7 +69,7 @@ public class CartController {
     @ResponseBody
     public String deleteItem(@PathVariable(value = "id") Long id, Principal principal) {
         Cart cart = this.cartService.getCartItem(id);
-        Member member = this.memberService.getMember(cart.getMember().getUsername());
+        Member member = this.memberService.getMember(cart.getBuyer().getUsername());
 
         //회원 검증 코드
         if (!member.getUsername().equals(principal.getName())) {
