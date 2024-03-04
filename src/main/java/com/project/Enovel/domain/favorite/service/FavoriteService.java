@@ -16,7 +16,7 @@ public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
 
     public void favorite(Product product, Member member) {
-        Favorite likeProduct = this.favoriteRepository.findByProductAAndMember(product, member);
+        Favorite likeProduct = this.favoriteRepository.findByProductAndMember(product, member);
 
         Favorite favorite = Favorite.builder()
                 .product(product)
