@@ -1,8 +1,12 @@
 package com.project.Enovel.global.config;
 
+import jakarta.persistence.EntityManager;
 import lombok.Getter;
-import lombok.Value;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
 
 @Configuration
 public class AppConfig {
@@ -33,18 +37,18 @@ public class AppConfig {
     public void setOrderCancelableSeconds(int orderCancelableSeconds) {
         this.orderCancelableSeconds = orderCancelableSeconds;
     }
-
-    // 토스 결제 위젯의 시크릿 키를 저장하는 필드
-    private static String tossPaymentsWidgetSecretKey;
-
-    // 토스 결제 위젯 시크릿 키를 설정하는 메서드
-    @Value("${custom.tossPayments.widget.secretKey}")
-    public void setTossPaymentsWidgetSecretKey(String tossPaymentsWidgetSecretKey) {
-        AppConfig.tossPaymentsWidgetSecretKey = tossPaymentsWidgetSecretKey;
-    }
-
-    // 토스 결제 위젯 시크릿 키를 반환하는 메서드
-    public static String getTossPaymentsWidgetSecretKey() {
-        return tossPaymentsWidgetSecretKey;
-    }
+//    todo 결제 로직 완성 후 사용
+//    // 토스 결제 위젯의 시크릿 키를 저장하는 필드
+//    private static String tossPaymentsWidgetSecretKey;
+//
+//    // 토스 결제 위젯 시크릿 키를 설정하는 메서드
+//    @Value("${custom.tossPayments.widget.secretKey}")
+//    public void setTossPaymentsWidgetSecretKey(String tossPaymentsWidgetSecretKey) {
+//        AppConfig.tossPaymentsWidgetSecretKey = tossPaymentsWidgetSecretKey;
+//    }
+//
+//    // 토스 결제 위젯 시크릿 키를 반환하는 메서드
+//    public static String getTossPaymentsWidgetSecretKey() {
+//        return tossPaymentsWidgetSecretKey;
+//    }
 }
