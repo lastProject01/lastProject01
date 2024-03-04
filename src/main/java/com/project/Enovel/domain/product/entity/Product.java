@@ -27,11 +27,11 @@ public class Product extends BaseEntity {
 
     private String productImgPath;
 
-    private String introduceImgPath;
+//    private String introduceImgPath;
 
     private String productImgName;
 
-    private String introduceImgName;
+//    private String introduceImgName;
 
     private String productImg;
 
