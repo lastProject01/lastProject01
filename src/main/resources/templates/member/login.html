@@ -1,24 +1,323 @@
-<html layout:decorate="~{main/layout}">
-<div th:replace="/main/navbar"></div>
-<div layout:fragment="content">
-<div>
-    <div>
-        <h2>로그인</h2>
-    </div>
-    <form action="/member/login" method="post">
-        <div class="mb-3">
-            <label for="username" class="form-label">사용자ID</label>
-            <input type="text" name="username" id="username">
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>SB Admin 2 - Login</title>
+
+        <!-- Custom fonts for this template-->
+        <link href="../lastProject01/src/main/resources/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+                href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+                rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+
+        <!-- Material Design Iconic Font -->
+        <link rel="stylesheet" type="text/css" th:href="@{/fonts/iconic/css/material-design-iconic-font.min.css}">
+
+        <!-- Linearicons Font -->
+        <link rel="stylesheet" type="text/css" th:href="@{/fonts/linearicons-v1.0.0/icon-font.min.css}">
+
+        <!-- Animate.css -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}">
+
+        <!-- Hamburgers -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">
+
+        <!-- Animsition -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}">
+
+        <!-- Select2 -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}">
+
+        <!-- Datepicker -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/daterangepicker/daterangepicker.css}">
+
+        <!-- Slick Carousel -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}">
+
+        <!-- Magnific Popup -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/MagnificPopup/magnific-popup.css}">
+
+        <!-- Perfect Scrollbar -->
+        <link rel="stylesheet" type="text/css" th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}">
+
+        <!-- Custom Styles -->
+
+        <link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/simplemde.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/layout.css}">
+
+        <!-- jQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/util.css">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="simplemde.min.css">
+        <link rel="stylesheet" type="text/css" href="layout.css">
+
+        <!-- Bootstrap JS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+        <title>enovel</title>
+
+    </head>
+
+    <body class="bg-gradient-primary">
+
+        <nav>
+            <!-- Header -->
+            <header>
+                <!-- Header desktop -->
+                <div class="container-menu-desktop">
+                    <!-- Topbar -->
+                    <div class="top-bar">
+                        <div class="content-topbar flex-sb-m h-full container">
+                            <div class="left-top-bar">
+                                언제나 읽을 수 있는 책
+                            </div>
+
+                            <div class="right-top-bar flex-w h-full">
+                                <a th:href="@{/seller/products}" sec:authorize="isAuthenticated()"  th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}"  class="flex-c-m trans-04 p-lr-25">
+                                    상품 관리
+                                </a>
+
+                                <a th:href="@{/admin/member}" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="flex-c-m trans-04 p-lr-25">
+                                    관리자 페이지
+                                </a>
+
+                                <a th:href="@{/member/signup}"  sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25">
+                                    회원가입
+                                </a>
+
+                                <a th:href="@{/member/checkedPw}" th:unless="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                                    마이페이지
+                                </a>
+
+                                <a th:href="@{/member/myInfo}" th:if="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                                    마이페이지
+                                </a>
+
+                                <a  th:href="@{/member/login}" sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25">
+                                    로그인
+                                </a>
+
+                                <a  th:href="@{/member/logout}" sec:authorize="isAuthenticated()"  class="flex-c-m trans-04 p-lr-25">
+                                    로그아웃
+                                </a>
+                                <!--추후 삭제-->
+                                <a  th:href="@{/order/create}"  class="flex-c-m trans-04 p-lr-25">
+                                    주문 생성
+                                </a>
+
+                                <!--추후 삭제-->
+                                <a  th:href="@{/order/myList}"   class="flex-c-m trans-04 p-lr-25">
+                                    내 주문 보기
+                                </a>
+
+                                <!--추후 삭제-->
+                                <a  th:href="@{/review/create}"   class="flex-c-m trans-04 p-lr-25">
+                                    리뷰 생성
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Header Mobile -->
+                <div class="wrap-header-mobile">
+                    <!-- Logo moblie -->
+                    <div class="logo-mobile">
+                        <a href="index.html"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+                    </div>
+
+                    <!-- Icon header -->
+                    <div class="wrap-icon-header flex-w flex-r-m m-r-15">
+                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
+                            <i class="zmdi zmdi-search"></i>
+                        </div>
+
+                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart">
+                            <i class="zmdi zmdi-shopping-cart"><a th:href="@{/cart/list}"></a></i>
+                        </div>
+
+                        <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
+                            <i class="zmdi zmdi-favorite-outline"></i>
+                        </a>
+                    </div>
+
+                    <!-- Button show menu -->
+                    <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+				<span class="hamburger-box">
+					<span class="hamburger-inner"></span>
+				</span>
+                    </div>
+                </div>
+
+
+                <!-- Menu Mobile -->
+                <div class="menu-mobile">
+                    <ul class="topbar-mobile">
+                        <li>
+                            <div class="left-top-bar">
+                                Free shipping for standard order over $100
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="right-top-bar flex-w h-full">
+                                <a href="#" class="flex-c-m p-lr-10 trans-04">
+                                    Help & FAQs
+                                </a>
+
+                                <a href="#" class="flex-c-m p-lr-10 trans-04">
+                                    My Account
+                                </a>
+
+                                <a href="#" class="flex-c-m p-lr-10 trans-04">
+                                    EN
+                                </a>
+
+                                <a href="#" class="flex-c-m p-lr-10 trans-04">
+                                    USD
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="main-menu-m">
+                        <li>
+                            <a href="index.html">Home</a>
+                            <ul class="sub-menu-m">
+                                <li><a href="index.html">Homepage 1</a></li>
+                                <li><a href="home-02.html">Homepage 2</a></li>
+                                <li><a href="home-03.html">Homepage 3</a></li>
+                            </ul>
+                            <span class="arrow-main-menu-m">
+						<i class="fa fa-angle-right" aria-hidden="true"></i>
+					</span>
+                        </li>
+
+                        <li>
+                            <a href="product.html">Shop</a>
+                        </li>
+
+                        <li>
+                            <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
+                        </li>
+
+                        <li>
+                            <a href="blog.html">Blog</a>
+                        </li>
+
+                        <li>
+                            <a href="about.html">About</a>
+                        </li>
+
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Modal Search -->
+                <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+                    <div class="container-search-header">
+                        <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+                            <img src="images/icons/icon-close2.png" alt="CLOSE">
+                        </button>
+
+                        <form class="wrap-search-header flex-w p-l-15">
+                            <button class="flex-c-m trans-04">
+                                <i class="zmdi zmdi-search"></i>
+                            </button>
+                            <input class="plh3" type="text" name="search" placeholder="Search...">
+                        </form>
+                    </div>
+                </div>
+            </header>
+        </nav>
+
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-lg-6">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div>
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    </div>
+                                    <form class="user" th:action="@{/member/login}"  method="post">
+                                        <div class="form-group">
+                                            <label for="username" class="form-label">사용자ID</label>
+                                            <input type="text" name="username" id="username" class="form-control form-control-user"
+                                                   aria-describedby="emailHelp"
+                                                   placeholder="아이디">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password" class="form-label">비밀번호</label>
+                                            <input  type="password" name="password" id="password" class="form-control form-control-user" placeholder="Password">
+                                        </div>
+                                        <button type="submit"  class="btn btn-primary btn-user btn-block">로그인</button>
+                                        <hr>
+                                        <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </a>
+<!--                                        <button type="button" onclick="location.href='/oauth2/authorization/kakao'">카카오 로그인</button>-->
+                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                        </a>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="register.html">Create an Account!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">비밀번호</label>
-            <input type="password" name="password" id="password">
-        </div>
-        <div>
-            <button type="submit">로그인</button>
-            <button type="button" onclick="location.href='/oauth2/authorization/kakao'">카카오 로그인</button>
-        </div>
-    </form>
-</div>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    </body>
 </div>
 </html>
