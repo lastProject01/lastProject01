@@ -38,7 +38,7 @@ public class MemberController {
         bindingResult.reject("signupFailed", "이미 가입된 사용자입니다.");
     }
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public String login() {
         return "member/login";
     }
