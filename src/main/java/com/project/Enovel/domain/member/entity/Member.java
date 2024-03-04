@@ -48,4 +48,5 @@ public class Member extends BaseEntity {
     @Setter
     private boolean checkedKakaoMember;
 
+    private String profileImg;
 }

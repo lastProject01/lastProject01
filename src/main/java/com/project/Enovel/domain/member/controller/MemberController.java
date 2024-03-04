@@ -87,11 +87,16 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/updateMyInfo")
-    public String myPage(MemberCreateForm memberCreateForm, Principal principal) {
+    public String myPage(Model model, MemberCreateForm memberCreateForm, Principal principal) {
         String username = principal.getName();
         Member member = this.memberService.getMember(username);
         if (!member.getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+
+        // Ensure memberCreateForm is not null
+        if (memberCreateForm == null) {
+            memberCreateForm = new MemberCreateForm();
         }
 
         memberCreateForm.setUsername(member.getUsername());
@@ -100,8 +105,11 @@ public class MemberController {
         memberCreateForm.setAddress(member.getAddress());
         memberCreateForm.setPhone(member.getPhone());
 
+        model.addAttribute("memberCreateForm", memberCreateForm);
+
         return "member/my_info_update";
     }
+
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/updateMyInfo")
