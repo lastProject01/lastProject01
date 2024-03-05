@@ -1,3 +1,6 @@
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
 <form th:object="${memberCheckedPwForm}" method="post" th:action="@{/member/checkedPw}">
     <!-- CSRF 토큰 추가 -->
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -9,3 +12,5 @@
     </div>
     <button type="submit">확인</button>
 </form>
+</div>
+</html>

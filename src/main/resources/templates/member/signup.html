@@ -1,57 +1,10 @@
-<div>
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
+<div style="text-align: center;">
     <div>
-        <h2>회원가입</h2>
+        <h2 style="margin-top: 30px;">회원가입</h2>
     </div>
-    <div>
-        <form th:action="@{/member/signup}" th:object="${memberCreateForm}" method="post">
-            <div>
-                <label for="username" class="form-label">사용자ID</label>
-                <input type="text" th:field="*{username}" id="username" autocomplete="off"/>
-            </div>
-            <div>
-                <label for="password1" class="form-label">비밀번호</label>
-                <input type="password" th:field="*{password1}">
-            </div>
-            <div>
-                <label for="password2" class="form-label">비밀번호 확인</label>
-                <input type="password" th:field="*{password2}">
-            </div>
-        </div>
-            <ul class="main-menu-m">
-                <li>
-                    <a href="index.html">Home</a>
-                    <ul class="sub-menu-m">
-                        <li><a href="index.html">Homepage 1</a></li>
-                        <li><a href="home-02.html">Homepage 2</a></li>
-                        <li><a href="home-03.html">Homepage 3</a></li>
-                    </ul>
-                    <span class="arrow-main-menu-m">
-						<i aria-hidden="true" class="fa fa-angle-right"></i>
-					</span>
-                </li>
-
-                <li>
-                    <a href="product.html">Shop</a>
-                </li>
-
-                <li>
-                    <a class="label1 rs1" data-label1="hot" href="shoping-cart.html">Features</a>
-                </li>
-
-                <li>
-                    <a href="blog.html">Blog</a>
-                </li>
-
-                <li>
-                    <a href="about.html">About</a>
-                </li>
-
-                <li>
-                    <a href="contact.html">Contact</a>
-                </li>
-            </ul>
-        </div>
-
         <!-- Modal Search -->
         <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
             <div class="container-search-header">
@@ -67,8 +20,6 @@
                 </form>
             </div>
         </div>
-    </header>
-</nav>
 <!-- Nested Row within Card Body -->
 <div class="row justify-content-center">
     <div class="col-lg-7">
@@ -132,7 +83,6 @@
 
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
-
-</body>
-
+</div>
+</div>
 </html>
