@@ -1,3 +1,6 @@
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
 <form th:object="${memberPasswordForm}" method="post" th:action="@{/member/changePw}">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <div class="mb-3">
@@ -10,3 +13,5 @@
     </div>
     <button type="submit" class="btn bg-orange-300 hover:bg-orange-500">수정하기</button>
 </form>
+</div>
+</html>
