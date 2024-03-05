@@ -1,43 +1,94 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>내 주문 목록</title>
-</head>
-<body>
-<h1>내 주문 목록</h1>
-<div th:if="${orders.isEmpty()}">
-    주문 내역이 없습니다.
+<html layout:decorate="~{main/layout}">
+<div layout:fragment="content">
+    <!-- Shoping Cart -->
+    <form class="bg0 p-t-75 p-b-85">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+                    <div class="m-l-25 m-r--38 m-lr-0-xl">
+                        <div class="wrap-table-shopping-cart">
+                            <table class="table-shopping-cart">
+                                <tr class="table_head">
+                                    <th class="column-1">구매 상품</th>
+                                    <th class="column-2">구매자</th>
+                                    <th class="column-3">가격</th>
+                                </tr>
+
+                                <tr class="table_row">
+                                    <td class="column-1">
+                                        <div class="how-itemcart1">
+                                            <img src="" alt="IMG">
+                                        </div>
+                                    </td>
+                                    <td class="column-2" ></td>
+                                    <td class="column-3" ></td>
+                                    <td class="column-4" >
+                                        <button type="button"
+                                                class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+                                            삭제하기
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+                            <a class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+                                Update Cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Back to top -->
+    <div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script>
+        $(".js-select2").each(function(){
+            $(this).select2({
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next('.dropDownSelect2')
+            });
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script>
+        $('.js-pscroll').each(function(){
+            $(this).css('position','relative');
+            $(this).css('overflow','hidden');
+            var ps = new PerfectScrollbar(this, {
+                wheelSpeed: 1,
+                scrollingThreshold: 1000,
+                wheelPropagation: false,
+            });
+
+            $(window).on('resize', function(){
+                ps.update();
+            })
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+
 </div>
-<div th:unless="${orders.isEmpty()}">
-    <table>
-        <thead>
-        <tr>
-            <th>주문 번호</th>
-            <th>구매자</th>
-<!--            <th>주문 상태</th>-->
-            <th>주문 날짜</th>
-            <th>결제 날짜</th>
-            <th>취소 날짜</th>
-            <th>환불 날짜</th>
-            <th>주문 총액</th>
-            <th>상세 보기</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="order : ${orders}">
-            <td th:text="${order.id}">주문번호</td>
-            <td th:text="${order.buyer.username}">구매자명</td>
-<!--            <td th:text="${order.status}">주문상태</td>-->
-            <td th:text="${order.createDate}">주문날짜</td>
-            <td th:text="${order.payDate}">결제날짜</td>
-            <td th:text="${order.cancelDate}">취소날짜</td>
-            <td th:text="${order.refundDate}">환불날짜</td>
-            <td th:text="${order.calculateTotalPrice()}">주문총액</td>
-            <td><a th:href="@{/order/detail/{orderId}(orderId=${order.id})}">상세 보기</a></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-</body>
 </html>
