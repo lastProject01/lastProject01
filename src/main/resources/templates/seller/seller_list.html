@@ -1,70 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
-<body>
-<div th:each="product : ${productList}">
-    <ul th:id="'product-'+ ${product.id}">
-        <li th:text="${product.productName}"></li>
-        <button type="button" th:if="${product.getDeleteDate() == null}" th:onclick="deleteProduct([[${product.id}]])">판매중지</button>
-        <button type="button" th:if="${product.getDeleteDate() != null}" th:onclick="addProduct([[${product.id}]])">판매중지철회</button>
-    </ul>
-    <div th:if="${product.getDeleteDate() != null}">판매중지상품</div>
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
+<div style="text-align: center;">
+    <div>
+        <h2 style="margin-top: 30px; margin-bottom: 30px;">상품관리 페이지</h2>
+    </div>
+    <table class="table table-striped" style="max-width: 1500px; text-align: center; justify-content: center; margin-right: auto; margin-left: auto; margin-bottom: 30px;">
+    <thead>
+    <tr>
+        <th style="width: 12.5%;">번호</th>
+        <th style="width: 12.5%;">상품명</th>
+        <th style="width: 12.5%;">상품가격</th>
+        <th style="width: 12.5%;">상품설명</th>
+        <th style="width: 12.5%;">생성자</th>
+        <th style="width: 10%;">생성날짜</th>
+        <th style="width: 15%;">수정날짜</th>
+        <th style="width: 12.5%;">판매중지/철회</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product, loop : ${productList}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.productName}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.content}"></td>
+        <td th:if="${product.author != null}" th:text="${product.author.getUsername()}"></td>
+        <td th:unless="${product.author != null}">No Author</td>
+        <td>
+            <div th:text="${#temporals.format(product.createDate, 'yyyy-MM-dd')}"></div>
+            <div th:text="${#temporals.format(product.createDate, 'HH:mm')}"></div>
+        </td>
+        <td>
+            <div th:text="${#temporals.format(product.modifyDate, 'yyyy-MM-dd')}"></div>
+            <div th:text="${#temporals.format(product.modifyDate, 'HH:mm')}"></div>
+        </td>
+        <td>
+            <form th:if="${product.deleteDate == null}" th:action="@{/product/delete/{id}(id=${product.id})}" method="post"
+                  onsubmit="return confirm('상품판매를 중지하겠습니까?');">
+                <input type="hidden" name="username" th:value="${product.productName}"/>
+                <button type="submit" sec:authorize="isAuthenticated()" class="btn btn-secondary">상품판매중지</button>
+            </form>
+            <form th:if="${product.deleteDate != null}" th:action="@{/product/add/{id}(id=${product.id})}" method="post"
+                  onsubmit="return confirm('상품판매 중지 철회하겠습니까?');">
+                <input type="hidden" name="username" th:value="${product.productName}"/>
+                <button type="submit" sec:authorize="isAuthenticated()" class="btn btn-secondary">상품판매철회</button>
+            </form>
+            <div th:if="${product.getDeleteDate() != null}">판매중지상품</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </div>
-
-<div>상품 목록이에요</div>
-</body>
-
-<script>
-    function deleteProduct(productId) {
-        // AJAX 요청 보내기
-        $.ajax({
-            url: "/product/delete/" + productId, // 삭제할 URL
-            method: "POST",
-            data: { productId: productId }, // 삭제할 카트 ID를 서버로 전달합니다.
-            success: function(response) {
-                // 삭제가 성공하면 사용자에게 알림을 표시합니다.
-                alert("판매중지 처리가 완료되었습니다.");
-                $("#product-" + productId).parent().remove();
-            },
-            error: function(xhr, status, error) {
-                // 권한이 없는 경우
-                if (xhr.status === 403) {
-                    alert("권한이 없습니다.");
-                } else  {
-                    // 삭제 실패 시 오류 메시지 표시
-                    alert("판매 중지 처리에 했습니다. 다시 시도해주세요.");
-                }
-            }
-        });
-    }
-
-    function addProduct(productId) {
-        // AJAX 요청 보내기
-        $.ajax({
-            url: "/product/add/" + productId, // 판매중지 철회할 URL
-            method: "POST",
-            data: { productId: productId }, // 판매할 카트 ID를 서버로 전달합니다.
-            success: function(response) {
-                // 삭제가 성공하면 사용자에게 알림을 표시합니다.
-                alert("판매중지 처리가 철회되었습니다.");
-                $("#product-" + productId).parent().add();
-            },
-            error: function(xhr, status, error) {
-                // 권한이 없는 경우
-                if (xhr.status === 403) {
-                    alert("권한이 없습니다.");
-                } else  {
-                    // 삭제 실패 시 오류 메시지 표시
-                    alert("판매 중지 철회에 실패했습니다. 다시 시도해주세요.");
-                    console.error(xhr.responseText); // 서버의 응답 내용을 콘솔에 출력
-                }
-            }
-        });
-    }
-
-</script>
+</div>
 </html>
