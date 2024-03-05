@@ -1,33 +1,6 @@
 <!DOCTYPE html>
 <html layout:decorate="~{main/layout}">
 <div layout:fragment="content">
-<!--<head>-->
-<!--    <title>Shoping Cart</title>-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/fonts/iconic/css/material-design-iconic-font.min.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/fonts/linearicons-v1.0.0/icon-font.min.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">-->
-<!--    &lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--</head>-->
 <!-- Shoping Cart -->
 <form class="bg0 p-t-75 p-b-85">
     <div class="container">
@@ -45,11 +18,17 @@
                             <tr class="table_row" th:each="cart : ${cartList}">
                                 <td class="column-1">
                                     <div class="how-itemcart1">
-                                        <img  th:src="${cart.product.productImgPath}" alt="IMG">
+                                        <img th:src="${cart.product.productImgPath}" alt="IMG">
                                     </div>
                                 </td>
                                 <td class="column-2" th:text="${cart.product.productName}"></td>
                                 <td class="column-3" th:text="${cart.product.price}"></td>
+                                <td class="column-4" th:id="'cart-'+ ${cart.id}">
+                                    <button type="button" th:onclick="deleteCartItem([[${cart.id}]])"
+                                            class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+                                        삭제하기
+                                    </button>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -194,6 +173,26 @@
 </script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
+
+    <script>
+        function deleteCartItem(cartId) {
+        // AJAX 요청 보내기
+        $.ajax({
+            url: "/cart/delete/" + cartId, // 삭제할 URL
+            method: "POST",
+            data: { cartId: cartId }, // 삭제할 카트 ID를 서버로 전달합니다.
+            success: function(response) {
+                // 삭제가 성공하면 해당 카트 항목을 DOM에서 제거합니다.
+                $("#cart-" + cartId).remove();
+                alert("삭제 했습니다.");
+            },
+            error: function(xhr, status, error) {
+                // 삭제가 실패하면 사용자에게 알림을 표시합니다.
+                alert("삭제 실패했습니다. 다시 시도해주세요.");
+            }
+        });
+    }
+    </script>
 
 </div>
 </html>
