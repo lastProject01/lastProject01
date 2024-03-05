@@ -44,10 +44,6 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath introduceImg = createString("introduceImg");
 
-    public final StringPath introduceImgName = createString("introduceImgName");
-
-    public final StringPath introduceImgPath = createString("introduceImgPath");
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifyDate = _super.modifyDate;
 

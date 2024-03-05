@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
-    Page<OrderItem> findByOrderPayDateBetweenAndOrderRefundDateAndRebateItem(
+    Page<OrderItem> findByOrderPayDateBetweenAndOrderRefundDate(
             LocalDateTime startDate,
             LocalDateTime endDate,
             LocalDateTime refundDate,

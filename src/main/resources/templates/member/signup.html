@@ -279,29 +279,31 @@
                                 <input class="form-control form-control-user" placeholder="ID" type="text" autocomplete="off" th:field="*{username}" id="username">
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control form-control-user" placeholder="NickName" type="text" th:field="*{nickname}">
+                                <input class="form-control form-control-user" placeholder="NickName" autocomplete="off" type="text" th:field="*{nickname}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <input class="form-control form-control-user" placeholder="Password" type="password" th:field="*{password1}">
+                                <input class="form-control form-control-user" placeholder="Password" autocomplete="off" type="password" th:field="*{password1}">
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control form-control-user" placeholder="Repeat Password" type="password" th:field="*{password2}">
+                                <input class="form-control form-control-user" placeholder="Repeat Password" autocomplete="off" type="password" th:field="*{password2}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <input class="form-control form-control-user" placeholder="Email" type="email" th:field="*{email}">
+                                <input class="form-control form-control-user" placeholder="Email" autocomplete="off" type="email" th:field="*{email}">
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control form-control-user" placeholder="Phone Number" type="text" th:field="*{phone}">
+                                <input class="form-control form-control-user" placeholder="Phone Number" autocomplete="off" type="text" th:field="*{phone}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <input class="form-control form-control-user" placeholder="Address" type="text" th:field="*{address}">
+                            <input class="form-control form-control-user" placeholder="Address" autocomplete="off" type="text" th:field="*{address}">
                         </div>
-                        <button type="submit" class="btn">회원가입</button>
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-primary">회원가입</button>
+                        </div>
                         <hr>
                     </form>
                     <hr>

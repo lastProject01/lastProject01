@@ -37,3 +37,9 @@ spring:
 custom:
   order:
     cancelableSeconds: 3600
+  genFileDirPath: C:\Users\hanjaehyun\Pictures\genFile
+  resourcePath: C:\Users\hanjaehyun\Pictures\genFile
+  requestPath: /upload/**
+  originPath: /upload/
+  paymentSecretKey: test_ck_ZLKGPx4M3M41oaJJ5zo8BaWypv1o
+

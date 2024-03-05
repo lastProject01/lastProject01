@@ -84,6 +84,10 @@ public class OrderService {
         order.setRefundDone(); // 환불 처리
         orderRepository.save(order);
     }
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("주문 번호가 유효하지 않습니다."));
+    }
 
     // 사용자의 주문 목록을 조회하는 메소드
     @Transactional(readOnly = true)

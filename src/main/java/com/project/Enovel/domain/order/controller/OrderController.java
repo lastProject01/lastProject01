@@ -29,6 +29,17 @@ public class OrderController {
     private final ProductService productService;
     private final MemberService memberService;
 
+    @GetMapping("/detail/{orderId}")
+    public String orderDetail(@PathVariable("orderId") Long orderId, Model model) {
+        try {
+            Order order = orderService.getOrderById(orderId);
+            model.addAttribute("order", order);
+            return "order/detail";
+        } catch (IllegalArgumentException e) {
+            // 적절한 예외 처리 (예: 사용자를 오류 페이지로 리다이렉트)
+            return "redirect:/error-page";  // 오류 페이지나 홈페이지로 리다이렉트
+        }
+    }
     @GetMapping("/create")
     public String showCreateOrderForm(Model model) {
         // 상품 목록을 가져와 모델에 추가

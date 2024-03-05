@@ -50,6 +50,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath phone = createString("phone");
 
+    public final StringPath profileImg = createString("profileImg");
+
     public final StringPath username = createString("username");
 
     public QMember(String variable) {
