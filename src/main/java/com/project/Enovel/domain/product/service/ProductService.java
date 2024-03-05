@@ -57,7 +57,6 @@ public class ProductService {
         Product product = Product.builder()
                 .productName(productName)
                 .price(price)
-                .productImg(productImg)
                 .content(content)
                 .productImgPath(filePath)
                 .productImgName(fileName)
@@ -82,7 +81,6 @@ public class ProductService {
         Product modifyProduct = product.toBuilder()
                 .productName(productName)
                 .price(price)
-                .productImg(productImg)
                 .content(content)
                 .modifyDate(LocalDateTime.now())
                 .build();
