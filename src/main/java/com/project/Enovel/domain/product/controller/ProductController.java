@@ -27,15 +27,6 @@ public class ProductController {
     private final ProductService productService;
     private final MemberService memberService;
 
-    //상품 목록 출력
-    @GetMapping("/list")
-    public String productList(Model model) {
-        List<Product> productList = this.productService.getList();
-        model.addAttribute("productList", productList);
-
-        return "product/product_list";
-    }
-
     //상품 세부
     @GetMapping("/detail/{id}")
     public String detailProduct(@PathVariable(value = "id") Long id, Model model) {
@@ -90,7 +81,7 @@ public class ProductController {
                 file,
                 member);
 
-        return "redirect:/product/list";
+        return "redirect:/";
     }
 
     //admin 등급과 seller 등급만 접근 가능
@@ -139,8 +130,31 @@ public class ProductController {
 
     //admin 등급과 seller 등급만 접근 가능
     //상품 삭제
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
+//    @PostMapping("/delete/{id}")
+//    public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
+//        //TODO 회원 등급 검증 문제 해결 필요(비회원이 기능 사용시 기능 정상 작동 문제)
+//        if(principal == null) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+//        }
+//
+//        Member member = this.memberService.getMember(principal.getName());
+//
+//
+//        Product product = this.productService.getProduct(id);
+//        //회원 등급 검증
+//        //user등급만 필터링
+//        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
+//        }
+//
+//        this.productService.deleteProduct(product);
+//
+//        return "redirect:/seller/products";
+//    }
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
         //TODO 회원 등급 검증 문제 해결 필요(비회원이 기능 사용시 기능 정상 작동 문제)
         if(principal == null) {
