@@ -25,25 +25,15 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(Member buyer, List<Long> productIds) {
-        // Order 인스턴스 생성
-        Order order = Order.builder()
-                .buyer(buyer)
-                .build();
+        Order order = Order.builder().buyer(buyer).build();
 
-        // 제품 ID 목록을 반복하여 각 제품에 대한 OrderItem을 추가
-        productIds.forEach(productId -> {
+        for (Long productId : productIds) {
             Product product = productService.getProduct(productId);
-            if (product != null) { // 제품이 존재하는지만 확인
-                OrderItem orderItem = OrderItem.builder()
-                        .product(product)
-                        .order(order)
-                        .build();
-                order.addOrderItem(orderItem); // 수정됨: 제품 대신 주문 항목을 추가
-            }
-        });
-
-        if (order.getOrderItems().isEmpty()) {
-            throw new IllegalArgumentException("주문할 수 있는 제품이 없습니다.");
+            OrderItem orderItem = OrderItem.builder()
+                    .product(product)
+                    .order(order)
+                    .build();
+            order.addOrderItem(orderItem);
         }
 
         return orderRepository.save(order);
@@ -74,31 +64,31 @@ public class OrderService {
     @Transactional
     public void payOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("주문 번호가 유효하지 않습니다."));
-        order.markPaid();
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order ID"));
+        order.setPaymentDone(); // 결제 완료 처리
         orderRepository.save(order);
     }
 
     @Transactional
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("주문 번호가 유효하지 않습니다."));
-        order.markCancelled();
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order ID"));
+        order.setCancelDone(); // 주문 취소 처리
         orderRepository.save(order);
     }
 
     @Transactional
     public void refundOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("주문 번호가 유효하지 않습니다."));
-        order.markRefunded();
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order ID"));
+        order.setRefundDone(); // 환불 처리
         orderRepository.save(order);
     }
-
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("주문 번호가 유효하지 않습니다."));
     }
+
     // 사용자의 주문 목록을 조회하는 메소드
     @Transactional(readOnly = true)
     public List<Order> findOrdersByMemberId(Long memberId) {

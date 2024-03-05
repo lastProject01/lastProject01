@@ -40,7 +40,6 @@ public class OrderController {
             return "redirect:/error-page";  // 오류 페이지나 홈페이지로 리다이렉트
         }
     }
-
     @GetMapping("/create")
     public String showCreateOrderForm(Model model) {
         // 상품 목록을 가져와 모델에 추가
@@ -48,7 +47,7 @@ public class OrderController {
         model.addAttribute("products", products);
 
         // 주문 생성 페이지 뷰 이름 반환
-        return "order/create"; // 뷰 이름은 실제 템플릿 경로와 일치해야 합니다.
+        return "order/create";
     }
     // 주문 생성
     @PostMapping("/create")
@@ -96,14 +95,14 @@ public class OrderController {
     @PostMapping("/{orderId}/pay")
     public String payOrder(@PathVariable("orderId") Long orderId) {
         orderService.payOrder(orderId);
-        return "redirect:/order/detail/" + orderId;  // 변경된 부분
+        return "redirect:/order/detail/" + orderId;
     }
 
     // 주문 취소
     @PostMapping("/{orderId}/cancel")
     public String cancelOrder(@PathVariable("orderId") Long orderId) {
         orderService.cancelOrder(orderId);
-        return "redirect:/order/detail/" + orderId;  // 변경된 부분
+        return "redirect:/order/detail/" + orderId;
     }
 
     // 주문 환불

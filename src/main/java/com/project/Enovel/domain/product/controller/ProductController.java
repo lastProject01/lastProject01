@@ -141,7 +141,6 @@ public class ProductController {
     //상품 삭제
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/delete/{id}")
-    @ResponseBody
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
         //TODO 회원 등급 검증 문제 해결 필요(비회원이 기능 사용시 기능 정상 작동 문제)
         if(principal == null) {
@@ -160,12 +159,11 @@ public class ProductController {
 
         this.productService.deleteProduct(product);
 
-        return "delete success";
+        return "redirect:/seller/products";
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/add/{id}")
-    @ResponseBody
     public String addProduct(@PathVariable(value = "id")Long id, Principal principal) {
 
         Member member = this.memberService.getMember(principal.getName());
@@ -180,7 +178,7 @@ public class ProductController {
 
         this.productService.addProduct(product);
 
-        return "add success";
+        return "redirect:/seller/products";
     }
 
 

@@ -21,8 +21,18 @@ public class OrderItem extends BaseEntity {
     @ManyToOne
     private Product product;
 
+    private double rebateRate;
+    private long payPrice;
+
     // 실제 결제 금액 반환
     public long getPrice() {
         return product.getPrice(); // 상품 가격을 반환
+    }
+
+    public void setPaymentDone() {
+    }
+    public void setCancelDone() {
+    }
+    public void setRefundDone() {
     }
 }
