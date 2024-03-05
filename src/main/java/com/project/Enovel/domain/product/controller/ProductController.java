@@ -13,8 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -66,7 +68,7 @@ public class ProductController {
     //상품 생성
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/create")
-    public String createProductPost(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
+    public String createProductPost(@Valid ProductCreateForm productCreateForm, BindingResult bindingResult, @RequestParam("file") MultipartFile file, Principal principal) throws IOException {
 
         Member member = this.memberService.getMember(principal.getName());
 
@@ -85,6 +87,7 @@ public class ProductController {
                 productCreateForm.getPrice(),
                 productCreateForm.getProductImg(),
                 productCreateForm.getContent(),
+                file,
                 member);
 
         return "redirect:/product/list";

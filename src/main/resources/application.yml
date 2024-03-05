@@ -34,3 +34,9 @@ spring:
       org.hibernate.orm.jdbc.bind: TRACE
       org.hibernate.orm.jdbc.extract: TRACE
       org.springframework.transaction.interceptor: TRACE
+custom:
+  genFileDirPath: C:\Users\hanjaehyun\Pictures\genFile
+  resourcePath: C:\Users\hanjaehyun\Pictures\genFile
+  requestPath: /upload/**
+  originPath: /upload/
+  paymentSecretKey: test_ck_ZLKGPx4M3M41oaJJ5zo8BaWypv1o

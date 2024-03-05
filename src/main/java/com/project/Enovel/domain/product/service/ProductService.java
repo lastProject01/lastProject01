@@ -4,18 +4,26 @@ import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+
+    @Value("${custom.originPath}")
+    private String originPath;
 
     public List<Product> getList() {
         return this.productRepository.findAll();
@@ -31,7 +39,19 @@ public class ProductService {
                                  int price,
                                  String productImg,
                                  String content,
-                                 Member author) {
+                                 MultipartFile file,
+                                 Member author) throws IOException {
+
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/upload";
+
+        UUID uuid = UUID.randomUUID();
+
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        String filePath = originPath + fileName;
+
+        File saveFile = new File(projectPath, fileName);
+        file.transferTo(saveFile);
+
 
         //상품 생성 코드
         Product product = Product.builder()
@@ -39,6 +59,8 @@ public class ProductService {
                 .price(price)
                 .productImg(productImg)
                 .content(content)
+                .productImgPath(filePath)
+                .productImgName(fileName)
                 .author(author)
                 .createDate(LocalDateTime.now())
                 .build();
