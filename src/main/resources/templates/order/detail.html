@@ -1,48 +1,79 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
 <head>
-    <meta charset="UTF-8">
-    <title>주문 상세 정보</title>
-    <link rel="stylesheet" href="/css/style.css"> <!-- CSS 스타일 링크 -->
+    <title th:text="'주문 ' + (${order != null ? order.id : 'N/A'}) + '번'">주문 정보</title>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const orderCode = /*[[${order != null ? order.code : ''}]]*/ 'defaultCode';
+        const buyerUsername = /*[[${order != null ? order.buyer.username : ''}]]*/ 'defaultUsername';
+        const orderName = /*[[${order != null ? order.getName() : 'N/A'}]]*/ 'defaultOrderName';
+        const orderPayPrice = /*[[${order != null ? order.calculateTotalPrice() : 0}]]*/ 0;
+        const toss_clientKey = /*[[${@environment.getProperty('custom.tossPayments.widget.clientKey')}]]*/ 'defaultClientKey';
+        /*]]>*/
+    </script>
 </head>
+
 <body>
-<h1>주문 상세 정보</h1>
-<div th:if="${order == null}">
-    <p>주문 정보를 찾을 수 없습니다.</p>
-</div>
-<div th:if="${order != null}">
-    <p><strong>주문 상태:</strong>
-        <span th:if="${order.payDate != null}" th:text="'결제 완료'"></span>
-        <span th:if="${order.cancelDate != null}" th:text="'취소됨'"></span>
-        <span th:if="${order.refundDate != null}" th:text="'환불됨'"></span>
-        <span th:if="${order.payDate == null and order.cancelDate == null and order.refundDate == null}" th:text="'대기 중'"></span>
-    </p>
-    <table>
-        <thead>
-        <tr>
-            <th>제품 이름</th>
-            <th>가격</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${order.orderItems}">
-            <td th:text="${item.product.productName}">제품 이름</td>
-            <td th:text="${item.getPrice()}">가격</td>
-        </tr>
-        </tbody>
-    </table>
-    <p><strong>총 금액:</strong> <span th:text="${order.calculateTotalPrice()}">총 금액</span></p>
-    <div>
-        <form th:action="@{'/order/' + ${order.id} + '/pay'}" method="post" th:if="${order.payDate == null and order.cancelDate == null and order.refundDate == null}">
-            <input type="submit" value="결제하기"/>
-        </form>
-        <form th:action="@{'/order/' + ${order.id} + '/cancel'}" method="post" th:if="${order.payDate != null and order.cancelDate == null}">
-            <input type="submit" value="주문 취소"/>
-        </form>
-        <form th:action="@{'/order/' + ${order.id} + '/refund'}" method="post" th:if="${order.payDate != null and order.refundDate == null}">
-            <input type="submit" value="환불 요청"/>
-        </form>
+
+<div layout:fragment="content">
+
+    <h1>결제정보</h1>
+
+    <div th:if="${order != null}">
+        <a th:if="${order.cancelable}" onclick="return confirm('정말로 취소하시겠습니까?');" th:method="DELETE" th:href="@{|${order.id}/cancel?redirectUrl=${@rq.encodedCurrentUrl}|}" class="btn btn-sm btn-secondary">주문취소</a>
+
+        <button onclick="history.back();" class="btn btn-primary btn-sm">뒤로가기</button>
+
+        <div>
+            <div>주문번호: <span th:text="${order.id}">123</span></div>
+            <div>주문코드: <span th:text="${order.code}">ABC123</span></div>
+            <div>주문자: <span th:text="${order.buyer.username}">user@example.com</span></div>
+            <div>주문상품: <span th:text="${order.getName()}">Sample Product</span></div>
+            <div>결제금액: <span th:text="${order.calculateTotalPrice()}">10000</span>원</div>
+            <div>결제상태: <span th:text="${order.forPrintPayStatus}">결제대기중</span></div>
+            <div>취소상태: <span th:text="${order.forPrintCancelStatus}">취소되지 않음</span></div>
+            <div>환불상태: <span th:text="${order.forPrintRefundStatus}">환불되지 않음</span></div>
+        </div>
     </div>
+    <div th:unless="${order != null}">
+        <p>주문 정보를 불러올 수 없습니다.</p>
+    </div>
+
+    <th:block th:if="${order != null and order.payable}">
+        <!-- 결제 UI -->
+        <div id="payment-method"></div>
+        <!-- 이용약관 UI -->
+        <div id="agreement"></div>
+        <!-- 결제하기 버튼 -->
+        <form th:action="@{|/order/${order.id}/pay|}" method="POST" onsubmit="submitPayForm(this); return false;">
+            <!-- 여기에 추가적인 필드가 필요하면 삽입, 현재는 서버에서 처리하는 정보에 따라 결정됨 -->
+        </form>
+    </th:block>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const paymentWidget = new TossPayments(toss_clientKey);
+        let submitPayFormDone = false;
+
+        function submitPayForm(form) {
+            if (submitPayFormDone) return;
+            submitPayFormDone = true;
+
+            // 결제 요청
+            paymentWidget.requestPayment('카드', {
+                amount: orderPayPrice,
+                orderId: orderCode,
+                orderName: orderName,
+                customerEmail: buyerUsername, // 이메일 주소가 필요한 경우
+                successUrl: window.location.origin + '/order/success',
+                failUrl: window.location.origin + '/order/fail'
+            });
+        }
+        /*]]>*/
+    </script>
 </div>
+
 </body>
+
 </html>

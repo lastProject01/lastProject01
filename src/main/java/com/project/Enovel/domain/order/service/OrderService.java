@@ -8,12 +8,14 @@ import com.project.Enovel.domain.order.entity.OrderItem;
 import com.project.Enovel.domain.order.repository.OrderRepository;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.service.ProductService;
+import com.project.Enovel.global.exception.GlobalException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,15 +29,18 @@ public class OrderService {
     public Order createOrder(Member buyer, List<Long> productIds) {
         Order order = Order.builder().buyer(buyer).build();
 
-        for (Long productId : productIds) {
-            Product product = productService.getProduct(productId);
-            OrderItem orderItem = OrderItem.builder()
-                    .product(product)
-                    .order(order)
-                    .build();
-            order.addOrderItem(orderItem);
-        }
-
+            for (Long productId : productIds) {
+                Product product = productService.getProduct(productId);
+                if (product != null) {
+                    OrderItem orderItem = OrderItem.builder()
+                            .product(product)
+                            .order(order)
+                            .build();
+                    order.addOrderItem(orderItem);
+                }  if (order.getOrderItems().isEmpty()) {
+                    throw new IllegalArgumentException("주문할 수 있는 제품이 없습니다.");
+                }
+            }
         return orderRepository.save(order);
     }
 
@@ -88,10 +93,74 @@ public class OrderService {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("주문 번호가 유효하지 않습니다."));
     }
-
     // 사용자의 주문 목록을 조회하는 메소드
     @Transactional(readOnly = true)
     public List<Order> findOrdersByMemberId(Long memberId) {
         return orderRepository.findOrdersByBuyer_Id(memberId);
+    }
+    public Optional<Order> findById(long id) {
+        return orderRepository.findById(id);
+    }
+
+    public boolean actorCanSee(Member actor, Order order) {
+        return order.getBuyer().equals(actor);
+    }
+
+    public void checkCanPay(String orderCode, long pgPayPrice) {
+        Order order = findByCode(orderCode).orElse(null);
+
+        if (order == null)
+            throw new GlobalException("400-1", "존재하지 않는 주문입니다.");
+
+        checkCanPay(order, pgPayPrice);
+    }
+
+    public void checkCanPay(Order order, long pgPayPrice) {
+        if (!canPay(order, pgPayPrice))
+            throw new GlobalException("400-2", "PG결제금액 혹은 예치금이 부족하여 결제할 수 없습니다.");
+    }
+
+    public Optional<Order> findByCode(String code) {
+        long id = Long.parseLong(code.split("__", 2)[1]);
+
+        return findById(id);
+    }
+
+    public boolean canPay(Order order, long pgPayPrice) {
+        if (!order.isPayable()) return false;
+
+        return order.calcPayPrice() <= pgPayPrice;
+    }
+
+    @Transactional
+    public void cancel(Order order) {
+        if (!order.isCancelable())
+            throw new GlobalException("400-1", "취소할 수 없는 주문입니다.");
+
+        order.setCancelDone();
+
+        if (order.isPayDone())
+            refundOrder(order.getId());
+    }
+
+    public boolean canCancel(Member actor, Order order) {
+        return actor.equals(order.getBuyer()) && order.isCancelable();
+    }
+
+    @Transactional
+    public void payByTossPayments(Order order, long pgPayPrice) {
+        long payPrice = order.calcPayPrice();
+        // 예치금 사용 로직 삭제...
+        payDone(order);
+    }
+
+    private void payDone(Order order) {
+        order.setPaymentDone();
+
+        order.getOrderItems()
+                .stream()
+                .forEach(orderItem -> {
+                    Product product = orderItem.getProduct();
+                });
     }
 }

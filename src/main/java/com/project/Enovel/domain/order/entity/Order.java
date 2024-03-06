@@ -125,4 +125,9 @@ public class Order extends BaseEntity {
 
         return true;
     }
+    public long calcPayPrice() {
+        return orderItems.stream()
+                .mapToLong(OrderItem::getPayPrice)
+                .sum();
+    }
 }
