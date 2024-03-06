@@ -38,4 +38,7 @@ public abstract class CustomUserDetails implements UserDetails {
 
         return authorities;
     }
+    public Long getMemberId() {
+        return member.getId();
+    }
 }
