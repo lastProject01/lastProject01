@@ -116,19 +116,41 @@ public class ProductService {
             return deleteProduct;
         } else {
             // 권한이 없는 경우 익셉션 발생
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "상품을 삭제할 권한이 없습니다.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "상품을 수정할 권한이 없습니다.");
         }
     }
 
+    public Product addProduct(Product product, Member member, Principal principal) {
+        // 현재 사용자 정보 가져오기
+        Member currentUser = this.memberService.getMember(principal.getName());
 
-    public Product addProduct(Product product) {
+        // 상품 작성자 정보 가져오기
+        Member productOwner = product.getAuthor();
 
-        Product addProduct = product.toBuilder()
-                .deleteDate(null)
-                .build();
+        // 현재 사용자와 상품 작성자가 동일한 경우에만 삭제 처리
+        if (member.isCheckedAdmin() || member.isCheckedSeller() && currentUser.equals(productOwner)) {
+            // 삭제 시간 추가 코드
+            Product addProduct = product.toBuilder()
+                    .deleteDate(null)
+                    .build();
 
-        this.productRepository.save(addProduct);
+            this.productRepository.save(addProduct);
 
-        return product;
+            return null;
+        } else {
+            // 권한이 없는 경우 익셉션 발생
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "상품을 수정할 권한이 없습니다.");
+        }
     }
+
+//    public Product addProduct(Product product) {
+//
+//        Product addProduct = product.toBuilder()
+//                .deleteDate(null)
+//                .build();
+//
+//        this.productRepository.save(addProduct);
+//
+//        return product;
+//    }
 }

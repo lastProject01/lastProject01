@@ -171,7 +171,7 @@ public class ProductController {
 
         Product product = this.productService.getProduct(id);
 
-        this.productService.addProduct(product);
+        this.productService.addProduct(product, member, principal);
 
         return "redirect:/seller/products";
     }
