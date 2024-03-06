@@ -9,7 +9,7 @@
         const buyerUsername = /*[[${order != null ? order.buyer.username : ''}]]*/ 'defaultUsername';
         const orderName = /*[[${order != null ? order.getName() : 'N/A'}]]*/ 'defaultOrderName';
         const orderPayPrice = /*[[${order != null ? order.calculateTotalPrice() : 0}]]*/ 0;
-        const toss_clientKey = /*[[${@environment.getProperty('custom.tossPayments.widget.clientKey')}]]*/ 'defaultClientKey';
+        const toss_clientKey = /*[[ ${@environment.getProperty('custom.tossPayments.widget.clientKey')} ]]*/ null;
         /*]]>*/
     </script>
 </head>
@@ -47,31 +47,36 @@
         <div id="agreement"></div>
         <!-- 결제하기 버튼 -->
         <form th:action="@{|/order/${order.id}/pay|}" method="POST" onsubmit="submitPayForm(this); return false;">
-            <!-- 여기에 추가적인 필드가 필요하면 삽입, 현재는 서버에서 처리하는 정보에 따라 결정됨 -->
+            <div class="space-y-4">
+                <div>
+                    <button type="submit" id="payment-button" class="w-full py-2 px-4 bg-white text-gray-800 rounded hover:bg-gray-100 focus:outline-none shadow">결제하기</button>
+                </div>
+            </div>
         </form>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const paymentWidget = new TossPayments(toss_clientKey);
+            let submitPayFormDone = false;
+
+            function submitPayForm(form) {
+                if (submitPayFormDone) return;
+                submitPayFormDone = true;
+
+                // 결제 요청
+                paymentWidget.requestPayment('카드', {
+                    amount: orderPayPrice,
+                    orderId: orderCode,
+                    orderName: orderName,
+                    customerEmail: buyerUsername, // 이메일 주소가 필요한 경우
+                    successUrl: window.location.origin + '/order/success',
+                    failUrl: window.location.origin + '/order/fail'
+                });
+            }
+            /*]]>*/
+        </script>
     </th:block>
 
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        const paymentWidget = new TossPayments(toss_clientKey);
-        let submitPayFormDone = false;
 
-        function submitPayForm(form) {
-            if (submitPayFormDone) return;
-            submitPayFormDone = true;
-
-            // 결제 요청
-            paymentWidget.requestPayment('카드', {
-                amount: orderPayPrice,
-                orderId: orderCode,
-                orderName: orderName,
-                customerEmail: buyerUsername, // 이메일 주소가 필요한 경우
-                successUrl: window.location.origin + '/order/success',
-                failUrl: window.location.origin + '/order/fail'
-            });
-        }
-        /*]]>*/
-    </script>
 </div>
 
 </body>
