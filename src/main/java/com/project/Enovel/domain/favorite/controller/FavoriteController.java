@@ -6,6 +6,7 @@ import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +31,7 @@ public class FavoriteController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
+    @Transactional
     public String cartList(Model model, Principal principal) {
         Member member = this.memberService.getMember(principal.getName());
         List<Favorite> favoriteList = this.favoriteService.getFavoriteList(member);
@@ -45,6 +47,7 @@ public class FavoriteController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add/{id}")
+    @Transactional
     public String addItem(@PathVariable(value = "id") Long id, Principal principal) {
         Member member = this.memberService.getMember(principal.getName());
         Product product = this.productService.getProduct(id);
@@ -55,11 +58,12 @@ public class FavoriteController {
 
         this.favoriteService.favorite(product, member);
 
-        return "redirect:/product/list";
+        return "redirect:/";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
+    @Transactional
     public String deleteItem(@PathVariable(value = "id") Long id, Principal principal) {
         Favorite favorite = this.favoriteService.getCartItem(id);
         Member member = this.memberService.getMember(favorite.getMember().getUsername());

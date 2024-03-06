@@ -35,7 +35,7 @@
             <div th:text="${#temporals.format(product.modifyDate, 'HH:mm')}"></div>
         </td>
         <td>
-            <form th:if="${product.deleteDate == null}" th:action="@{/product/delete/{id}(id=${product.id})}" method="post"
+            <form th:if="${product.deleteDate == null}" th:action="@{/product/delete/{id}(id=${product.id})}" method="get"
                   onsubmit="return confirm('상품판매를 중지하겠습니까?');">
                 <input type="hidden" name="username" th:value="${product.productName}"/>
                 <button type="submit" sec:authorize="isAuthenticated()" class="btn btn-secondary">상품판매중지</button>
