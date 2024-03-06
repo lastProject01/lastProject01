@@ -60,7 +60,7 @@ public class CartController {
 
         this.cartService.addItem(product, member);
 
-        return "redirect:/product/list";
+        return "redirect:/";
     }
 
 
