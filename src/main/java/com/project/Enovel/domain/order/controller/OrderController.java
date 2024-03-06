@@ -166,7 +166,7 @@ public class OrderController {
 
     @GetMapping("/success")
     public String showSuccess() {
-        return "domain/product/order/success";
+        return "domain/order/success";
     }
 
     @GetMapping("/fail")
@@ -174,7 +174,7 @@ public class OrderController {
         rq.attr("code", failCode);
         rq.attr("message", failMessage);
 
-        return "domain/product/order/fail";
+        return "domain/order/fail";
     }
 
     @PostMapping("/confirm")
