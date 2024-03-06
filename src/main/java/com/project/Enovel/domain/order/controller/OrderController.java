@@ -245,4 +245,14 @@ public class OrderController {
 
         return ResponseEntity.status(code).body(jsonObject);
     }
+    @PostMapping("/createForEbook")
+    public String createOrderForEbook(@RequestParam("productId") Long productId, Principal principal) {
+        // 현재 로그인한 사용자 정보 가져오기
+        String username = principal.getName();
+        Member buyer = memberService.getMember(username);
+
+        // 주문 생성 로직 구현
+        Order order = orderService.createOrder(buyer, Arrays.asList(productId));
+        return "redirect:/order/detail/" + order.getId();
+    }
 }
