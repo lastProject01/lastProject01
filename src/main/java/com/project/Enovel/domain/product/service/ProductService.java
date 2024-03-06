@@ -1,17 +1,21 @@
 package com.project.Enovel.domain.product.service;
 
 import com.project.Enovel.domain.member.entity.Member;
+import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final MemberService memberService;
 
     @Value("${custom.originPath}")
     private String originPath;
@@ -92,17 +97,29 @@ public class ProductService {
     }
 
     //상품 삭제 (soft delete)
-    public Product deleteProduct(Product product) {
+    public Product deleteProduct(Product product, Member member, Principal principal) {
+        // 현재 사용자 정보 가져오기
+        Member currentUser = this.memberService.getMember(principal.getName());
 
-        //삭제 시간 추가 코드
-        Product deleteProduct = product.toBuilder()
-                .deleteDate(LocalDateTime.now())
-                .build();
+        // 상품 작성자 정보 가져오기
+        Member productOwner = product.getAuthor();
 
-        this.productRepository.save(deleteProduct);
+        // 현재 사용자와 상품 작성자가 동일한 경우에만 삭제 처리
+        if (member.isCheckedAdmin() || member.isCheckedSeller() && currentUser.equals(productOwner)) {
+            // 삭제 시간 추가 코드
+            Product deleteProduct = product.toBuilder()
+                    .deleteDate(LocalDateTime.now())
+                    .build();
 
-        return product;
+            this.productRepository.save(deleteProduct);
+
+            return deleteProduct;
+        } else {
+            // 권한이 없는 경우 익셉션 발생
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "상품을 삭제할 권한이 없습니다.");
+        }
     }
+
 
     public Product addProduct(Product product) {
 
@@ -114,8 +131,4 @@ public class ProductService {
 
         return product;
     }
-
-//    public List<Product> getSellerProductList(String name) {
-//
-//    }
 }
