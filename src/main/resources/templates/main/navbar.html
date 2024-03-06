@@ -13,10 +13,6 @@
                     상품 관리
                 </a>
 
-                <a th:href="@{/product/create}" th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}" class="flex-c-m trans-04 p-lr-25">
-                    상품등록
-                </a>
-
                 <a th:href="@{/admin/member}" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="flex-c-m trans-04 p-lr-25">
                     관리자 페이지
                 </a>
@@ -37,16 +33,17 @@
                     로그인
                 </a>
 
-                <a  th:href="@{/member/logout}" sec:authorize="isAuthenticated()"  class="flex-c-m trans-04 p-lr-25">
-                    로그아웃
-                </a>
 
-                <a th:href="@{/cart/list}" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/cart/list}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
                     장바구니
                 </a>
 
-                <a th:href="@{/favorite/list}" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/favorite/list}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
                     찜목록
+                </a>
+
+                <a  th:href="@{/member/logout}" sec:authorize="isAuthenticated()"  class="flex-c-m trans-04 p-lr-25">
+                    로그아웃
                 </a>
             </div>
         </div>

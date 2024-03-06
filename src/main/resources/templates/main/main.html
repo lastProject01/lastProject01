@@ -60,7 +60,7 @@
             <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women" style="position: absolute; left: 0%; top: 0px;">
                 <!-- Block2 -->
                 <div class="block2">
-                    <ul style=" display: grid; grid-template-columns: repeat(5, minmax(225px, 225px)); gap: 25px; /* 간격 설정 */">
+                    <ul style=" display: grid; margin-left: 50%; margin-right: 50%; grid-template-columns: repeat(5, minmax(225px, 225px)); gap: 25px; /* 간격 설정 */">
                         <li  th:each="product : ${productList}">
                             <a th:href="@{|/product/detail/${product.id}|}">
                                 <img th:src="${product.productImgPath}" alt="IMG-PRODUCT" style="width: 225px; height: 225px;">
