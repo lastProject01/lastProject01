@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -128,53 +129,33 @@ public class ProductController {
         return String.format("redirect:/product/detail/%d", product.getId());
     }
 
-    //admin 등급과 seller 등급만 접근 가능
-    //상품 삭제
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
-//    @PostMapping("/delete/{id}")
-//    public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
-//        //TODO 회원 등급 검증 문제 해결 필요(비회원이 기능 사용시 기능 정상 작동 문제)
-//        if(principal == null) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
-//        }
-//
-//        Member member = this.memberService.getMember(principal.getName());
-//
-//
-//        Product product = this.productService.getProduct(id);
-//        //회원 등급 검증
-//        //user등급만 필터링
-//        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
-//        }
-//
-//        this.productService.deleteProduct(product);
-//
-//        return "redirect:/seller/products";
-//    }
-
+    // 상품 삭제 컨트롤러 메서드
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable(value = "id") Long id, Principal principal) {
-        //TODO 회원 등급 검증 문제 해결 필요(비회원이 기능 사용시 기능 정상 작동 문제)
-        if(principal == null) {
+        // TODO: 회원 등급 검증 문제 해결 필요(비회원이 기능 사용 시 기능 정상 작동 문제)
+
+        if (principal == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
         Member member = this.memberService.getMember(principal.getName());
 
-
         Product product = this.productService.getProduct(id);
-        //회원 등급 검증
-        //user등급만 필터링
-        if (!member.isCheckedAdmin() && !member.isCheckedSeller() ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
-        }
 
-        this.productService.deleteProduct(product);
+        // 회원 등급 검증
+        // user 등급만 필터링
+        if (member.isCheckedAdmin() || (member.isCheckedSeller() && product.getAuthor().equals(member) && member.getUsername().equals(principal.getName()))) {
+            // 현재 사용자가 관리자거나 판매자이면서 상품 작성자와 동일한 경우에만 삭제 처리
+            this.productService.deleteProduct(product, member, principal);
+        } else {
+            // 권한이 없는 경우 익셉션 발생
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "상품을 삭제할 권한이 없습니다.");
+        }
 
         return "redirect:/seller/products";
     }
+
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/add/{id}")
