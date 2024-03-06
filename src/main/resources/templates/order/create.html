@@ -1,5 +1,5 @@
 <html layout:decorate="~{main/layout}">
-
+<div th:replace="/main/navbar"></div>
 <head>
     <title th:text="'주문 ' + (${order != null ? order.id : 'N/A'}) + '번'">주문 정보</title>
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
