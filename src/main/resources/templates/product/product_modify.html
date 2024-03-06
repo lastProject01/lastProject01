@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
 <form th:action="@{|/product/modify/${product.id}|}" th:object="${productCreateForm}" method="post" enctype="multipart/form-data">
     <!--            <div class="category-section">-->
     <!--                <div class="title">대분류 카테고리</div>-->
@@ -35,6 +31,5 @@
         <button>취소하기</button>
     </div>
 </form>
-
-</body>
+</div>
 </html>
