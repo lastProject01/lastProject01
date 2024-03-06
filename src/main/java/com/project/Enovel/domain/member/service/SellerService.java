@@ -22,6 +22,7 @@ public class SellerService {
         return this.productRepository.findAll();
     }
 
+
     public Product getProduct(Long id) {
         Optional<Product> product = this.productRepository.findById(id);
         return product.get();

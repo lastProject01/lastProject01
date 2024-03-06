@@ -5,6 +5,10 @@
     <div>
         <h2 style="margin-top: 30px; margin-bottom: 30px;">상품관리 페이지</h2>
     </div>
+    <form th:action="@{/product/create}">
+        <button type="submit" th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}"
+                class="btn btn-secondary">상품등록</button>
+    </form>
     <table class="table table-striped" style="max-width: 1500px; text-align: center; justify-content: center; margin-right: auto; margin-left: auto; margin-bottom: 30px;">
     <thead>
     <tr>
