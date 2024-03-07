@@ -129,7 +129,10 @@ public class Rq {
         if (isLogout()) return null;
 
         if (member == null) {
-            member = entityManager.getReference(Member.class, getMember());
+            CustomUserDetails userDetails = getUser();
+            if (userDetails != null) {
+                member = entityManager.find(Member.class, userDetails.getMemberId());
+            }
         }
 
         return member;
