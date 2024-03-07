@@ -152,7 +152,12 @@ public class OrderController {
             throw new GlobalException("404", "존재하지 않는 주문입니다.");
         }
 
-        Member actor = rq.getMember(); // 현재 로그인한 사용자 가져오기
+        // 현재 로그인한 사용자의 username을 Spring Security Context에서 가져옵니다.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        // MemberService를 사용하여 현재 로그인한 사용자의 Member 정보를 가져옵니다.
+        Member actor = memberService.getMember(currentUsername);
 
         // 사용자 정보가 없을 경우 예외 처리
         if (actor == null) {
