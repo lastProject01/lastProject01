@@ -27,20 +27,24 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(Member buyer, List<Long> productIds) {
-        Order order = Order.builder().buyer(buyer).build();
+        if (productIds == null || productIds.isEmpty()) {
+            throw new IllegalArgumentException("제품 ID 목록이 비어 있습니다.");
+        }
 
-            for (Long productId : productIds) {
-                Product product = productService.getProduct(productId);
-                if (product != null) {
-                    OrderItem orderItem = OrderItem.builder()
-                            .product(product)
-                            .order(order)
-                            .build();
-                    order.addOrderItem(orderItem);
-                }  if (order.getOrderItems().isEmpty()) {
-                    throw new IllegalArgumentException("주문할 수 있는 제품이 없습니다.");
-                }
+        Order order = Order.builder().buyer(buyer).build();
+        for (Long productId : productIds) {
+            Product product = productService.getProduct(productId);
+            if (product != null) {
+                OrderItem orderItem = OrderItem.builder()
+                        .product(product)
+                        .order(order)
+                        .build();
+                order.addOrderItem(orderItem);
             }
+        }
+        if (order.getOrderItems().isEmpty()) {
+            throw new IllegalArgumentException("주문할 수 있는 제품이 없습니다.");
+        }
         return orderRepository.save(order);
     }
 
@@ -96,6 +100,9 @@ public class OrderService {
     // 사용자의 주문 목록을 조회하는 메소드
     @Transactional(readOnly = true)
     public List<Order> findOrdersByMemberId(Long memberId) {
+        if (memberId == null) {
+            throw new IllegalArgumentException("멤버 ID가 유효하지 않습니다.");
+        }
         return orderRepository.findOrdersByBuyer_Id(memberId);
     }
     public Optional<Order> findById(long id) {
@@ -103,6 +110,12 @@ public class OrderService {
     }
 
     public boolean actorCanSee(Member actor, Order order) {
+        if (actor == null) {
+            throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
+        }
+        if (order == null) {
+            throw new IllegalArgumentException("유효하지 않은 주문입니다.");
+        }
         return order.getBuyer().equals(actor);
     }
 
