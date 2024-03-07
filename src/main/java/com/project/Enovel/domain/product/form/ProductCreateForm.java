@@ -23,4 +23,6 @@ public class ProductCreateForm {
     @NotEmpty(message = "내용을 넣어 주세요")
     private String content;
 
+    private String category;
+
 }
