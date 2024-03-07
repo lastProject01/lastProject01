@@ -4,8 +4,18 @@ import com.project.Enovel.domain.member.entity.Member;
 import com.project.Enovel.domain.member.service.MemberService;
 import com.project.Enovel.domain.product.entity.Product;
 import com.project.Enovel.domain.product.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.thymeleaf.util.StringUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -17,9 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +43,49 @@ public class ProductService {
         return this.productRepository.findAll();
     }
 
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public List<Product> getList(String category) {
+        if (StringUtils.isEmpty(category)) {
+            return getAllProducts();
+        } else {
+            return getCategoryProducts(category);
+        }
+    }
+
+
+    private List<Product> getCategoryProducts(String category) {
+        List<Product> products = new ArrayList<>();
+
+        switch (category) {
+            case "NOVEL":
+                products.addAll(getNovelProducts());
+                break;
+            case "POEM":
+                products.addAll(getPoemProducts());
+                break;
+            case "ESSAY":
+                products.addAll(getEssayProducts());
+                break;
+            case "MANAGEMENT":
+                products.addAll(getManagementProducts());
+                break;
+            case "ECONOMY":
+                products.addAll(getEconomyProducts());
+                break;
+            case "SOCIAL":
+                products.addAll(getSocialProducts());
+                break;
+            default:
+                products.addAll(getAllProducts());
+                break;
+        }
+
+        return products;
+    }
+
     public Product getProduct(Long id) {
         Optional<Product> product = this.productRepository.findById(id);
         return product.get();
@@ -45,6 +97,7 @@ public class ProductService {
                                  String productImg,
                                  String content,
                                  MultipartFile file,
+                                 String category,
                                  Member author) throws IOException {
 
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/upload";
@@ -65,6 +118,7 @@ public class ProductService {
                 .content(content)
                 .productImgPath(filePath)
                 .productImgName(fileName)
+                .category(category)
                 .author(author)
                 .createDate(LocalDateTime.now())
                 .build();
@@ -80,6 +134,7 @@ public class ProductService {
                                  String productName,
                                  int price,
                                  String productImg,
+                                 String category,
                                  String content) {
 
         //상품 수정 코드
@@ -87,6 +142,7 @@ public class ProductService {
                 .productName(productName)
                 .price(price)
                 .content(content)
+                .category(category)
                 .modifyDate(LocalDateTime.now())
                 .build();
 
@@ -143,6 +199,29 @@ public class ProductService {
         }
     }
 
+<<<<<<< HEAD
+
+    public List<Product> getNovelProducts() {
+        return this.productRepository.findByNovel();
+    }
+
+    public List<Product> getPoemProducts() {
+        return this.productRepository.findByPoem();
+    }
+
+    public List<Product> getEssayProducts() {
+        return this.productRepository.findByEssay();
+    }
+    public List<Product> getManagementProducts() {
+        return this.productRepository.findByManagement();
+    }
+    public List<Product> getEconomyProducts() {
+        return this.productRepository.findByEconomy();
+    }
+    public List<Product> getSocialProducts() {
+        return this.productRepository.findBySocial();
+    }
+=======
 //    public Product addProduct(Product product) {
 //
 //        Product addProduct = product.toBuilder()
@@ -153,4 +232,5 @@ public class ProductService {
 //
 //        return product;
 //    }
+>>>>>>> fcbdf72562c9a46f522b724d985d8708d949c33f
 }

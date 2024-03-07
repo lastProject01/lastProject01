@@ -7,14 +7,18 @@
             상품등록
         </div>
         <form th:action="@{/product/create}" th:object="${productCreateForm}" method="post" enctype="multipart/form-data">
-<!--            <div class="category-section">-->
-<!--                <div class="title">대분류 카테고리</div>-->
-<!--                <select class="category" id="Category" th:field="*{category}" onchange="updateSubCategories()">-->
-<!--                    <option value="none">선택해주세요</option>-->
-<!--                    <option value="NOVEL">소설</option>-->
-<!--                    <option value="SELFHELPBOOK">자기계발서</option>-->
-<!--                </select>-->
-<!--            </div>-->
+            <div class="category-section">
+                <div class="title"> 카테고리</div>
+                <select class="category" id="Category" th:field="*{category}">
+                    <option value="none">선택해주세요</option>
+                    <option value="NOVEL">소설</option>
+                    <option value="POEM">시집</option>
+                    <option value="ESSAY">에세이</option>
+                    <option value="MANAGEMENT">경영</option>
+                    <option value="ECONOMY">경제</option>
+                    <option value="SOCIAL">사회</option>
+                </select>
+            </div>
             <div class="product-name">
                 <div class="title">상품명</div>
                 <input type="text" class="productName" id="productName" name="productName" th:field="*{productName}" placeholder="상품명을 입력해주세요">

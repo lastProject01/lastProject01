@@ -80,6 +80,7 @@ public class ProductController {
                 productCreateForm.getProductImg(),
                 productCreateForm.getContent(),
                 file,
+                productCreateForm.getCategory(),
                 member);
 
         return "redirect:/";
@@ -124,7 +125,9 @@ public class ProductController {
                 productCreateForm.getProductName(),
                 productCreateForm.getPrice(),
                 productCreateForm.getProductImg(),
-                productCreateForm.getContent());
+                productCreateForm.getContent(),
+                productCreateForm.getCategory()
+        );
 
         return String.format("redirect:/product/detail/%d", product.getId());
     }
