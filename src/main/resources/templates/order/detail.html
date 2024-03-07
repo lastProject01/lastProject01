@@ -21,8 +21,14 @@
     <h1>결제정보</h1>
 
     <div th:if="${order != null}">
-        <a th:if="${order.cancelable}" onclick="return confirm('정말로 취소하시겠습니까?');" th:method="DELETE" th:href="@{|${order.id}/cancel?redirectUrl=${@rq.encodedCurrentUrl}|}" class="btn btn-sm btn-secondary">주문취소</a>
-
+        <div th:if="${order.cancelDate == null and order.refundDate == null}">
+            <form th:action="@{'/order/' + ${order.id} + '/cancel'}" method="post">
+                <input type="submit" value="주문취소" onclick="return confirm('정말로 취소하시겠습니까?');" class="btn btn-sm btn-secondary"/>
+            </form>
+            <form th:action="@{'/order/' + ${order.id} + '/refund'}" method="post">
+                <input type="submit" value="환불하기" onclick="return confirm('정말로 환불하시겠습니까?');" class="btn btn-sm btn-secondary"/>
+            </form>
+        </div>
         <button onclick="history.back();" class="btn btn-primary btn-sm">뒤로가기</button>
 
         <div>
@@ -31,9 +37,9 @@
             <div>주문자: <span th:text="${order.buyer.username}">user@example.com</span></div>
             <div>주문상품: <span th:text="${order.getName()}">Sample Product</span></div>
             <div>결제금액: <span th:text="${order.calculateTotalPrice()}">10000</span>원</div>
-            <div>결제상태: <span th:text="${order.forPrintPayStatus}">결제대기중</span></div>
-            <div>취소상태: <span th:text="${order.forPrintCancelStatus}">취소되지 않음</span></div>
-            <div>환불상태: <span th:text="${order.forPrintRefundStatus}">환불되지 않음</span></div>
+            <div>결제상태: <span th:text="${order.payDate != null ? '결제완료' : '결제대기중'}"></span></div>
+            <div>취소상태: <span th:text="${order.cancelDate != null ? '취소됨' : '취소되지 않음'}"></span></div>
+            <div>환불상태: <span th:text="${order.refundDate != null ? '환불됨' : '환불되지 않음'}"></span></div>
         </div>
     </div>
     <div th:unless="${order != null}">

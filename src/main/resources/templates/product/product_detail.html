@@ -41,11 +41,13 @@
                         <form th:action="@{|/cart/add/${product.id}|}" method="POST">
                             <button type="submit" class="btn btn-primary btn-user btn-block" style="margin-top: 8px;">장바구니</button>
                         </form>
-                        <!-- 주문하기 버튼 추가 -->
-                        <form th:action="@{/order/createForEbook}" method="POST">
-                            <input type="hidden" name="productId" th:value="${product.id}" />
-                            <button type="submit" class="btn btn-success btn-user btn-block" style="margin-top: 8px;">구매하기</button>
-                        </form>
+                        <div th:if="${#authorization.expression('isAuthenticated()')}">
+                            <!-- 주문하기 버튼 추가 -->
+                            <form th:action="@{/order/createForEbook}" method="POST">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <button type="submit" class="btn btn-success btn-user btn-block" style="margin-top: 8px;">구매하기</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

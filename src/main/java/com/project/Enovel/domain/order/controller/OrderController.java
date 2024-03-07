@@ -46,6 +46,7 @@ public class OrderController {
     private final Rq rq;
 
     @GetMapping("/detail/{orderId}")
+    @PreAuthorize("isAuthenticated()")
     public String orderDetail(@PathVariable("orderId") Long orderId, Model model) {
         try {
             Order order = orderService.getOrderById(orderId);
@@ -57,6 +58,7 @@ public class OrderController {
         }
     }
     @GetMapping("/create")
+    @PreAuthorize("isAuthenticated()")
     public String showCreateOrderForm(Model model) {
         // 상품 목록을 가져와 모델에 추가
         List<Product> products = productService.getList();
@@ -67,6 +69,7 @@ public class OrderController {
     }
     // 주문 생성
     @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
     public String createOrder(@RequestParam("productIds") String productIds) {
         // 현재 인증된 사용자의 Authentication 객체 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -83,6 +86,7 @@ public class OrderController {
     }
 
     @PostMapping("/createFromCart")
+    @PreAuthorize("isAuthenticated()")
     public String createFromCart(Principal principal, RedirectAttributes redirectAttributes) {
         // 현재 로그인한 사용자 정보 가져오기
         String username = principal.getName();
@@ -109,6 +113,7 @@ public class OrderController {
 
     // 주문 결제
     @PostMapping("/{orderId}/pay")
+    @PreAuthorize("isAuthenticated()")
     public String payOrder(@PathVariable("orderId") Long orderId) {
         orderService.payOrder(orderId);
         return "redirect:/order/detail/" + orderId;
@@ -116,6 +121,7 @@ public class OrderController {
 
     // 주문 취소
     @PostMapping("/{orderId}/cancel")
+    @PreAuthorize("isAuthenticated()")
     public String cancelOrder(@PathVariable("orderId") Long orderId) {
         orderService.cancelOrder(orderId);
         return "redirect:/order/detail/" + orderId;
@@ -123,12 +129,14 @@ public class OrderController {
 
     // 주문 환불
     @PostMapping("/{orderId}/refund")
+    @PreAuthorize("isAuthenticated()")
     public String refundOrder(@PathVariable("orderId") Long orderId) {
         orderService.refundOrder(orderId);
         return "redirect:/order/detail/" + orderId;  // 다시 시작
     }
     // 현재 사용자의 주문 목록을 보여주는 메소드
     @GetMapping("/myList")
+    @PreAuthorize("isAuthenticated()")
     public String showMyOrders(Principal principal, Model model) {
         String username = principal.getName(); // 현재 로그인한 사용자의 사용자명을 얻습니다.
         Member member = memberService.getMember(username); // 사용자명을 바탕으로 Member 객체를 조회합니다.
@@ -145,6 +153,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String showDetail(@PathVariable("id") long id, Model model) {
         Order order = orderService.findById(id).orElse(null);
 
@@ -255,6 +264,7 @@ public class OrderController {
         return ResponseEntity.status(code).body(jsonObject);
     }
     @PostMapping("/createForEbook")
+    @PreAuthorize("isAuthenticated()")
     public String createOrderForEbook(@RequestParam("productId") Long productId, Principal principal) {
         // 현재 로그인한 사용자 정보 가져오기
         String username = principal.getName();
