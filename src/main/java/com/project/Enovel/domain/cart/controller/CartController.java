@@ -40,6 +40,13 @@ public class CartController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
 
+        int totalPrice = 0;
+        for(Cart cart : cartList){
+            totalPrice += ( cart.getProduct().getPrice());
+        }
+
+        model.addAttribute("totalPrice", totalPrice);
+
         model.addAttribute("cartList", cartList);
 
         return "cart/cart_list";
