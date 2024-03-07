@@ -72,9 +72,6 @@ public class ProductService {
             case "MANAGEMENT":
                 products.addAll(getManagementProducts());
                 break;
-            case "ECONOMY":
-                products.addAll(getEconomyProducts());
-                break;
             case "SOCIAL":
                 products.addAll(getSocialProducts());
                 break;
@@ -212,9 +209,6 @@ public class ProductService {
     }
     public List<Product> getManagementProducts() {
         return this.productRepository.findByManagement();
-    }
-    public List<Product> getEconomyProducts() {
-        return this.productRepository.findByEconomy();
     }
     public List<Product> getSocialProducts() {
         return this.productRepository.findBySocial();
