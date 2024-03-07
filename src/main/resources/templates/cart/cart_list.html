@@ -32,11 +32,6 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                        <a th:href="@{/cart/list}" class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                           장바구니 불러오기
-                        </a>
-                    </div>
                 </div>
             </div>
 
@@ -50,8 +45,7 @@
                         </div>
 
                         <div class="size-209 p-t-1">
-								<span class="mtext-110 cl2">
-									$79.65
+								<span class="mtext-110 cl2" th:text="${totalPrice}">
 								</span>
                         </div>
                     </div>
@@ -120,8 +114,9 @@
             data: { cartId: cartId }, // 삭제할 카트 ID를 서버로 전달합니다.
             success: function(response) {
                 // 삭제가 성공하면 해당 카트 항목을 DOM에서 제거합니다.
-                $("#cart-" + cartId).remove();
+                $("#cart-" + cartId).parent().remove();
                 alert("삭제 했습니다.");
+                location.reload(true);
             },
             error: function(xhr, status, error) {
                 // 삭제가 실패하면 사용자에게 알림을 표시합니다.
