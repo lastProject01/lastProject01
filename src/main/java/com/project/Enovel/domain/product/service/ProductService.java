@@ -199,6 +199,7 @@ public class ProductService {
         }
     }
 
+<<<<<<< HEAD
 
     public List<Product> getNovelProducts() {
         return this.productRepository.findByNovel();
@@ -220,4 +221,16 @@ public class ProductService {
     public List<Product> getSocialProducts() {
         return this.productRepository.findBySocial();
     }
+=======
+//    public Product addProduct(Product product) {
+//
+//        Product addProduct = product.toBuilder()
+//                .deleteDate(null)
+//                .build();
+//
+//        this.productRepository.save(addProduct);
+//
+//        return product;
+//    }
+>>>>>>> fcbdf72562c9a46f522b724d985d8708d949c33f
 }
