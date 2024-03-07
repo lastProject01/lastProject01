@@ -11,33 +11,26 @@
                         <div class="wrap-table-shopping-cart">
                             <table class="table-shopping-cart">
                                 <tr class="table_head">
-                                    <th class="column-1">구매 상품</th>
-                                    <th class="column-2">구매자</th>
-                                    <th class="column-3">가격</th>
+                                    <th class="column-1">주문 번호</th>
+                                    <th class="column-2">주문 상태</th>
+                                    <th class="column-3">주문 총액</th>
+                                    <th class="column-4">주문 상세보기</th>
                                 </tr>
 
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img src="" alt="IMG">
-                                        </div>
-                                    </td>
-                                    <td class="column-2" ></td>
-                                    <td class="column-3" ></td>
-                                    <td class="column-4" >
-                                        <button type="button"
-                                                class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                                            삭제하기
-                                        </button>
+                                <tr th:each="order : ${orders}" class="table_row">
+                                    <td class="column-1" th:text="${order.id}"></td>
+                                    <td class="column-2" th:text="${order.forPrintPayStatus}"></td>
+                                    <td class="column-3" th:text="${order.calculateTotalPrice()}"></td>
+                                    <td class="column-4">
+                                        <a th:href="@{|/order/detail/${order.id}|}" class="btn btn-primary">
+                                            상세보기
+                                        </a>
+                                        <a th:href="@{|/review/createForm/${order.id}|}" class="btn btn-info">
+                                            리뷰 작성
+                                        </a>
                                     </td>
                                 </tr>
                             </table>
-                        </div>
-
-                        <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                            <a class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                                Update Cart
-                            </a>
                         </div>
                     </div>
                 </div>

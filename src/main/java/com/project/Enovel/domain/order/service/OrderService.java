@@ -176,4 +176,23 @@ public class OrderService {
                     Product product = orderItem.getProduct();
                 });
     }
+    @Transactional(readOnly = true)
+    public boolean checkOrderedByMember(Long memberId, Long productId) {
+        // 사용자가 주문한 모든 주문을 찾음
+        List<Order> orders = orderRepository.findOrdersByBuyer_Id(memberId);
+
+        // 주문 목록을 순회하면서 주문된 각 제품을 확인
+        for (Order order : orders) {
+            for (OrderItem item : order.getOrderItems()) {
+                if (item.getProduct().getId().equals(productId)) {
+                    // 제품이 주문 목록에 있다면 true 반환
+                    return true;
+                }
+            }
+        }
+
+        // 제품이 사용자의 어떤 주문 목록에도 없다면 false 반환
+        return false;
+    }
+
 }

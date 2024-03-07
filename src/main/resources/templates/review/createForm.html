@@ -1,0 +1,21 @@
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
+    <div class="container">
+        <h2 class="mt-5">리뷰 작성하기</h2>
+        <form action="@{/review/create}" method="post">
+            <div class="form-group">
+                <label for="content">리뷰 내용</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">리뷰 제출</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
