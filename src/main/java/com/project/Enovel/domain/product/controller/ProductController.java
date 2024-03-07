@@ -90,7 +90,7 @@ public class ProductController {
     //수정 폼 이동
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @GetMapping("/modify/{id}")
-    public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm, Principal principal) {
+    public String modifyProduct(@PathVariable(value = "id") Long id, ProductCreateForm productCreateForm, Principal principal, Model model) {
         Member member = this.memberService.getMember(principal.getName());
 
         //회원 등급 검증
@@ -99,6 +99,8 @@ public class ProductController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "권한이 없습니다.");
         }
         Product product = this.productService.getProduct(id);
+
+        model.addAttribute("product", product);
         return "product/product_modify";
     }
 
@@ -106,7 +108,7 @@ public class ProductController {
     //상품 수정
     @PreAuthorize("hasRole('ADMIN') or hasRole('SELLER')")
     @PostMapping("/modify/{id}")
-    public String modifyProduct(@PathVariable(value = "id") Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal) {
+    public String modifyProduct(@PathVariable(value = "id") Long id, @Valid ProductCreateForm productCreateForm, BindingResult bindingResult, Principal principal, Model model) {
 
         Member member = this.memberService.getMember(principal.getName());
 
@@ -125,9 +127,12 @@ public class ProductController {
                 productCreateForm.getProductName(),
                 productCreateForm.getPrice(),
                 productCreateForm.getProductImg(),
-                productCreateForm.getContent(),
-                productCreateForm.getCategory()
+                productCreateForm.getCategory(),
+                productCreateForm.getContent()
+
         );
+
+        model.addAttribute("product", product);
 
         return String.format("redirect:/product/detail/%d", product.getId());
     }

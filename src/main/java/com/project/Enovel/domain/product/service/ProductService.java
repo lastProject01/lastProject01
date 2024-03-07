@@ -141,8 +141,8 @@ public class ProductService {
         Product modifyProduct = product.toBuilder()
                 .productName(productName)
                 .price(price)
-                .content(content)
                 .category(category)
+                .content(content)
                 .modifyDate(LocalDateTime.now())
                 .build();
 
