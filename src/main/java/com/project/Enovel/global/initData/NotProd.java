@@ -19,12 +19,10 @@ public class NotProd {
     @Bean
     public ApplicationRunner init(MemberService memberService, ProductService productService) {
         return args -> {
-
-//            productService.createProduct("샘플 상품 1", 10000, "sample.jpg", "샘플 상품 설명입니다.");
-//            productService.createProduct("샘플 상품 2", 10000, "sample.jpg", "샘플 상품 설명입니다.");
-//            productService.createProduct("샘플 상품 3", 10000, "sample.jpg", "샘플 상품 설명입니다.");
-//            productService.createProduct("샘플 상품 4", 10000, "sample.jpg", "샘플 상품 설명입니다.");
-//            productService.createProduct("샘플 상품 5", 10000, "sample.jpg", "샘플 상품 설명입니다.");
+            memberService.create("admin1", "123123", "관리자1", "admin1@enovel.com", "대전광역시 서구", "01011111111", true, false, false);
+            memberService.create("admin2", "123123", "관리자2", "admin2@enovel.com", "대전광역시 동구", "01022222222", true, false, false);
+            memberService.create("seller1", "123123", "책벌레상점", "seller1@enovel.com", "대전광역시 대덕구", "01011111111", false, true, false);
+            memberService.create("seller2", "123123", "책을낳는나무", "seller2@enovel.com", "대전광역시 유성구", "01022222222", false, true, false);
         };
     }
 };
