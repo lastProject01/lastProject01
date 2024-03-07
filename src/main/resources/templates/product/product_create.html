@@ -1,46 +1,85 @@
 <html layout:decorate="~{main/layout}">
-<div th:replace="/main/navbar"></div>
 <div layout:fragment="content">
-<div class="container">
-    <div class="wrap">
-        <div class="title">
-            상품등록
+    <div style="text-align: center;">
+        <div>
+            <h2 style="margin-top: 30px;">상품 등록</h2>
         </div>
-        <form th:action="@{/product/create}" th:object="${productCreateForm}" method="post" enctype="multipart/form-data">
-            <div class="category-section">
-                <div class="title"> 카테고리</div>
-                <select class="category" id="Category" th:field="*{category}">
-                    <option value="none">선택해주세요</option>
-                    <option value="NOVEL">소설</option>
-                    <option value="POEM">시집</option>
-                    <option value="ESSAY">에세이</option>
-                    <option value="MANAGEMENT">경영</option>
-                    <option value="ECONOMY">경제</option>
-                    <option value="SOCIAL">사회</option>
-                </select>
+        <!-- Modal Search -->
+        <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+            <div class="container-search-header">
+                <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+                    <img alt="CLOSE" src="images/icons/icon-close2.png">
+                </button>
+
+                <form class="wrap-search-header flex-w p-l-15">
+                    <button class="flex-c-m trans-04">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+                    <input class="plh3" name="search" placeholder="Search..." type="text">
+                </form>
             </div>
-            <div class="product-name">
-                <div class="title">상품명</div>
-                <input type="text" class="productName" id="productName" name="productName" th:field="*{productName}" placeholder="상품명을 입력해주세요">
+        </div>
+        <!-- Nested Row within Card Body -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Create product!</h1>
+                            </div>
+                            <form th:action="@{/product/create}" th:object="${productCreateForm}" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <select class="form-control form-control-user" placeholder="Address" autocomplete="off" id="Category" th:field="*{category}">
+                                        <option value="none">카테고리를 선택해주세요</option>
+                                        <option value="NOVEL">소설</option>
+                                        <option value="POEM">시집</option>
+                                        <option value="ESSAY">에세이</option>
+                                        <option value="MANAGEMENT">경영</option>
+                                        <option value="ECONOMY">경제</option>
+                                        <option value="SOCIAL">사회</option>
+                                    </select>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="mb-3 mb-sm-0">
+                                        <input class="form-control form-control-user" placeholder="상품명" type="text" autocomplete="off" th:field="*{productName}" id="productName">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="">
+                                        <input class="form-control form-control-user" placeholder="가격" autocomplete="off" type="text" id="price" name="price">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="mb-3 mb-sm-0">
+                                        <textarea class="form-control form-control-user" placeholder="상품 설명" autocomplete="off" type="text" th:field="*{content}" style="height: 150px;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="">
+                                        <input class="form-control form-control-user"  accept="image/**" id="imgPath" name="file" autocomplete="off" type="file">
+                                    </div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">상품 등록</button>
+                                </div>
+                                <hr>
+                            </form>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="product-price">
-                <div class="title">상품 가격</div>
-                <input type="number" name="price" id="price" class="price" th:field="*{price}" placeholder="상품가격을 입력해주세요.">
-            </div>
-            <div class="big-info">
-                <div class="title">상품 설명</div>
-                <textarea name="content" id="content" cols="30" rows="10" class="little" th:field="*{content}" placeholder="상세한 설명을 작성해주세요."></textarea>
-            </div>
-            <div class="file-upload">
-                <div class="title">상품 사진등록</div>
-                <input type="file" accept="image/**" id="imgPath" name="file">
-            </div>
-            <div class="button">
-                <button type="submit">저장하기</button>
-                <button type="submit">취소하기</button>
-            </div>
-        </form>
+        </div>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
     </div>
-</div>
 </div>
 </html>
