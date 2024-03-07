@@ -18,8 +18,8 @@ import java.util.Optional;
 public class SellerService {
     private final ProductRepository productRepository;
 
-    public List<Product> getList() {
-        return this.productRepository.findAll();
+    public List<Product> getSellerList(Member author) {
+        return this.productRepository.findByAuthor(author);
     }
 
 

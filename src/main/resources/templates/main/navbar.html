@@ -4,46 +4,49 @@
     <!-- Topbar -->
     <div class="top-bar">
         <div class="content-topbar flex-sb-m h-full container">
-            <a href="/" class="left-top-bar">
+            <a href="/" class="left-top-bar" style="text-decoration: none;">
                 이글E글
             </a>
 
             <div class="right-top-bar flex-w h-full">
-                <a th:href="@{/seller/products}" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/seller/products}" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     상품 관리
                 </a>
 
-                <a th:href="@{/admin/member}" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/product/create}" th:if="${#authorization.expression('hasRole(''ADMIN'')')} or ${#authorization.expression('hasRole(''SELLER'')')}" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
+                    상품등록
+                </a>
+
+                <a th:href="@{/admin/member}" sec:authorize="isAuthenticated()" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     관리자 페이지
                 </a>
 
-                <a th:href="@{/member/signup}"  sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/member/signup}"  sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     회원가입
                 </a>
 
-                <a th:href="@{/member/checkedPw}" th:unless="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/member/checkedPw}" th:unless="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     마이페이지
                 </a>
 
-                <a th:href="@{/member/myInfo}" th:if="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/member/myInfo}" th:if="${#strings.containsIgnoreCase(#authentication.name, 'KAKAO')}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     마이페이지
                 </a>
 
-                <a  th:href="@{/member/login}" sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25">
+                <a  th:href="@{/member/login}" sec:authorize="isAnonymous()" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     로그인
                 </a>
 
+                <a  th:href="@{/member/logout}" sec:authorize="isAuthenticated()"  class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
+                    로그아웃
+                </a>
 
-                <a th:href="@{/cart/list}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/cart/list}" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     장바구니
                 </a>
 
-                <a th:href="@{/favorite/list}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                <a th:href="@{/favorite/list}" class="flex-c-m trans-04 p-lr-25" style="text-decoration: none;">
                     찜목록
-                </a>
-
-                <a  th:href="@{/member/logout}" sec:authorize="isAuthenticated()"  class="flex-c-m trans-04 p-lr-25">
-                    로그아웃
                 </a>
             </div>
         </div>

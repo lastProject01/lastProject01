@@ -11,32 +11,31 @@
 
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
+
+<!--                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">-->
+<!--                    인기상품-->
+<!--                </button>-->
+
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" onclick="location.href='/';">
                     All Products
                 </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
-                    인기상품
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" onclick="location.href='/main?category=NOVEL';">
                     소설
                 </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" onclick="location.href='/main?category=POEM';">
                     시집
                 </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" onclick="location.href='/main?category=ESSAY';">
                     에세이
                 </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
-                    경제/경영
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" onclick="location.href='/main?category=MANAGEMENT';">
+                    경영
                 </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
-                    사회과학
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" onclick="location.href='/main?category=ECONOMY';">
+                    경제
+                </button>
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" onclick="location.href='/main?category=SOCIAL';">
+                    사회
                 </button>
             </div>
                 <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
@@ -61,7 +60,7 @@
                 <!-- Block2 -->
                 <div class="block2">
                     <ul style=" display: grid; margin-left: 50%; margin-right: 50%; grid-template-columns: repeat(5, minmax(225px, 225px)); gap: 25px; /* 간격 설정 */">
-                        <li  th:each="product : ${productList}">
+                        <li  th:each="product : ${productList}" th:if="${product.deleteDate == null}">
                             <a th:href="@{|/product/detail/${product.id}|}">
                                 <img th:src="${product.productImgPath}" alt="IMG-PRODUCT" style="width: 225px; height: 225px;">
                             </a>
@@ -99,10 +98,11 @@
 
 
 <!-- Back to top -->
-<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
+<!--  필요없는 부분같아서 주석처리. 필요하게 되면 나중에 주석 해제할 것  -->
+<!--<div class="btn-back-to-top" id="myBtn">-->
+<!--		<span class="symbol-btn-back-to-top">-->
+<!--			<i class="zmdi zmdi-chevron-up"></i>-->
+<!--		</span>-->
 </div>
 </html>
 <!--===============================================================================================-->

@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
-<body>
+<html layout:decorate="~{main/layout}">
+<div th:replace="/main/navbar"></div>
+<div layout:fragment="content">
 <div th:each="product : ${productList}" th:if="${product.getDeleteDate() == null}">
     <ul th:id="'product-'+ ${product.id}">
         <li th:text="${product.productName}"></li>
@@ -23,9 +18,8 @@
         </form>
     </ul>
 </div>
-
-<div>상품 목록이에요</div>
-</body>
+</div>
+</html>
 
 <script>
     function deleteProduct(productId) {
@@ -51,4 +45,3 @@
     });
 }
 </script>
-</html>
