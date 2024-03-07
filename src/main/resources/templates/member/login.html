@@ -27,7 +27,7 @@
                                         <button type="submit"  class="btn btn-primary btn-user btn-block">로그인</button>
                                         <hr>
                                         <div style="text-align: center;">
-                                            <button type="button" onclick="location.href='/oauth2/authorization/kakao'" class="btn btn-warning">카카오 로그인</button>
+                                            <button type="button" onclick="location.href='/oauth2/authorization/kakao'" class="btn btn-warning btn-user btn-block">카카오 로그인</button>
                                         </div>
                                     </form>
                                     <hr>
@@ -35,7 +35,7 @@
 <!--                                        <a class="small" href="forgot-password.html">Forgot Password?</a>-->
 <!--                                    </div>-->
                                     <div class="text-center">
-                                        <a class="small" href="/member/signup">Create an Account!</a>
+                                        <a class="small" th:href="@{/member/signup}" style="text-decoration: none;">계정이 없다면 회원가입을 진행해 주세요!</a>
                                     </div>
                                 </div>
                             </div>
