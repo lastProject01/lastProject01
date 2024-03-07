@@ -64,17 +64,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select distinct p from Product p where p.category = 'MANAGEMENT'")
     List<Product> findByManagement();
 
-//    @Query(
-//            "select distinct p " +
-//                    "from Product p " +
-//                    "where " +
-//                    " p.name like %:kw% " +
-//                    " and p.category = 'ECONOMY'"
-//    )
-//    Page<Product> findAllEconomyByKeyword(@Param("kw") String kw, Pageable pageable);
-
-    @Query("select distinct p from Product p where  p.category = 'ECONOMY'")
-    List<Product> findByEconomy();
 
 //    @Query(
 //            "select distinct p " +
