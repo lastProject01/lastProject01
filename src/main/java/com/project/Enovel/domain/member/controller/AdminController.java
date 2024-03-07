@@ -1,7 +1,6 @@
 package com.project.Enovel.domain.member.controller;
 
 import com.project.Enovel.domain.member.entity.Member;
-import com.project.Enovel.domain.member.service.AdminService;
 import com.project.Enovel.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
