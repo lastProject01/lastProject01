@@ -42,6 +42,10 @@
                     찜목록
                 </a>
 
+                <a th:href="@{/order/myList}" sec:authorize="isAuthenticated()" class="flex-c-m trans-04 p-lr-25">
+                    장바구니
+                </a>
+
                 <a  th:href="@{/member/logout}" sec:authorize="isAuthenticated()"  class="flex-c-m trans-04 p-lr-25">
                     로그아웃
                 </a>
