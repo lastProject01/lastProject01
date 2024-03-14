@@ -1,6 +1,7 @@
 package com.project.Enovel.domain.member.entity;
 
 import com.project.Enovel.domain.cart.entity.Cart;
+import com.project.Enovel.domain.rebate.entity.Rebate;
 import com.project.Enovel.global.base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -49,4 +50,7 @@ public class Member extends BaseEntity {
     private boolean checkedKakaoMember;
 
     private String profileImg;
+
+    @OneToOne
+    private Rebate rebate;
 }
