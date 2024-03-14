@@ -34,6 +34,9 @@ public class Order extends BaseEntity {
 
     private LocalDateTime refundDate;
 
+    @ManyToOne
+    private Member seller;
+
     // 주문 항목 추가
     public void addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);

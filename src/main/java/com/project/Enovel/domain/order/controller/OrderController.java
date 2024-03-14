@@ -116,6 +116,18 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     public String payOrder(@PathVariable("orderId") Long orderId) {
         orderService.payOrder(orderId);
+
+//       Order order = this.orderService.getOrderById(orderId);
+
+//        Member seller = this.memberService.getMember(order.getSeller().getUsername());
+
+//        int totalPrice = seller.getRebate().getTotalPrice();
+//
+//        int price = 0;
+//
+//
+//        totalPrice += price;
+
         return "redirect:/order/detail/" + orderId;
     }
 

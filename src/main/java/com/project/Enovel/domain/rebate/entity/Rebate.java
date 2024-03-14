@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @ToString
 @AllArgsConstructor
 public class Rebate extends BaseEntity {
-    private Long totalPrice;
+    private int totalPrice;
 
     @OneToOne
     private Member member;
